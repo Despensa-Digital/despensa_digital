@@ -12,7 +12,7 @@ function LoginApp() {
     // Set an initializing state whilst Firebase connects
     const [initializing, setInitializing] = useState(true);
     const [user, setUser] = useState();
-
+    
     // Handle user state changes
     function onAuthStateChanged(user) {
         setUser(user);
@@ -36,7 +36,7 @@ function LoginApp() {
 
     return (
         <View>
-            <Text>Welcome {user.email}</Text>
+            <Text>Welcome {user.displayName}</Text>
         </View>
     );
 }
@@ -47,7 +47,9 @@ export default function App() {
     createUser = () => {
         auth()
             // .createUserWithEmailAndPassword
-            .createUserWithEmailAndPassword('jane.doe@example.com', 'SuperSecretPassword!')
+            .createUserWithEmailAndPassword('john.doe@example.com', 'SuperSecretPassword!')
+            .then((res) => {        res.user.updateProfile({          displayName: "John Doe"
+        })})
             .then(() => {
                 console.log('User account created & signed in!');
             })
@@ -66,12 +68,13 @@ export default function App() {
                 
                 console.error(error);
             });
+       
     }
 
     loginUser = () => {
         auth()
             // .createUserWithEmailAndPassword
-            .signInWithEmailAndPassword('jane.doe@example.com', 'SuperSecretPassword!')
+            .signInWithEmailAndPassword('john.doe@example.com', 'SuperSecretPassword!')
             .then(() => {
                 console.log('User account created & signed in!');
             })
