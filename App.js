@@ -10,13 +10,17 @@ import { signOut } from './Model/Firebase/signOut';
 import { googleSignIn } from './Model/Firebase/googleSignIn';
 import { forgotPassword } from './Model/Firebase/forgotPassword';
 
+//import da View
+import Login from './View/Login';
+
+
 
 export default function App() {
 
     return (
 
-        <View style={{ width: '100%', alignItems: 'center', padding: 20 }}>
-            {/* Botão importado da biblioteca GoogleSignIn */}
+        < >
+            {/* Botão importado da biblioteca GoogleSignIn
             <GoogleSigninButton               
                 size={GoogleSigninButton.Size.Wide}
                 color={GoogleSigninButton.Color.Light}
@@ -26,7 +30,9 @@ export default function App() {
             <Button title="Create User" onPress={emailSignUp} />
             <Button title="Login User" onPress={emailSignIn} />
             <Button title="Log Off" onPress={signOut} />
-            <Button title='Forgot Password' onPress={forgotPassword} />
-        </View>
+            <Button title='Forgot Password' onPress={forgotPassword} /> */}
+            <Login/>
+           
+        </>
     )
 }
