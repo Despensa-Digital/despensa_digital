@@ -12,7 +12,8 @@ import { forgotPassword } from './Model/Firebase/forgotPassword';
 
 //import da View
 import Login from './View/Login';
-
+import Cadastro from './View/Cadastro';
+import CadastroEmail from './View/CadastroEmail';
 
 
 export default function App() {
@@ -31,8 +32,9 @@ export default function App() {
             <Button title="Login User" onPress={emailSignIn} />
             <Button title="Log Off" onPress={signOut} />
             <Button title='Forgot Password' onPress={forgotPassword} /> */}
-            <Login/>
-           
+            {/* <Login/> */}
+           {/* <Cadastro/> */}
+           <CadastroEmail/>
         </>
     )
 }
