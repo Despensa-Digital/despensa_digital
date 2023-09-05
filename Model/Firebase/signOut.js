@@ -8,7 +8,7 @@ GoogleSignin.configure({
 const signOut = () => {
     auth()
         .signOut()
-        .then(() => console.log('User signed out!'));
+        //.then(() => console.log('User signed out!'));
 
     disconectAccount();     
 }
