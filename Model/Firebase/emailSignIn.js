@@ -1,11 +1,13 @@
 import auth from '@react-native-firebase/auth';
 
-const emailSignIn = () => {
+const emailSignIn = (email, senha) => {
+    console.log('emailSignIn:' + email + senha);
     auth()
         // .createUserWithEmailAndPassword
-        .signInWithEmailAndPassword('ricardo.ryt@gmail.com', 'Segredo1234')
+        .signInWithEmailAndPassword(email, senha)
         .then(() => {
-            console.log('User account signed in!');
+            console.log('signed in!');
+            
         })
         .catch(error => {              
             if (error.code === 'auth/invalid-email') {
@@ -21,7 +23,7 @@ const emailSignIn = () => {
             }      
 
             console.error(error);
-        });
+        });  
 }
 
 export {emailSignIn}

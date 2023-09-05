@@ -1,44 +1,50 @@
-import { useState } from 'react';
-import { Appbar, Button, Divider, PaperProvider, Text, TextInput, TouchableRipple } from 'react-native-paper';
+import { useState, useEffect } from 'react';
+import { Appbar, Button, Dialog, Divider, PaperProvider, Portal, Text, TextInput, TouchableRipple } from 'react-native-paper';
 import { GoogleSigninButton } from '@react-native-google-signin/google-signin';
 import { View } from 'react-native';
+import { signOut } from '../Model/Firebase/signOut';
 
+//import do Controller
+import { EmailLogin } from '../Controller/Login/emailLogin';
 
-const Login = () => {
+const Login = ({ navigation, user }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const [status, setStatus] = useState(false);
     const [showPass, setShowPass] = useState("eye");
 
+    const [visible, setVisible] = useState(false);
+    const hideDialog = () => {
+        setVisible(false);
+        signOut();
+    }
+
+    useEffect(() => {
+        if (user != null) {
+            if (!user.emailVerified) {
+                console.log('ESTOU AQUI')
+                setVisible(true);           
+            }
+        }
+    }, [user]);
+
+    //console.log({user});
+
     const changeSecureTextEntry = value => {
         setStatus(status === false ? true : false);
         setShowPass(showPass === 'eye' ? 'eye-off' : 'eye');
-
     };
+
 
     return (
         <PaperProvider >
-            <Appbar.Header style={{ marginTop: 20 }}>
-                <Appbar.Content 
-                    title="Login" 
-                    color='rgba(0,0,0,0.2)' 
-                    titleStyle={{ fontWeight: 'bold', fontSize: 28, textAlign: 'center' }}
-                />
-                <TouchableRipple
-                    style={{ position: 'absolute', right: 20, top: 20, color: '#5DB075' }}
-                    onPress={() => console.log('Pressionei o cadastras')}
-                    rippleColor="rgba(0, 0, 0, .32)">
-                    <Text style={{ color: '#5DB075', fontSize: 14 }}>Cadastrar</Text>
-                </TouchableRipple>
-            </Appbar.Header>
-
-            <Text 
-                style={{ 
-                    color: '#00000077', 
-                    textAlign: 'center', 
-                    fontSize: 16, 
-                    marginTop: 20 
+            <Text
+                style={{
+                    color: '#00000077',
+                    textAlign: 'center',
+                    fontSize: 16,
+                    marginTop: 20
                 }}>
                 Se conectar usando uma conta Google
             </Text>
@@ -53,12 +59,12 @@ const Login = () => {
 
             <Divider horizontalInset bold />
 
-            <Text 
-                style={{ 
-                    color: '#00000077', 
-                    textAlign: 'center', 
-                    fontSize: 16, 
-                    marginTop: 50 
+            <Text
+                style={{
+                    color: '#00000077',
+                    textAlign: 'center',
+                    fontSize: 16,
+                    marginTop: 50
                 }}>
                 Se conectar usando e-mail e senha
             </Text>
@@ -87,13 +93,13 @@ const Login = () => {
                 buttonColor='#5DB075'
                 style={{ marginVertical: 20, marginHorizontal: 20 }}
                 mode="contained"
-                onPress={() => console.log('Pressed')}>
+                onPress={() => EmailLogin(email, password)}>
                 Login
             </Button>
 
             <TouchableRipple
                 style={{ padding: 10, marginHorizontal: 80 }}
-                onPress={() => console.log('Pressed')}
+                onPress={() => navigation.navigate('RecuperarSenha')}
                 rippleColor="rgba(0, 0, 0, .32)">
                 <Text
                     style={{
@@ -104,6 +110,20 @@ const Login = () => {
                     Esqueceu a senha?
                 </Text>
             </TouchableRipple>
+
+            <View>
+                <Portal>
+                    <Dialog visible={visible} onDismiss={hideDialog}>
+                        <Dialog.Title>Confirmação de E-mail</Dialog.Title>
+                        <Dialog.Content>
+                            <Text variant="bodyMedium">Verifique seu e-mail para poder prosseguir.</Text>
+                        </Dialog.Content>
+                        <Dialog.Actions>
+                            <Button onPress={hideDialog}>Done</Button>
+                        </Dialog.Actions>
+                    </Dialog>
+                </Portal>
+            </View>
 
         </PaperProvider>
 
