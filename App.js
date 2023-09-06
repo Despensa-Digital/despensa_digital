@@ -124,6 +124,13 @@ export default function App() {
                                 }}
                             />
                             <Stack.Screen name="ReenviarEmailRecuperacao" component={ReenvirEmailRecuperacao} />
+                            <Stack.Screen name="Cadastro" component={Cadastro} />
+                            <Stack.Screen 
+                                name="CadastroEmail" 
+                                component={CadastroEmail} 
+                                options={{
+                                    title: 'Cadastro'
+                                }}/>
                         </>
                     )}
 
