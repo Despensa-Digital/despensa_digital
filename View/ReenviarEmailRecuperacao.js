@@ -1,22 +1,20 @@
 import { useState } from 'react';
 import { Appbar, Button, PaperProvider, Text, TextInput } from 'react-native-paper';
+import { forgotPassword } from '../Model/Firebase/forgotPassword';
 
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 
-const ReenvirEmailRecuperacao = () => {
-    const [email, setEmail] = useState('');
+const ReenvirEmailRecuperacao = ({navigation, route}) => {
+    const {emailUser} = route.params;
+    console.log(emailUser)
+    const reenviarEmail = () => {
+        forgotPassword(emailUser);
+    }
 
     return (
         <PaperProvider >
-            <Appbar.Header style={{ marginTop: 20 }}>
-                <Appbar.Content 
-                    title="Recuperar Senha" 
-                    color='rgba(0,0,0,0.2)' 
-                    titleStyle={{ fontWeight: 'bold', fontSize: 28, textAlign: 'center' }}
-                />              
-            </Appbar.Header>
-
+            
             <Text 
                 style={{ 
                     color: '#00000055', 
@@ -35,7 +33,7 @@ const ReenvirEmailRecuperacao = () => {
                 buttonColor='#5DB075'
                 style={{ marginTop: 50, marginHorizontal: 20 }}
                 mode="contained"
-                onPress={() => console.log('Pressed')}>
+                onPress={() => reenviarEmail()}>
                 Reenviar
             </Button>
 
@@ -44,7 +42,7 @@ const ReenvirEmailRecuperacao = () => {
                 buttonColor='#FFFFFF'           
                 style={{ marginVertical: 20, marginHorizontal: 20, borderColor: '#5DB075' }}
                 mode="outlined"
-                onPress={() => console.log('Pressed')}>
+                onPress={() => navigation.goBack()}>
                 Cancelar
             </Button>
           

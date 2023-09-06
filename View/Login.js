@@ -7,16 +7,21 @@ import { signOut } from '../Model/Firebase/signOut';
 //import do Controller
 import { EmailLogin } from '../Controller/Login/emailLogin';
 
+//import da Model
+//Alterar futuramente
+import { googleSignIn } from '../Model/Firebase/googleSignIn';
+
 const Login = ({ navigation, user }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const [status, setStatus] = useState(false);
+    const [status, setStatus] = useState(true);
     const [showPass, setShowPass] = useState("eye");
 
     const [visible, setVisible] = useState(false);
     const hideDialog = () => {
         setVisible(false);
+
         signOut();
     }
 
@@ -29,14 +34,13 @@ const Login = ({ navigation, user }) => {
         }
     }, [user]);
 
-    //console.log({user});
 
     const changeSecureTextEntry = value => {
         setStatus(status === false ? true : false);
         setShowPass(showPass === 'eye' ? 'eye-off' : 'eye');
     };
 
-
+    
     return (
         <PaperProvider >
             <Text
@@ -44,9 +48,10 @@ const Login = ({ navigation, user }) => {
                     color: '#00000077',
                     textAlign: 'center',
                     fontSize: 16,
-                    marginTop: 20
+                    marginTop: 20,
+                    marginHorizontal: 40
                 }}>
-                Se conectar usando uma conta Google
+                Se conectar usando uma conta Google (cadastro automático)
             </Text>
 
             <View style={{ marginVertical: 30, alignSelf: 'center' }}>

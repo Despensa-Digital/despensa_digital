@@ -1,10 +1,16 @@
 import { useState } from 'react';
 import { Appbar, Button, PaperProvider, Text, TextInput } from 'react-native-paper';
+import { forgotPassword } from '../Model/Firebase/forgotPassword';
 
 
 
 const RecuperarSenha = ({navigation}) => {
     const [email, setEmail] = useState('');
+
+    const enviarEmail = (email) => {
+        forgotPassword(email);
+        navigation.navigate('ReenviarEmailRecuperacao', {emailUser: email});
+    }
 
     return (
         <PaperProvider>          
@@ -35,7 +41,7 @@ const RecuperarSenha = ({navigation}) => {
                 buttonColor='#5DB075'
                 style={{ marginTop: 50, marginHorizontal: 20 }}
                 mode="contained"
-                onPress={() => console.log('Pressed')}>
+                onPress={() => enviarEmail(email)}>
                 Confirmar
             </Button>
 

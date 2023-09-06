@@ -3,13 +3,16 @@ import { Appbar, Button, Divider, PaperProvider, Text, TextInput, TouchableRippl
 import { GoogleSigninButton } from '@react-native-google-signin/google-signin';
 import { View } from 'react-native';
 
-const CadastroEmail = () => {
-    const [celular, setCelular] = useState('');
+//import do Controller
+import { cadastrarEmail } from '../Controller/Cadastro/cadastrarEmail';
+
+const CadastroEmail = ({navigation}) => {
+    //const [celular, setCelular] = useState('');
     const [nome, setNome] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [status, setStatus] = useState(false);
+    const [status, setStatus] = useState(true);
     const [showPass, setShowPass] = useState("eye");
     const changeSecureTextEntry = value => {
         setStatus(status === false ? true : false);
@@ -17,42 +20,37 @@ const CadastroEmail = () => {
 
     };
     const hasErrors = () => {
-        return !text.includes('@');
+        if(email.length > 0){
+            return !email.includes('@');
+        } else {
+            return false;
+        }
       };
+
+    const passwordDiff = () => {
+       return (password !== confirmPassword)
+    }
+
+    const enviarCadastro = () => {
+        cadastrarEmail(nome, email, password);
+        navigation.popToTop();
+    }
       
     return(
         <PaperProvider>
-            <Appbar.Header style={{ marginTop: 20 }}>
-            <TouchableRipple
-                    style={{ position: 'absolute', left: 20, top: 20, color: 'rgba(0,0,0,0.2)' }}
-                    onPress={() => console.log('Pressionei o cadastras')}
-                    rippleColor="rgba(0, 0, 0, .32)">
-                    <Text style={{fontWeight: 'bold', color: 'rgba(0,0,0,0.2)', fontSize: 16 }}>X</Text>
-                </TouchableRipple>
-                <Appbar.Content 
-                    title="Cadastro" 
-                    color='rgba(0,0,0,0.2)' 
-                    titleStyle={{ fontWeight: 'bold', fontSize: 28, textAlign: 'center' }}
-                />
-                <TouchableRipple
-                    style={{ position: 'absolute', right: 20, top: 20, color: '#5DB075' }}
-                    onPress={() => console.log('Pressionei o cadastras')}
-                    rippleColor="rgba(0, 0, 0, .32)">
-                    <Text style={{ color: '#5DB075', fontSize: 14 }}>Login</Text>
-                </TouchableRipple>
-            </Appbar.Header>
+            
 
             <TextInput
-                style={{ marginVertical: 20, marginHorizontal: 20 }}
+                style={{ marginTop: 20, marginHorizontal: 20 }}
                 label="Nome"
                 mode="outlined"
                 error={false}
                 value={nome}
                 onChangeText={nome => setNome(nome)}
             />
-
-            <TextInput
-                style={{ marginVertical: 0, marginHorizontal: 20 }}
+            
+            {/* <TextInput
+                style={{ marginTop: 20, marginHorizontal: 20 }}
                 label="Celular"
                 mode="outlined"
                 error={false}
@@ -61,24 +59,24 @@ const CadastroEmail = () => {
             />
             <HelperText
                     style={{ marginVertical: 0, marginHorizontal: 20 }}
-            >Ex.: (12) 91234--5678</HelperText>
+            >Ex.: (12) 91234-5678</HelperText> */}
             
             <TextInput
-                style={{ marginVertical: 0, marginHorizontal: 20 }}
+                style={{ marginTop: 20, marginHorizontal: 20 }}
                 label="E-mail"
                 mode="outlined"
                 error={false}
-                value={email}
-                onChangeText={nome => setEmail(email)}
+                value={email}              
+                onChangeText={email => setEmail(email)}
             />
 
             <HelperText
-                    style={{ marginVertical: 0, marginHorizontal: 20 }}
+                    style={{ marginVertical: 0, marginHorizontal: 20}}
                     type='error' visible = {hasErrors()}
             >E-mail inválido</HelperText>
 
             <TextInput
-                style={{ marginVertical: 20, marginHorizontal: 20 }}
+                style={{ marginTop: 0, marginHorizontal: 20 }}
                 label="Senha"
                 mode="outlined"
                 error={false}
@@ -89,7 +87,7 @@ const CadastroEmail = () => {
             />
 
             <TextInput
-                style={{ marginVertical: 20, marginHorizontal: 20 }}
+                style={{ marginTop: 20, marginHorizontal: 20 }}
                 label="Confirmar senha"
                 mode="outlined"
                 error={false}
@@ -98,12 +96,16 @@ const CadastroEmail = () => {
                 value={confirmPassword}
                 onChangeText={confirmPassword => setConfirmPassword(confirmPassword)}
             />
+            <HelperText
+                    style={{ marginVertical: 0, marginHorizontal: 20}}
+                    type='error' visible = {passwordDiff()}
+            >* Senha e Confirmar senha precisam coincidir</HelperText>
 
             <Button
                 buttonColor='#5DB075'
-                style={{ marginVertical: 20, marginHorizontal: 20 }}
+                style={{ marginTop: 30, marginHorizontal: 20 }}
                 mode="contained"
-                onPress={() => console.log('Pressed')}>
+                onPress={() => enviarCadastro()}>
                 Cadastrar
             </Button>
 

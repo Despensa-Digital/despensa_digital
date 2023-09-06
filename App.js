@@ -123,7 +123,28 @@ export default function App() {
                                     title: 'Recuperar Senha'
                                 }}
                             />
-                            <Stack.Screen name="ReenviarEmailRecuperacao" component={ReenvirEmailRecuperacao} />
+                            <Stack.Screen 
+                                name="ReenviarEmailRecuperacao" 
+                                component={ReenvirEmailRecuperacao} 
+                                options={{
+                                    title: 'Reenviar E-mail'
+                                }}
+                            />
+                            
+                            {/* <Stack.Screen
+                                name="Cadastro"
+                                component={Cadastro}
+                                options={{
+                                    title: 'Cadastrar'
+                                }}/> */}
+                            
+                            <Stack.Screen
+                                name="CadastroEmail"
+                                component={CadastroEmail}
+                                options={{
+                                    title: 'Cadastrar E-mail'
+                                }}
+                            />
                         </>
                     )}
 
