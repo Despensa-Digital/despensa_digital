@@ -7,16 +7,22 @@ GoogleSignin.configure({
 
 //login pelo Google
 const googleSignIn = async () => {
-    // Check if your device supports Google Play
-    await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-    // Get the users ID token
-    const { idToken } = await GoogleSignin.signIn();
+    try {
+        // Check if your device supports Google Play
+        await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true })
+        
+        // Get the users ID token
+        const { idToken } = await GoogleSignin.signIn()
+        
+        // Create a Google credential with the token
+        const googleCredential = auth.GoogleAuthProvider.credential(idToken);
 
-    // Create a Google credential with the token
-    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+        // Sign-in the user with the credential
+        return auth().signInWithCredential(googleCredential);
+    } catch (error) {
+        //return error
+    }
 
-    // Sign-in the user with the credential
-    return auth().signInWithCredential(googleCredential);
 }
 
 export { googleSignIn }
