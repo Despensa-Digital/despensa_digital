@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, View, Text } from 'react-native';
 import { GoogleSigninButton } from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
-import { Dialog } from 'react-native-paper';
+import { DefaultTheme } from 'react-native-paper';
 
 //Navigation
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
@@ -23,7 +23,7 @@ import CadastroEmail from './View/CadastroEmail';
 import RecuperarSenha from './View/RecuperarSenha';
 import ReenvirEmailRecuperacao from './View/ReenviarEmailRecuperacao';
 import AppBarButton from './View/AppBarButton';
-import HomeScreen from './View/HomeScreen';
+import BottomTabs from './View/HomeTabs/BottomTabs';
 
 
 
@@ -36,6 +36,14 @@ export default function App() {
     const [initializing, setInitializing] = useState(true);
     const [user, setUser] = useState();
     const [isEmailVerified, setIsEmailVerified] = useState(false);
+
+    const theme = {
+        ...DefaultTheme,
+        colors: {
+          ...DefaultTheme.colors,
+          secondaryContainer: 'transparent', // Use transparent to disable the little highlighting oval
+        },
+      };
 
     // Handle user state changes
     function onAuthStateChanged(user) {
@@ -83,8 +91,10 @@ export default function App() {
             {/* <ReenvirEmailRecuperacao /> */}
 
 
-
-            <NavigationContainer>
+            {/*  */}
+            <NavigationContainer
+                theme={theme}
+            >
                 <Stack.Navigator
                     initialRouteName="Login"
                     screenOptions={{
@@ -99,12 +109,12 @@ export default function App() {
                     {isEmailVerified ? (
                         <>
                             <Stack.Screen
-
-                                name="Home"
-                                component={HomeScreen}
+                                name="BottomTabs"
+                                component={BottomTabs}
                                 options={{
-                                    title: 'Home Screen'
-                                }} />
+                                    headerShown: false
+                                }}
+                                />
                         </>
                     ) : (
                         <>
