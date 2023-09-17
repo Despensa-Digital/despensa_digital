@@ -1,17 +1,18 @@
 import auth from '@react-native-firebase/auth';
 
-const emailSignUp = () => {
+const emailSignUp = (name, email, password) => {
     auth()
         // .createUserWithEmailAndPassword
-        .createUserWithEmailAndPassword('ricardo.ryt@gmail.com', 'SuperSecretPassword!')
+        .createUserWithEmailAndPassword(email, password)
         .then((userCredential) => {
-            // userCredential.user.updateProfile({
-            //     displayName: "Paulo da Silva"
-            // })
-            userCredential.user.sendEmailVerification()
+            userCredential.user.updateProfile({
+                displayName: name
+            })
+            userCredential.user.sendEmailVerification();
+            console.log('Usuário criado: ' + userCredential.user);
         })
         .then(() => {
-            console.log('User account created & signed in!');
+            console.log('User account created & signed in!');          
         })
         .catch(error => {
             if (error.code === 'auth/email-already-in-use') {
