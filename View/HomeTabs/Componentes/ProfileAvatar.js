@@ -1,7 +1,6 @@
 import { Avatar, PaperProvider, Text } from "react-native-paper";
 import { View } from 'react-native';
 import * as React from 'react';
-import boy from '../../../Assets/ProfileThumbnail/boy1.png'
 
 const ProfileAvatar = ({profileKey, name, photo}) => {
     

@@ -3,7 +3,7 @@ import { View, FlatList, ScrollView } from 'react-native'
 import { Appbar, Avatar, Button, Divider, PaperProvider, Text, TextInput } from 'react-native-paper';
 import { signOut } from '../../../Model/Firebase/signOut';
 import ProfileAvatar from '../Componentes/ProfileAvatar';
-import ListItem from '../Componentes/ListItem';
+import ListComponent from '../Componentes/ListComponent';
 
 const HomeScreen = () => {
 
@@ -31,7 +31,7 @@ const HomeScreen = () => {
 
     return (
         <PaperProvider>
-            <ScrollView>
+            <ScrollView >
                 <Text
                     variant="titleMedium"
                     style={{
@@ -85,10 +85,8 @@ const HomeScreen = () => {
                     }}>
                     Itens próximos do vencimento
                 </Text>
-                <View>
-                    {products.map(product =>
-                        <ListItem productName={product.name} productImage={product.image} expireDate={product.expire} productKey={product.key} />
-                    )}
+                <View>               
+                    <ListComponent itens={products} />
                 </View>
 
 
