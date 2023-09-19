@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "258123344341",
+    "project_id": "despensadigital-10674",
+    "storage_bucket": "despensadigital-10674.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:258123344341:android:de88693b39ba2e106e355c",
+        "android_client_info": {
+          "package_name": "com.despensadigital"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "258123344341-u7ggu9bnro0gqf115oa2hrqthmsrbo82.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.despensadigital",
+            "certificate_hash": "5510d75cbd1eff5ee698c1849c62f276dc6630e7"
+          }
+        },
+        {
+          "client_id": "258123344341-5drvtb9d8anvsnvnmitc9hdjf6ipn50b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAo1SAFwYjpz4-YoLv_eEwrtQAKWaO8NDI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "258123344341-5drvtb9d8anvsnvnmitc9hdjf6ipn50b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
