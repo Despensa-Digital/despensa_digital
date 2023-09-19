@@ -8,8 +8,11 @@ const DespensaStack = createNativeStackNavigator();
 function DespensaStackScreen() {
   return (
     <DespensaStack.Navigator>
-      <DespensaStack.Screen name="Despensa" component={Despensa} />  
-      <DespensaStack.Screen name="AdicionarProduto" component={AdicionarProduto} />     
+      <DespensaStack.Screen name='Despensa' component={Despensa} />  
+      <DespensaStack.Screen 
+        name='AdicionarProduto'
+        component={AdicionarProduto} 
+        options={{title: 'Adicionar produto'}}/>     
     </DespensaStack.Navigator>
   );
 }
