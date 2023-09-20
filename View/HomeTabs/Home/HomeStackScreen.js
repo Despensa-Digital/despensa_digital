@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './HomeScreen';
 import AppBarGerenciarResidenciasButton from './AppBarGerenciarResidenciasButton';
 import GerenciarResidencias from '../Residencias/GerenciarResidencias';
+import EditarResidencia from '../Residencias/EditarResidencia';
 
 const HomeStack = createNativeStackNavigator();
 
@@ -26,6 +27,13 @@ function HomeStackScreen() {
           component={GerenciarResidencias}
           options={{
             title: "Gerenciar Residências"
+          }}
+        />
+        <HomeStack.Screen
+          name="EditarResidencia"
+          component={EditarResidencia}
+          options={{
+            title: "Editar Residência"
           }}
         />
       </HomeStack.Group>

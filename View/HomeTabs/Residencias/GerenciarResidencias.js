@@ -8,15 +8,15 @@ import {BlurView} from "@react-native-community/blur";
 
 import { TextInput } from 'react-native-paper';
 import NovaResidencia from './NovaResidencia';
-
+import { useNavigation } from '@react-navigation/native';
 
 const GerenciarResidencias = () => {
+    const navigation = useNavigation();
     const [modal, setModal] = useState(false);
+
     return (
         <PaperProvider style={styles.raiz}>
-
-                  <View>
-
+          <View>
              {modal && (
                <BlurView
                     style={styles.absolute}
@@ -27,10 +27,12 @@ const GerenciarResidencias = () => {
                 <List.Item
                     title="First Item"
                     description="Item description"
+                    onPress={() => navigation.navigate('EditarResidencia')}
                 />
                 <List.Item
                     title="Second Item"
                     description="Item description"
+                    onPress={() => navigation.navigate('EditarResidencia')}
                   />
 
                 <Button
