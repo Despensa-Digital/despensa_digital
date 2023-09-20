@@ -16,14 +16,7 @@ const GerenciarResidencias = () => {
 
     return (
         <PaperProvider style={styles.raiz}>
-          <View>
-             {modal && (
-               <BlurView
-                    style={styles.absolute}
-                    blurType="dark"
-                    blurAmount={90}
-                  />
-             )}
+        <GestureHandlerRootView style={(modal ? styles.container_blur: styles.container)}>
                 <List.Item
                     title="First Item"
                     description="Item description"
@@ -36,15 +29,17 @@ const GerenciarResidencias = () => {
                   />
 
                 <Button
-                    buttonColor='#5DB075'
+                    buttonColor={(modal? '#2b5536':'#5DB075')}
+                    textColor={(modal? 'gray':'white')}
                     style={{marginTop: 15, marginHorizontal: 20, marginBottom: 20}}
                     mode="contained"
                     onPress={() => setModal(!modal)}>
                     Abrir/fechar modal
                 </Button>
-            </View>
-             {modal && (<NovaResidencia setModal={setModal}/>)}
 
+             {modal && (<NovaResidencia setModal={setModal} modal={modal}/>)}
+
+            </GestureHandlerRootView>
         </PaperProvider>
     );
 };
@@ -62,7 +57,16 @@ const styles = StyleSheet.create({
         marginTop: 50,
         marginHorizontal: 50
     },
-
+  container: {
+    flex: 1,
+    padding: 24,
+    backgroundColor: 'transparent',
+  },
+  container_blur: {
+    flex: 1,
+    padding: 24,
+    backgroundColor: 'grey',
+  },
 absolute: {
         position: "absolute",
         top: 0,

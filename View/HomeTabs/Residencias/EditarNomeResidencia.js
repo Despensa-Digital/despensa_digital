@@ -3,13 +3,11 @@ import { PaperProvider, Text, Button } from 'react-native-paper';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { Dimensions, View, StyleSheet,  SafeAreaView} from 'react-native';
 import BottomSheet  from '@gorhom/bottom-sheet';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import { BlurView } from 'expo-blur';
 import { TextInput } from 'react-native-paper';
 
-const NovoMembro = ({setModal, modal}) => {
+const EditarNomeResidencia = ({setModal, modal}) => {
     const bottomSheetRef = useRef();
-    const snapPoints = useMemo(() => ['25%', '65%'], []);
+    const snapPoints = useMemo(() => ['25%', '45%'], []);
     const handleSheetChanges = useCallback((index: number) => {
         console.log('handleSheetChanges', index);
         if (index === -1) {
@@ -18,9 +16,7 @@ const NovoMembro = ({setModal, modal}) => {
       }, []);
 
     // variables
-    const [nomeMembro, setNomeMembro] = React.useState("");
-    const [emailMembro, setEmailMembro] = React.useState("");
-
+    const [nomeResidencia, setNomeResidencia] = React.useState("")
 
     return (
               <BottomSheet
@@ -31,32 +27,22 @@ const NovoMembro = ({setModal, modal}) => {
                 enablePanDownToClose={true}
                 >
                 <View style={styles.contentContainer}>
-                  <Text style={styles.textBox}>Adicionar novo membro</Text>
-                  <Text style={styles.textSubtitulo}>Para adicionar um novo membro digite o e-mail e nome abaixo:</Text>
+                  <Text style={styles.textBox}>Editar nome da residência</Text>
                   <TextInput
                         style={styles.textInput}
                         mode= 'outlined'
                         outlineColor= 'black'
                         label="Nome"
-                        value={nomeMembro, setNomeMembro}
-                        onChangeText={nomeMembro => setNomeMembro(nomeMembro)}
+                        value={nomeResidencia, setNomeResidencia}
+                        onChangeText={nomeResidencia => setNomeResidencia(nomeResidencia)}
                       />
-                  <TextInput
-                                style={styles.textInput}
-                                mode= 'outlined'
-                                outlineColor= 'black'
-                                label="E-mail"
-                                value={emailMembro, setEmailMembro}
-                                onChangeText={emailMembro => setEmailMembro(emailMembro)}
-                              />
-
                   <Button
                     buttonColor='#5DB075'
                     textColor='white'
                     style={styles.buttonSave}
                     mode="contained"
                     onPress={() => setModal(false)}>
-                    Enviar convite
+                    Salvar alteração
                   </Button>
 
                   <Button
@@ -112,4 +98,4 @@ const styles = StyleSheet.create({
 
 
 
-export default NovoMembro;
+export default EditarNomeResidencia;

@@ -7,29 +7,29 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import { BlurView } from 'expo-blur';
 import { TextInput } from 'react-native-paper';
 
-const NovaResidencia = ({setModal}) => {
-    // ref
+const NovaResidencia = ({setModal, modal}) => {
     const bottomSheetRef = useRef();
+    const snapPoints = useMemo(() => ['25%', '45%'], []);
+    const handleSheetChanges = useCallback((index: number) => {
+        console.log('handleSheetChanges', index);
+        if (index === -1) {
+            setModal(false);
+        }
+      }, []);
 
     // variables
-    const snapPoints = useMemo(() => ['35%', '100%'], []);
     const [nomeResidencia, setNomeResidencia] = React.useState("");
 
-    // callbacks
-    const handleSheetChanges = useCallback((index: number) => {
-    console.log('handleSheetChanges', index);
-    }, []);
 
     return (
-        <GestureHandlerRootView style={styles.container}>
               <BottomSheet
                 ref={bottomSheetRef}
-                index={1}
+                index={(modal? 1: -1)}
                 snapPoints={snapPoints}
                 onChange={handleSheetChanges}
-                style={styles.sheetStyle}
+                enablePanDownToClose={true}
                 >
-                <View style={styles.container}>
+                <View style={styles.contentContainer}>
                   <Text style={styles.textBox}>Nova Residência</Text>
                   <TextInput
                         style={styles.textInput}
@@ -61,7 +61,6 @@ const NovaResidencia = ({setModal}) => {
                 </View>
               </BottomSheet>
 
-            </GestureHandlerRootView>
         );
 };
 
@@ -78,13 +77,12 @@ const styles = StyleSheet.create({
     },
   contentContainer: {
 
-    ///flex: 1,
-    ///alignItems: 'center',
+    flex: 1,
   },
     textInput: {
         backgroundColor: 'white',
         marginHorizontal: 10,
-        marginTop: 50,
+        marginTop: 10,
       },
 
     buttonCancel: {
@@ -93,7 +91,7 @@ const styles = StyleSheet.create({
     },
 
     buttonSave: {
-        marginTop: 70,
+        marginTop: 10,
         marginHorizontal: 20,
 
     },

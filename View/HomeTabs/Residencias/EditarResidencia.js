@@ -1,75 +1,96 @@
-import { PaperProvider, Text, Button, List } from 'react-native-paper';
-
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { View, StyleSheet,  SafeAreaView} from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import {BlurView} from "@react-native-community/blur";
+import { PaperProvider, Text, Button, List } from 'react-native-paper';
 
-import { TextInput } from 'react-native-paper';
 import NovoMembro from './NovoMembro';
-import { useNavigation } from '@react-navigation/native';
+import EditarNomeResidencia from './EditarNomeResidencia';
 
 const EditarResidencia = () => {
-    const navigation = useNavigation();
-    const [modal, setModal] = useState(false);
+    const [modalMembro, setModalMembro] = useState(false);
+    const [modalResidencia, setModalResidencia] = useState(false);
+    const abrirFecharModalMembro = (valor) => {
+      if (modalResidencia == true){
+        return
+      }
+      setModalMembro(valor)
+    }
+    const abrirFecharModalResidencia = (valor) => {
+      if (modalMembro == true){
+        return
+      }
+      setModalResidencia(valor)
+    }
 
-    return (
-        <PaperProvider style={styles.raiz}>
+  return (
+    <PaperProvider style={styles.raiz}>
+    <GestureHandlerRootView style={(modalMembro || modalResidencia ? styles.container_blur: styles.container)}>
 
-              <View>
-             {modal && (
-               <BlurView
-                    style={styles.absolute}
-                    blurType="dark"
-                    blurAmount={90}
-                  />
-             )}
-             <Text style={styles.tituloEditar}>Editar</Text>
-                <List.Item
-                    title="Primeira residência"
-                    description="Item description"
-                    onPress={() => setModal(!modal)}
-                />
-                <List.Item
-                    title="Segunda residencia"
-                    description="Item description"
-                    onPress={() => setModal(!modal)}
-                  />
+       <Text style={styles.tituloEditar}>Editar</Text>
+            <List.Item
+                title="Primeira residência"
+                description="Item description"
+                onPress={() => abrirFecharModalResidencia(!modalResidencia)}
+            />
+            <List.Item
+                title="Segunda residencia"
+                description="Item description"
+                onPress={() => abrirFecharModalResidencia(!modalResidencia)}
+              />
 
-              <Text style={styles.tituloMembro}>Membro</Text>
-                             <List.Item
-                                 title="Primeiro membro"
-                                 description="Item description"
-                                 onPress={() => setModal(!modal)}
-                             />
-                             <List.Item
-                                 title="Segundo membro"
-                                 description="Item description"
-                                 onPress={() => setModal(!modal)}
-                               />
-                <Button
-                    buttonColor='#5DB075'
-                    style={{marginTop: 15, marginHorizontal: 20, marginBottom: 20}}
-                    mode="contained"
-                    onPress={() => setModal(!modal)}>
-                    Adicionar novo membro
-                </Button>
+            <Text style={styles.tituloMembro}>Membro</Text>
+            <Button
+            buttonColor={(modalMembro || modalResidencia? '#2b5536':'#5DB075')}
+            textColor={(modalMembro|| modalResidencia? 'gray':'white')}
+            style={{marginTop: 15, marginHorizontal: 20, marginBottom: 20}}
+            mode="contained"
+            onPress={() => abrirFecharModalMembro(!modalMembro)}>
+            Adicionar novo membro
+            </Button>
+          
+              <List.Item
+                 title="Primeiro membro"
+                 description="Item description"
+                 onPress={() => abrirFecharModalMembro(!modalMembro)}
+             />
+             <List.Item
+                 title="Segundo membro"
+                 description="Item description"
+                 onPress={() => abrirFecharModalMembro(!modalMembro)}
+               />
 
-            </View>
-             {modal && (<NovoMembro setModal={setModal}/>)}
+            <Button
+            buttonColor={(modalMembro || modalResidencia? '#2b5536':'#5DB075')}
+            textColor={(modalMembro|| modalResidencia? 'gray':'white')}
+            style={{marginTop: 15, marginHorizontal: 20, marginBottom: 20}}
+            mode="contained"
+            onPress={() => abrirFecharModalMembro(!modalMembro)}>
+            Adicionar novo membro
+            </Button>
+        
 
+     {modalMembro && (<NovoMembro setModal={abrirFecharModalMembro} modal={modalMembro}/>)}
+     {modalResidencia && (<EditarNomeResidencia setModal={abrirFecharModalResidencia} modal={modalResidencia}/>)}
 
-        </PaperProvider>
-    );
+    </GestureHandlerRootView>
+    </PaperProvider>
+
+  );
 };
 
 const styles = StyleSheet.create({
-    raiz: {
-        fontFamily: "Roboto",
-        backgroundColor: "gray",
-    },
-  titulo : {
+  container: {
+    flex: 1,
+    padding: 24,
+    backgroundColor: 'transparent',
+  },
+  container_blur: {
+    flex: 1,
+    padding: 24,
+    backgroundColor: 'grey',
+  },
+    titulo : {
         color: '#00000088',
         textAlign: 'center',
         fontSize: 20,
@@ -77,15 +98,6 @@ const styles = StyleSheet.create({
         marginTop: 50,
         marginHorizontal: 50
     },
-
-absolute: {
-        position: "absolute",
-        top: 0,
-        left: 0,
-        bottom: 0,
-        right: 0
-  },
-
   tituloEditar: {
     marginTop: 10,
     marginHorizontal: 15,
@@ -102,7 +114,5 @@ absolute: {
       fontFamily: "Roboto",
     }
 });
-
-
 
 export default EditarResidencia;
