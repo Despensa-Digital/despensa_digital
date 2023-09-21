@@ -26,14 +26,14 @@ function HomeStackScreen() {
           name="GerenciarResidencias"
           component={GerenciarResidencias}
           options={{
-            title: "Gerenciar Residências"
+            title: "Minha Residência",
           }}
         />
         <HomeStack.Screen
           name="EditarResidencia"
           component={EditarResidencia}
           options={{
-            title: "Editar Residência"
+            title: "Minha Residência"
           }}
         />
       </HomeStack.Group>

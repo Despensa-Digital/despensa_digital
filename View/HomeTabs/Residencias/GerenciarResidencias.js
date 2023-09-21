@@ -1,7 +1,7 @@
 import { PaperProvider, Text, Button, List } from 'react-native-paper';
 
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { View, StyleSheet,  SafeAreaView} from 'react-native';
+import { View, StyleSheet,  SafeAreaView } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {BlurView} from "@react-native-community/blur";
@@ -16,30 +16,72 @@ const GerenciarResidencias = () => {
 
     return (
         <PaperProvider style={styles.raiz}>
-        <GestureHandlerRootView style={(modal ? styles.container_blur: styles.container)}>
+       <GestureHandlerRootView style={(modal ? styles.container_blur: styles.container)}>
+
                 <List.Item
-                    title="First Item"
-                    description="Item description"
+                    title="Minha casa"
                     onPress={() => navigation.navigate('EditarResidencia')}
+                    style={styles.listItem}
+                    right={props => <List.Icon {...props} icon="greenhouse" />}
+
                 />
                 <List.Item
-                    title="Second Item"
-                    description="Item description"
+                    title="Casa da mãe"
                     onPress={() => navigation.navigate('EditarResidencia')}
+                    style={styles.listItem}
+                    right={props => <List.Icon {...props} icon="greenhouse" />}
+                  />
+                <List.Item
+                    title="Casa da praia"
+                    onPress={() => navigation.navigate('EditarResidencia')}
+                    style={styles.listItem}
+                    right={props => <List.Icon {...props} icon="greenhouse" />}
+                  />
+                <List.Item
+                    title="Casa da Luna"
+                    onPress={() => navigation.navigate('EditarResidencia')}
+                    style={styles.listItem}
+                    right={props => <List.Icon {...props} icon="greenhouse" />}
+                  />
+                <List.Item
+                    title="Casa do Vini"
+                    onPress={() => navigation.navigate('EditarResidencia')}
+                    style={styles.listItem}
+                    right={props => <List.Icon {...props} icon="greenhouse" />}
+                  />
+                <List.Item
+                    title="Casa do Fake"
+                    onPress={() => navigation.navigate('EditarResidencia')}
+                    style={styles.listItem}
+                    right={props => <List.Icon {...props} icon="greenhouse" />}
+                  />
+                <List.Item
+                    title="Casa do Yoichi"
+                    onPress={() => navigation.navigate('EditarResidencia')}
+                    style={styles.listItem}
+                    right={props => <List.Icon {...props} icon="greenhouse" />}
+                  />
+                <List.Item
+                    title="Casa do Roberto"
+                    onPress={() => navigation.navigate('EditarResidencia')}
+                    style={styles.listItem}
+                    right={props => <List.Icon {...props} icon="greenhouse" />}
                   />
 
                 <Button
                     buttonColor={(modal? '#2b5536':'#5DB075')}
                     textColor={(modal? 'gray':'white')}
-                    style={{marginTop: 15, marginHorizontal: 20, marginBottom: 20}}
+                    style={{position: 'absolute', bottom:10, alignSelf:"center", width: 300}}
                     mode="contained"
                     onPress={() => setModal(!modal)}>
-                    Abrir/fechar modal
+                    Adicionar nova residência
                 </Button>
 
              {modal && (<NovaResidencia setModal={setModal} modal={modal}/>)}
 
             </GestureHandlerRootView>
+
+
         </PaperProvider>
     );
 };
@@ -73,7 +115,13 @@ absolute: {
         left: 0,
         bottom: 0,
         right: 0
-  }
+  },
+  listItem: {
+        borderBottomColor: 'rgba(93, 176, 117, .2)',
+        borderBottomWidth: 3,
+        marginBottom: 0,
+
+    }
 });
 
 
