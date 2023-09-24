@@ -4,10 +4,6 @@ import { View, StyleSheet, Modal } from 'react-native';
 import { PaperProvider, Text, Button, List } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 
-import NovoMembro from './NovoMembro';
-import EditarNomeResidencia from './EditarNomeResidencia';
-import EditarMembro from './EditarMembro';
-
 const ModalExcluir =  ({setModal, modal}) => {
   const navigation = useNavigation();
 
