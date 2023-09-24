@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native'
 import { Button, IconButton, Modal, PaperProvider, Portal, Switch, Text, TextInput } from 'react-native-paper';
 
-const AdicionarProduto = ({ navigation }) => {
+//Adicionar props nos estados
+const EditarProduto = ({ navigation }) => {
 
     const [codigoDeBarras, setCodigoDeBarras] = useState('');
     const [nomeProduto, setNomeProduto] = useState('');
@@ -87,7 +88,7 @@ const AdicionarProduto = ({ navigation }) => {
                     mode="outlined"
                     error={false}
                     value={codigoDeBarras}
-                    onChangeText={codigoDeBarras => setCodigoDeBarras(codigoDeBarras)}
+                    onChangeText={codigoDeBarras => setCodigoDeBarras(CodigoDebarras)}
                 />
                 <TextInput
                     style={{ marginTop: 10, marginHorizontal: 20 }}
@@ -303,4 +304,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default AdicionarProduto;
+export default EditarProduto;

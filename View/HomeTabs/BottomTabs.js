@@ -14,7 +14,7 @@ function BottomTabs() {
 
     return (
       <Tab.Navigator
-        initialRouteName="DespensaTab"
+        initialRouteName="HomeTab"
         activeColor="#5DB075"
         inactiveColor="#000"
         barStyle={{ backgroundColor: '#fff', borderTopWidth: 1, borderColor: 'rgba(0, 0, 0, .1)' }}
