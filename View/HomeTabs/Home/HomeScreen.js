@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Appbar, Button, PaperProvider, Text, TextInput } from 'react-native-paper';
-import { signOut } from '../../../Model/Firebase/signOut';
 
 const HomeScreen = () => {
 
@@ -22,7 +21,7 @@ const HomeScreen = () => {
                 buttonColor='red'
                 style={{ marginTop: 50, marginHorizontal: 20 }}
                 mode="contained"
-                onPress={() => signOut()}>
+                onPress={() => console.log("signOut()")}>
                 Log out
             </Button>   
             

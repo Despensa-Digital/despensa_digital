@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Appbar, Button, PaperProvider, Text, TextInput } from 'react-native-paper';
-import { forgotPassword } from '../Model/Firebase/forgotPassword';
 
 
 
@@ -8,7 +7,7 @@ const RecuperarSenha = ({navigation}) => {
     const [email, setEmail] = useState('');
 
     const enviarEmail = (email) => {
-        forgotPassword(email);
+        // forgotPassword(email);
         navigation.navigate('ReenviarEmailRecuperacao', {emailUser: email});
     }
 

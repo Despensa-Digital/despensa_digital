@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Appbar, Button, PaperProvider, Text, TextInput } from 'react-native-paper';
-import { forgotPassword } from '../Model/Firebase/forgotPassword';
 
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -9,7 +8,7 @@ const ReenvirEmailRecuperacao = ({navigation, route}) => {
     const {emailUser} = route.params;
     console.log(emailUser)
     const reenviarEmail = () => {
-        forgotPassword(emailUser);
+        //forgotPassword(emailUser);
     }
 
     return (

@@ -1,15 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Appbar, Button, Dialog, Divider, PaperProvider, Portal, Text, TextInput, TouchableRipple } from 'react-native-paper';
-import { GoogleSigninButton } from '@react-native-google-signin/google-signin';
 import { View } from 'react-native';
-import { signOut } from '../Model/Firebase/signOut';
 
 //import do Controller
 import { EmailLogin } from '../Controller/Login/emailLogin';
 
 //import da Model
 //Alterar futuramente
-import { googleSignIn } from '../Model/Firebase/googleSignIn';
 
 const Login = ({ navigation, user }) => {
     const [email, setEmail] = useState('');
@@ -22,7 +19,7 @@ const Login = ({ navigation, user }) => {
     const hideDialog = () => {
         setVisible(false);
 
-        signOut();
+        // signOut();
     }
 
     useEffect(() => {
@@ -43,25 +40,6 @@ const Login = ({ navigation, user }) => {
     
     return (
         <PaperProvider >
-            <Text
-                style={{
-                    color: '#00000077',
-                    textAlign: 'center',
-                    fontSize: 16,
-                    marginTop: 20,
-                    marginHorizontal: 40
-                }}>
-                Se conectar usando uma conta Google (cadastro automático)
-            </Text>
-
-            <View style={{ marginVertical: 30, alignSelf: 'center' }}>
-                <GoogleSigninButton
-                    size={GoogleSigninButton.Size.Wide}
-                    color={GoogleSigninButton.Color.Light}
-                    onPress={() => googleSignIn().then(() => console.log('Signed in with Google!'))}
-                />
-            </View>
-
             <Divider horizontalInset bold />
 
             <Text

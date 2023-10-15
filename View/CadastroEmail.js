@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { Appbar, Button, Divider, PaperProvider, Text, TextInput, TouchableRipple, HelperText } from 'react-native-paper';
-import { GoogleSigninButton } from '@react-native-google-signin/google-signin';
 import { View } from 'react-native';
 
 //import do Controller
