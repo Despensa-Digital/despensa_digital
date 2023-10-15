@@ -40,6 +40,8 @@ const Login = ({ navigation, user }) => {
     
     return (
         <PaperProvider >
+      
+
             <Divider horizontalInset bold />
 
             <Text

@@ -8,7 +8,7 @@ const ReenvirEmailRecuperacao = ({navigation, route}) => {
     const {emailUser} = route.params;
     console.log(emailUser)
     const reenviarEmail = () => {
-        //forgotPassword(emailUser);
+        forgotPassword(emailUser);
     }
 
     return (

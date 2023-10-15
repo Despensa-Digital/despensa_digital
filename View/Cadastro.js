@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { Appbar, Button, Divider, PaperProvider, Text, TextInput, TouchableRipple } from 'react-native-paper';
 import { View } from 'react-native';
 
-
+//import da Model
+//alterar futuramente
 
 
 const Cadastro = ({ navigation }) => {
@@ -10,7 +11,7 @@ const Cadastro = ({ navigation }) => {
     return (
         <PaperProvider>
             <View style={{ height: '100%', display: 'flex', justifyContent: 'center' }}>
-        
+             
                 <Divider horizontalInset bold />
 
                 <Button
