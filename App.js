@@ -16,7 +16,6 @@ import AppBarButton from './View/AppBarButton';
 import BottomTabs from './View/HomeTabs/BottomTabs';
 
 
-
 const Stack = createNativeStackNavigator();
 
 export default function App() {
