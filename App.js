@@ -15,9 +15,12 @@ import ReenvirEmailRecuperacao from './View/ReenviarEmailRecuperacao';
 import AppBarButton from './View/AppBarButton';
 import BottomTabs from './View/HomeTabs/BottomTabs';
 
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs();//Ignore all log notifications
+
 
 const Stack = createNativeStackNavigator();
-
 export default function App() {
 
     //Firebase

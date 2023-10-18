@@ -7,22 +7,35 @@ import { useNavigation } from '@react-navigation/native';
 
 const Listas = () => {
     const [itens, setItens] = useState(
-        ["Lista do mercado",
+    [
+        "Lista do mercado",
         "Lista do churrasco",
         "Lista do açougue", 
         "Lista de guloseimas", 
         "Lista da festa ",
         "Lista do Supermercado",
         "Lista de Produto/Limpeza", 
-        "Lista de guloseimas", 
         "Lista do Pet Shop",
         "Lista do café da manha",
-         "Lista dos congelados"]
+        "Lista dos congelados"
+    ]
         );
 
     const navigation = useNavigation();
 
     const [modalOpcoes, setModalOpcoes] = useState(false);
+    const [indexEditando, setIndexEditando] = useState();
+    const editandoOpcoes = (index) => {
+        setIndexEditando(index);
+        setModalOpcoes(true);
+    }
+
+    const removerItemEditando = () => {
+        let novoLista = [...itens];
+        novoLista.splice(indexEditando, 1);
+        setItens(novoLista);
+        setModalOpcoes(false);
+    }
 
     const [modalRemover, setModalRemover] = useState(false);
 
@@ -41,6 +54,7 @@ const Listas = () => {
     const adicionarNovaLista = () => {
         let novoLista = [...itens];
         novoLista.push(nomeDaLista);
+        setNomeDaLista('')
         setItens(novoLista);
         setModalNovaLista(false);
     }
@@ -61,7 +75,7 @@ const Listas = () => {
                                 title={item}
                                 titleStyle={styles.textBox}
                                 onPress={() => navigation.navigate('Lista de compras')}
-                                right={props => <IconButton {...props} icon="dots-vertical" onPress={() => setModalOpcoes(true)} />}
+                                right={props => <IconButton {...props} icon="dots-vertical" onPress={() => editandoOpcoes(index)} />}
                                 left={props => <List.Icon {...props} icon={require('../../../Assets/Categories/Hamper.png')} />}
                             />
                             <Divider style={{ height: 1 }} />
@@ -106,14 +120,16 @@ const Listas = () => {
             <Portal>
                 <Modal visible={modalOpcoes} onDismiss={() => setModalOpcoes(false)} contentContainerStyle={styles.containerStyle}>
                     <List.Item
+                        onPress={() => removerItemEditando()}
                         title={"            Remover"}
                         titleStyle={styles.textBoxRemover}
-                        right={props => <IconButton {...props} icon="minus-circle-outline" onPress={() => abrrirFecharRemover()} />}
+                        right={props => <IconButton {...props} icon="minus-circle-outline"  />}
                     />
                     <List.Item
+                        onPress={() => abrrirFecharCompartilhar()}
                         title={"            Compartilhar"}
                         titleStyle={styles.textBoxCompartilhar}
-                        right={props => <IconButton {...props} icon="share-variant-outline" onPress={() => abrrirFecharCompartilhar()} />}
+                        right={props => <IconButton {...props} icon="share-variant-outline"  />}
                     />
                 </Modal>
             </Portal>
