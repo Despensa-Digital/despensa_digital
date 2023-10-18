@@ -1,75 +1,82 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
-import { Avatar, Button, Card, Title } from 'react-native-paper';
+import { Avatar, Text, FAB } from 'react-native-paper';
+
+const categories = [
+  { name: 'Lavanderia', photo: require('../../../Assets/Categories/WashingMachine.png') },
+  { name: 'Geladeira', photo: require('../../../Assets/Categories/Fridge.png') },
+  { name: 'Cozinha', photo: require('../../../Assets/Categories/Hamper.png') },
+  
+];
+
+const CategoryAvatar = ({ categoryKey, name, photo }) => {
+  return (
+    <View style={styles.avatarContainer}>
+      <View style={styles.imageContainer}>
+        <Avatar.Image size={90} source={photo} />
+      </View>
+      <Text style={styles.categoryText}>{name}</Text>
+    </View>
+  );
+};
 
 const Categorias = () => {
-  // Lista de categorias 
-  const [categories, setCategories] = useState([]);
-
-  // Simulando o carregamento de categorias do banco (useEffect simulado)
-  useEffect(() => {
-   
-    const categoriesFromDatabase = [
-      { id: 1, name: 'Categoria 1', imageUrl: 'url_da_imagem1' },
-      { id: 2, name: 'Categoria 2', imageUrl: 'url_da_imagem2' },
-      { id: 3, name: 'Categoria 3', imageUrl: 'url_da_imagem3' },
-
-    ];
-    setCategories(categoriesFromDatabase);
-  }, []);
-
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        <Title style={styles.title}>Selecione uma Categoria</Title>
-        <View style={styles.categoryContainer}>
-          {categories.map(category => (
-            <Card key={category.id} style={styles.card}>
-              <Card.Content style={styles.cardContent}>
-                <Avatar.Image
-                  size={64}
-                  source={{ uri: category.imageUrl }}
-                  style={styles.avatar}
-                />
-              </Card.Content>
-              <Card.Actions style={styles.cardActions}>
-                <Button>Selecionar</Button>
-              </Card.Actions>
-            </Card>
-          ))}
-        </View>
-      </View>
-    </ScrollView>
+    <View style={styles.container}>
+      <ScrollView showsScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
+        {categories.map((categoria, index) => (
+          <View key={categoria.name} style={styles.categoryContainer}>
+            <CategoryAvatar
+              categoryKey={categoria.name}
+              name={categoria.name}
+              photo={categoria.photo}
+            />
+          </View>
+        ))}
+      </ScrollView>
+      <FAB
+        icon="plus"
+        style={styles.fab}
+        onPress={() => navigation.navigate('AdicionarCategoria', 1)}
+      />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
-    backgroundColor: 'white',
+    flex: 1,
+    marginTop: 20,
   },
-  title: {
-    marginBottom: 16,
+  scrollContent: {
+    paddingLeft: 20, // Espaçamento à esquerda
+    paddingRight: 20, // Espaçamento à direita
+    flex: 4,
   },
   categoryContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    marginRight: 10, // Espaçamento entre categorias
   },
-  card: {
-    marginVertical: 8,
-    width: '30%',
-  },
-  cardContent: {
+  avatarContainer: {
     alignItems: 'center',
+    marginBottom: 20,
   },
-  avatar: {
-    backgroundColor: '#add8e6', // Azul claro
+  imageContainer: {
+    padding: 10,
+    borderRadius: 45,
+    marginBottom: 10,
   },
-  cardActions: {
-    justifyContent: 'center',
+  categoryText: {
+    textAlign: 'center',
+    marginTop: 10,
+    fontSize: 16,
   },
+  fab: {
+    position: 'absolute',
+    margin: 16,
+    right: 0,
+    bottom: 0,
+    backgroundColor: '#b0ea93'
+},
 });
 
-export default Categorias
-
+export default Categorias;
