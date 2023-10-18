@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 
 
 const Listas = () => {
-    const [itens, setItens] = (
+    const [itens, setItens] = useState(
         ["Lista do mercado",
         "Lista do churrasco",
         "Lista do açougue", 
@@ -17,7 +17,7 @@ const Listas = () => {
         "Lista de guloseimas", 
         "Lista do Pet Shop",
         "Lista do café da manha",
-        "Lista dos congelados"]
+         "Lista dos congelados"]
         );
 
     const navigation = useNavigation();
@@ -49,22 +49,26 @@ const Listas = () => {
 
     return (
         <PaperProvider>
-            
-            <View>
-                {itens.map((item, index) => 
-                    <>
-                    <List.Item
-                        title={item}
-                        titleStyle={styles.textBox}
-                        onPress={() => navigation.navigate('Lista de compras')}
-                        right={props => <IconButton {...props} icon="dots-vertical" onPress={() => setModalOpcoes(true)} />}
-                        left={props => <List.Icon {...props} icon={require('../../../Assets/Categories/Hamper.png')} />}
-                    />
-                    <Divider style={{ height: 1 }} />
-                    </>
-
-                )}
-            </View>
+            <FlatList
+                data={itens}
+                horizontal={false}
+                showsVerticalScrollIndicator={false}
+                keyExtractor={(item) => String(item)}
+                renderItem={({ item, index }) => {
+                    return (
+                        <View key={`${index}-${item}`}>
+                            <List.Item
+                                title={item}
+                                titleStyle={styles.textBox}
+                                onPress={() => navigation.navigate('Lista de compras')}
+                                right={props => <IconButton {...props} icon="dots-vertical" onPress={() => setModalOpcoes(true)} />}
+                                left={props => <List.Icon {...props} icon={require('../../../Assets/Categories/Hamper.png')} />}
+                            />
+                            <Divider style={{ height: 1 }} />
+                        </View>
+                    );
+                }}
+            />
 
             <FAB
                 icon="plus"
