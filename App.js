@@ -87,6 +87,7 @@ export default function App() {
             <Button title="Create User" onPress={emailSignUp} />
             <Button title="Login User" onPress={emailSignIn} />
             <Button title="Log Off" onPress={signOut} />
+            <Button title="Log Off" onPress={signOut} />
             <Button title='Forgot Password' onPress={forgotPassword} /> */}
             {/* <ReenvirEmailRecuperacao /> */}
 
