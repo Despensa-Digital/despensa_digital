@@ -1,109 +1,58 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React from 'react';
 import { View, StyleSheet, Modal } from 'react-native';
-
-import { PaperProvider, Text, Button, List } from 'react-native-paper';
+import { Text, Button } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 
-const ModalExcluir =  ({setModal, modal}) => {
+const ModalExcluir = ({ setModal, modal }) => {
   const navigation = useNavigation();
 
   return (
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modal}
-        //animationType="fade"
-        onRequestClose={() => {
-          //setModal(true)
-        }}>
-
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-                  <Text style={styles.textoModal}>Tem certeza de que deseja remover? Todas as suas informações serão perdidas.</Text>
-                  <Button
-                    textColor={'white'}
-                    buttonColor={'#ff0000'}
-                    style={styles.buttonModal}
-                    mode="contained"
-                    onPress={() => setModal(false)}>
-                    Remover
-                  </Button>
-                  <Button
-                    textColor={'#5DB075'}
-                    buttonColor={'white'}
-                    style={styles.buttonModal}
-                    mode="outlined"
-                    theme={{ colors: { outline: '#5DB075' }}}
-                    onPress={() => setModal(false)}>
-                    Cancelar
-                  </Button>
-          </View>
+    <Modal
+      animationType="slide"
+      transparent={true}
+      visible={modal}
+      onRequestClose={() => {
+        // Handle modal close
+      }}>
+      <View style={styles.centeredView}>
+        <View style={styles.modalView}>
+          <Text style={styles.textoModal}>
+            Tem certeza de que deseja remover? Todas as suas informações serão perdidas.
+          </Text>
+          <Button
+            color="#ff0000"
+            style={styles.buttonModal}
+            mode="contained"
+            onPress={() => setModal(false)}>
+            Remover
+          </Button>
+          <Button
+            color="#5DB075"
+            style={styles.buttonModal}
+            mode="outlined"
+            onPress={() => setModal(false)}>
+            Cancelar
+          </Button>
         </View>
-      </Modal>
+      </View>
+    </Modal>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 24,
-    backgroundColor: 'transparent',
-  },
-
-  container_blur: {
-    flex: 1,
-    padding: 24,
-    backgroundColor: 'grey',
-  },
-
-  titulo : {
-        color: '#00000088',
-        textAlign: 'center',
-        fontSize: 20,
-        fontFamily: "Roboto",
-        marginTop: 50,
-        marginHorizontal: 50
-    },
-  tituloEditar: {
-    marginTop: 10,
+  textoModal: {
+    marginBottom: 10,
     marginHorizontal: 15,
-    alignSelf: 'left',
-    fontSize: 20,
-    fontFamily: "Roboto"
+    alignSelf: 'center',
+    fontSize: 17,
+    fontFamily: 'Roboto',
+    textAlign: 'justify',
   },
-
-  tituloMembro: {
-      marginTop: 10,
-      marginHorizontal: 15,
-      alignSelf: 'left',
-      fontSize: 20,
-      fontFamily: "Roboto",
-    },
-
-    buttonVoltar: {
-      marginTop: 5,
-      marginHorizontal: 20,
-      marginBottom: 10,
-    },
-
-    buttonExcluir: {
-      marginTop:0,
-      marginHorizontal: 20,
-      marginBottom: 5,
-    },
-    textoModal: {
-        marginBottom: 10,
-        marginHorizontal: 15,
-        alignSelf: 'center',
-        fontSize: 17,
-        fontFamily: "Roboto",
-        textAlign:'justify'
-    },
-   buttonModal: {
+  buttonModal: {
     marginBottom: 10,
     borderRadius: 20,
-    width:300,
-   },
+    width: 300,
+  },
   centeredView: {
     flex: 1,
     justifyContent: 'center',
@@ -115,7 +64,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 30,
     padding: 40,
-    width:400,
+    width: 400,
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
@@ -126,6 +75,6 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
-  });
+});
 
 export default ModalExcluir;

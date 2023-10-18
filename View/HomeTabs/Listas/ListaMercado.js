@@ -3,8 +3,6 @@ import { View, StyleSheet, Image, Text} from 'react-native';
 
 import { PaperProvider, List, IconButton, Portal, Modal, Button, FAB, TextInput } from 'react-native-paper';
 
-
-
 const ListaMercado = () => {
   const [itens, setItens] = useState(
     [
@@ -12,19 +10,19 @@ const ListaMercado = () => {
         "title": "Arroz 1kg",
         "description": "R$4,99",
         "image": require('../../../Assets/Products/Rice.png'),
-        "counter": 0
+        "counter": 1
       },
       {
         "title": "Cerveja",
         "description": "R$6,99",
         "image": require('../../../Assets/Products/beer.png'),
-        "counter": 0
+        "counter": 1
       },
       {
         "title": "Leite",
         "description": "R$7,99",
         "image": require('../../../Assets/Products/Milk.png'),
-        "counter": 0
+        "counter": 1
       },
     ]
   )

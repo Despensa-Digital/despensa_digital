@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, ScrollView, FlatList, View } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, FlatList, View, Linking } from 'react-native';
 import { IconButton, Divider, List, FAB, Modal, Portal, Text, Button, PaperProvider, TextInput } from 'react-native-paper';
 import ListasStackScreen from './ListasStackScreen';
 import { useNavigation } from '@react-navigation/native';
 
 
 const Listas = () => {
-    const itens = ["Lista do mercado", "Lista do churrasco", "Lista do açougue", "Lista de guloseimas", "Lista do mercado", "Lista do churrasco", "Lista do açougue", "Lista de guloseimas", "Lista do churrasco", "Lista do açougue", "Lista de guloseimas", "Lista do churrasco", "Lista do açougue", "Lista de guloseimas"];
-    
+    const itens = ["Lista do mercado", "Lista do churrasco", "Lista do açougue", "Lista de guloseimas", "Lista da festa ", "Lista do Supermercado", "Lista de Produto/Limpeza", "Lista de guloseimas", "Lista do Pet Shop", "Lista do café da manha", "Lista dos congelados"];
+
     const navigation = useNavigation();
 
     const [modalOpcoes, setModalOpcoes] = useState(false);
@@ -15,7 +15,7 @@ const Listas = () => {
     const [modalRemover, setModalRemover] = useState(false);
 
     const [modalCompartilhar, setModalCompartilhar] = useState(false);
-    
+
     const abrrirFecharRemover = () => {
         setModalRemover(!modalRemover);
         setModalOpcoes(!modalOpcoes);
@@ -43,7 +43,7 @@ const Listas = () => {
                             <List.Item
                                 title={item}
                                 titleStyle={styles.textBox}
-                                onPress={() => navigation.navigate('Lista Mercado')}
+                                onPress={() => navigation.navigate('Lista de compras')}
                                 right={props => <IconButton {...props} icon="dots-vertical" onPress={() => setModalOpcoes(true)} />}
                                 left={props => <List.Icon {...props} icon={require('../../../Assets/Categories/Hamper.png')} />}
                             />
@@ -119,7 +119,7 @@ const Listas = () => {
                         buttonColor='#FFFFFF'
                         style={{ marginTop: 20, marginBottom: 20, marginHorizontal: 20, borderColor: '#5DB075' }}
                         mode="outlined"
-                        >
+                    >
                         Cancelar
                     </Button>
                 </Modal>
@@ -128,28 +128,31 @@ const Listas = () => {
             <Portal>
                 <Modal visible={modalCompartilhar} onDismiss={() => abrrirFecharCompartilhar()} contentContainerStyle={styles.containerStyle}>
                     <Button
-                        icon= 'whatsapp'
+                        icon='whatsapp'
                         textColor='#FFFFFF'
                         buttonColor='#5DB075'
                         style={{ marginTop: 40, marginHorizontal: 20 }}
                         mode="contained"
+                        onPress={() => Linking.openURL('whatsapp://send?text=LISTA DE COMPRA:\n Arroz, Cerveja, Leite, Coca-Cola&')}
                     >
                         Compartilhar com o  Whatsapp
                     </Button>
 
                     <Button
-                        icon= 'email-outline'
+                        icon='email-outline'
                         textColor='#5DB075'
                         buttonColor='#FFFFFF'
                         style={{ marginTop: 20, marginBottom: 20, marginHorizontal: 20, borderColor: '#5DB075' }}
                         mode="outlined"
-                        >
+                        onPress={() => Linking.openURL('mailto:despensadigital@gmail.com?subject=Lista do mercado&body= LISTA DE COMPRAS:\n Arroz, Cerveja, Leite, Coca-Cola')}
+                        title="giulianna.lancellotti@gmail.com"
+                    >
                         Compartilhar com o e-mail
                     </Button>
                 </Modal>
             </Portal>
 
-        </PaperProvider>
+        </PaperProvider >
     )
 }
 

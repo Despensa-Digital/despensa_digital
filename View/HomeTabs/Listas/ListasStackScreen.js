@@ -9,7 +9,7 @@ function ListasStackScreen() {
   return (
     <ListasStack.Navigator>
       <ListasStack.Screen name="Listas" component={Listas} />     
-      <ListasStack.Screen name="Lista Mercado" component={ListaMercado} />     
+      <ListasStack.Screen name="Lista de compras" component={ListaMercado} />     
 
     </ListasStack.Navigator>
   );
