@@ -6,7 +6,19 @@ import { useNavigation } from '@react-navigation/native';
 
 
 const Listas = () => {
-    const itens = ["Lista do mercado", "Lista do churrasco", "Lista do açougue", "Lista de guloseimas", "Lista da festa ", "Lista do Supermercado", "Lista de Produto/Limpeza", "Lista de guloseimas", "Lista do Pet Shop", "Lista do café da manha", "Lista dos congelados"];
+    const [itens, setItens] = (
+        ["Lista do mercado",
+        "Lista do churrasco",
+        "Lista do açougue", 
+        "Lista de guloseimas", 
+        "Lista da festa ",
+        "Lista do Supermercado",
+        "Lista de Produto/Limpeza", 
+        "Lista de guloseimas", 
+        "Lista do Pet Shop",
+        "Lista do café da manha",
+        "Lista dos congelados"]
+        );
 
     const navigation = useNavigation();
 
@@ -26,32 +38,33 @@ const Listas = () => {
         setModalOpcoes(!modalOpcoes);
     }
 
-
+    const adicionarNovaLista = () => {
+        let novoLista = [...itens];
+        novoLista.push(nomeDaLista);
+        setItens(novoLista);
+        setModalNovaLista(false);
+    }
     const [modalNovaLista, setModalNovaLista] = useState(false);
     const [nomeDaLista, setNomeDaLista] = useState('');
 
     return (
         <PaperProvider>
-            <FlatList
-                data={itens}
-                horizontal={false}
-                showsVerticalScrollIndicator={false}
-                keyExtractor={(item) => String(item)}
-                renderItem={({ item, index }) => {
-                    return (
-                        <View key={`${index}-${item}`}>
-                            <List.Item
-                                title={item}
-                                titleStyle={styles.textBox}
-                                onPress={() => navigation.navigate('Lista de compras')}
-                                right={props => <IconButton {...props} icon="dots-vertical" onPress={() => setModalOpcoes(true)} />}
-                                left={props => <List.Icon {...props} icon={require('../../../Assets/Categories/Hamper.png')} />}
-                            />
-                            <Divider style={{ height: 1 }} />
-                        </View>
-                    );
-                }}
-            />
+            
+            <View>
+                {itens.map((item, index) => 
+                    <>
+                    <List.Item
+                        title={item}
+                        titleStyle={styles.textBox}
+                        onPress={() => navigation.navigate('Lista de compras')}
+                        right={props => <IconButton {...props} icon="dots-vertical" onPress={() => setModalOpcoes(true)} />}
+                        left={props => <List.Icon {...props} icon={require('../../../Assets/Categories/Hamper.png')} />}
+                    />
+                    <Divider style={{ height: 1 }} />
+                    </>
+
+                )}
+            </View>
 
             <FAB
                 icon="plus"
@@ -73,7 +86,7 @@ const Listas = () => {
                         buttonColor='#5DB075'
                         style={{ marginTop: 40, marginHorizontal: 20 }}
                         mode="contained"
-                        onPress={() => setModalNovaLista(false)}>
+                        onPress={() => adicionarNovaLista()}>
                         Adicionar
                     </Button>
                     <Button

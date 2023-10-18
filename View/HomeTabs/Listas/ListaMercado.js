@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Image, Text} from 'react-native';
-
 import { PaperProvider, List, IconButton, Portal, Modal, Button, FAB, TextInput } from 'react-native-paper';
 
 const ListaMercado = () => {
@@ -55,7 +54,6 @@ const ListaMercado = () => {
 
   const [nome, setNome] = useState('');
   const [valor, setValor] = useState(0);
-
   const [total, setTotal] = useState(0);
   
   const recalculateTotal = () => {
@@ -66,7 +64,21 @@ const ListaMercado = () => {
     novoTotal = novoTotal.toFixed(2);
     setTotal(novoTotal);
   }
-  
+
+  adicionarNovoItem = () => {
+    let novoItem = {
+      "title": nome,
+      "valor": valor,
+      "image": require('../../../Assets/Products/Milk.png'),
+      "counter": 1
+    }
+    setValor(0);
+    setNome('');
+    setItens([...itens, novoItem]);
+    hideModal();
+    recalculateTotal();
+  }
+
   useEffect(() => {
     recalculateTotal();
   });
@@ -109,20 +121,23 @@ const ListaMercado = () => {
                   value={nome}
                   onChangeText={nome => setNome(nome)}
               />
-                <TextInput
+ 
+              <TextInput
                   style={{ marginTop: 20, marginHorizontal: 20 }}
                   label="Valor do produto"
                   mode="outlined"
                   error={false}
+                  keyboardType={'numeric'}
                   value={valor}
                   onChangeText={valor => setValor(valor)}
               />
+
               <Button
                   textColor='#fff'
                   buttonColor='#5DB075'
                   style={{ marginTop: 40, marginHorizontal: 20 }}
                   mode="contained"
-                  onPress={() => hideModal()}>
+                  onPress={() => adicionarNovoItem()}>
                   Adicionar
               </Button>
               <Button
