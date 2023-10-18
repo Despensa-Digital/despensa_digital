@@ -35,6 +35,8 @@ const Listas = () => {
         novoLista.splice(indexEditando, 1);
         setItens(novoLista);
         setModalOpcoes(false);
+        setModalRemover(false)
+        setIndexEditando(null);
     }
 
     const [modalRemover, setModalRemover] = useState(false);
