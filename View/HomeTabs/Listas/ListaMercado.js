@@ -8,21 +8,18 @@ const ListaMercado = () => {
     [
       {
         "title": "Arroz 1kg",
-        "description": "R$4,99",
         "valor": 4.99,
         "image": require('../../../Assets/Products/Rice.png'),
         "counter": 1
       },
       {
         "title": "Cerveja",
-        "description": "R$6,99",
         "valor": 6.99,
         "image": require('../../../Assets/Products/beer.png'),
         "counter": 1
       },
       {
         "title": "Leite",
-        "description": "R$7,99",
         "valor": 7.99,
         "image": require('../../../Assets/Products/Milk.png'),
         "counter": 1
@@ -45,7 +42,7 @@ const ListaMercado = () => {
     if (direction == "minus" ) {
       newItens[index].counter--;
       if (newItens[index].counter <= 0) {
-        newItens.pop(index)
+        newItens.splice(index, 1);
       }
     }else {
       newItens[index].counter++;
@@ -80,7 +77,7 @@ const ListaMercado = () => {
    {itens.map((item, index) =>
     <List.Item
       title={item.title}
-      description={item.description}
+      description={"R$" + item.valor}
       style={styles.listStyle}
       left={props => <Image source={item.image} style={{ width: 50, height: 50 }} />} 
       right={props => 
