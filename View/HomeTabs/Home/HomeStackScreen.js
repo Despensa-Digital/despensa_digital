@@ -15,8 +15,9 @@ function HomeStackScreen() {
           name="Home"
           component={HomeScreen}
           options={{
-            headerRight: () => <AppBarGerenciarResidenciasButton />
-          }}
+            headerRight: () => <AppBarGerenciarResidenciasButton />,
+        }}
+
         />
       </HomeStack.Group>
 

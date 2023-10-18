@@ -32,7 +32,8 @@ export default function App() {
     const theme = {
         ...DefaultTheme,
         colors: {
-          ...DefaultTheme.colors,
+        card: "#fff",
+        text: '#000',
           secondaryContainer: 'transparent', // Use transparent to disable the little highlighting oval
         },
       };

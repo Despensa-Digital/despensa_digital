@@ -9,7 +9,7 @@ const AppBarGerenciarResidenciasButton = () => {
         <IconButton
             icon="home-group-plus"
             size={28}
-            iconColor='#5DB075'
+            iconColor='#000'
             onPress={() => navigation.navigate('GerenciarResidencias')}
         />
     );

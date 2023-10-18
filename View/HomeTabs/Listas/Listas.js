@@ -120,7 +120,7 @@ const Listas = () => {
             <Portal>
                 <Modal visible={modalOpcoes} onDismiss={() => setModalOpcoes(false)} contentContainerStyle={styles.containerStyle}>
                     <List.Item
-                        onPress={() => removerItemEditando()}
+                        onPress={() => abrrirFecharRemover()}
                         title={"            Remover"}
                         titleStyle={styles.textBoxRemover}
                         right={props => <IconButton {...props} icon="minus-circle-outline"  />}
@@ -143,6 +143,7 @@ const Listas = () => {
                         buttonColor='#ff0000'
                         style={{ marginTop: 40, marginHorizontal: 20 }}
                         mode="contained"
+                        onPress={() => removerItemEditando()}
                     >
                         Remover
                     </Button>
@@ -152,6 +153,7 @@ const Listas = () => {
                         buttonColor='#FFFFFF'
                         style={{ marginTop: 20, marginBottom: 20, marginHorizontal: 20, borderColor: '#5DB075' }}
                         mode="outlined"
+                        onPress={() => abrrirFecharRemover()}
                     >
                         Cancelar
                     </Button>
