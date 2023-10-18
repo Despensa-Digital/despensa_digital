@@ -81,7 +81,7 @@ const ListaMercado = () => {
                   mode="outlined"
                   error={false}
                   value={valor}
-                  onChangeText={nome => setValor(valor)}
+                  onChangeText={valor => setValor(valor)}
               />
               <Button
                   textColor='#fff'

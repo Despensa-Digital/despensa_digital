@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, ScrollView, FlatList, View } from 'react-native';
-import { IconButton, Divider, List, FAB, Modal, Portal, Text, Button, PaperProvider } from 'react-native-paper';
+import { IconButton, Divider, List, FAB, Modal, Portal, Text, Button, PaperProvider, TextInput } from 'react-native-paper';
 import ListasStackScreen from './ListasStackScreen';
 import { useNavigation } from '@react-navigation/native';
 
@@ -26,7 +26,9 @@ const Listas = () => {
         setModalOpcoes(!modalOpcoes);
     }
 
-    console.log(modalOpcoes)
+
+    const [modalNovaLista, setModalNovaLista] = useState(false);
+    const [nomeDaLista, setNomeDaLista] = useState('');
 
     return (
         <PaperProvider>
@@ -54,9 +56,36 @@ const Listas = () => {
             <FAB
                 icon="plus"
                 style={styles.fab}
-                onPress={() => navigation.navigate('Lista Mercado', 1)}
+                onPress={() => setModalNovaLista(true)}
             />
-
+            <Portal>
+                <Modal visible={modalNovaLista} onDismiss={() => setModalNovaLista(false)} contentContainerStyle={styles.containerStyle}>
+                    <TextInput
+                        style={{ marginTop: 20, marginHorizontal: 20 }}
+                        label="Nome da nova lista"
+                        mode="outlined"
+                        error={false}
+                        value={nomeDaLista}
+                        onChangeText={nomeDaLista => setNomeDaLista(nomeDaLista)}
+                    />
+                    <Button
+                        textColor='#fff'
+                        buttonColor='#5DB075'
+                        style={{ marginTop: 40, marginHorizontal: 20 }}
+                        mode="contained"
+                        onPress={() => setModalNovaLista(false)}>
+                        Adicionar
+                    </Button>
+                    <Button
+                        textColor='#5DB075'
+                        buttonColor='#FFFFFF'
+                        style={{ marginTop: 20, marginBottom: 20, marginHorizontal: 20, borderColor: '#5DB075' }}
+                        mode="outlined"
+                        onPress={() => setModalNovaLista(false)}>
+                        Cancelar
+                    </Button>
+                </Modal>
+            </Portal>
             <Portal>
                 <Modal visible={modalOpcoes} onDismiss={() => setModalOpcoes(false)} contentContainerStyle={styles.containerStyle}>
                     <List.Item
