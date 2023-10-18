@@ -41,7 +41,7 @@ const Listas = () => {
                             <List.Item
                                 title={item}
                                 titleStyle={styles.textBox}
-                                //onPress={() => navigation.navigate('Lista Mercado')}
+                                onPress={() => navigation.navigate('Lista Mercado')}
                                 right={props => <IconButton {...props} icon="dots-vertical" onPress={() => setModalOpcoes(true)} />}
                                 left={props => <List.Icon {...props} icon={require('../../../Assets/Categories/Hamper.png')} />}
                             />
