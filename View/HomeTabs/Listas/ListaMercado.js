@@ -3,8 +3,6 @@ import { View, StyleSheet, Image, Text} from 'react-native';
 
 import { PaperProvider, List, IconButton, Portal, Modal, Button, FAB, TextInput } from 'react-native-paper';
 
-
-
 const ListaMercado = () => {
   const [itens, setItens] = useState(
     [

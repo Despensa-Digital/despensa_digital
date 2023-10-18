@@ -16,24 +16,10 @@ const CategoryAvatar = ({ categoryKey, name, photo }) => {
 const categories = [
   { name: 'Lavanderia', photo: require('../../../Assets/Categories/WashingMachine.png') },
   { name: 'Geladeira', photo: require('../../../Assets/Categories/Fridge.png') },
+  { name: 'Hortifruit', photo: require('../../../Assets/Categories/Fruits.png') },
+  { name: 'Armário da sala', photo: require('../../../Assets/Categories/Pantry.png') },
+  { name: 'Banheiro', photo: require('../../../Assets/Categories/Bathtub.png') },
   { name: 'Cozinha', photo: require('../../../Assets/Categories/Hamper.png') },
-  { name: 'Cozinaha', photo: require('../../../Assets/Categories/Hamper.png') },
-  { name: 'Lavanderia', photo: require('../../../Assets/Categories/WashingMachine.png') },
-  { name: 'Geladeira', photo: require('../../../Assets/Categories/Fridge.png') },
-  { name: 'Cozinha', photo: require('../../../Assets/Categories/Hamper.png') },
-  { name: 'Cozinaha', photo: require('../../../Assets/Categories/Hamper.png') },
-  { name: 'Lavanderia', photo: require('../../../Assets/Categories/WashingMachine.png') },
-  { name: 'Geladeira', photo: require('../../../Assets/Categories/Fridge.png') },
-  { name: 'Cozinha', photo: require('../../../Assets/Categories/Hamper.png') },
-  { name: 'Cozinaha', photo: require('../../../Assets/Categories/Hamper.png') },
-  { name: 'Lavanderia', photo: require('../../../Assets/Categories/WashingMachine.png') },
-  { name: 'Geladeira', photo: require('../../../Assets/Categories/Fridge.png') },
-  { name: 'Cozinha', photo: require('../../../Assets/Categories/Hamper.png') },
-  { name: 'Cozinaha', photo: require('../../../Assets/Categories/Hamper.png') },
-  { name: 'Lavanderia', photo: require('../../../Assets/Categories/WashingMachine.png') },
-  { name: 'Geladeira', photo: require('../../../Assets/Categories/Fridge.png') },
-  { name: 'Cozinha', photo: require('../../../Assets/Categories/Hamper.png') },
-  { name: 'Cozinaha', photo: require('../../../Assets/Categories/Hamper.png') },
   
 ];
 // a gente precisa agrupar em grupos de 3 para criar a grid
@@ -46,7 +32,7 @@ const Categorias = () => {
         <ScrollView style={{ backgroundColor: '#fff' }}>
         <View style={styles.gridBox}>
           {rows.map((grupo, index) => (
-            <View key={index} style={{flexDirection: "row"}}>
+            <View key={index} style={styles.rowFlex}>
               {grupo ? grupo.map((categoria, index) => (
                 <CategoryAvatar
                   categoryKey={categoria.name}
@@ -73,16 +59,16 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   scrollContent: {
-    paddingLeft: 20, // Espaçamento à esquerda
-    paddingRight: 20, // Espaçamento à direita
+    paddingLeft: 30, // Espaçamento à esquerda
+    paddingRight: 30, // Espaçamento à direita
     flex: 4,
   },
   categoryContainer: {
-    marginRight: 10, // Espaçamento entre categorias
+    marginRight: 20, // Espaçamento entre categorias
   },
   avatarContainer: {
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 30,
   },
   imageContainer: {
     padding: 10,
@@ -110,6 +96,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-evenly',
     alignItems: 'center',
+    
   }
 });
 
