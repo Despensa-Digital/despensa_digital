@@ -170,7 +170,7 @@ const Listas = () => {
                         buttonColor='#5DB075'
                         style={{ marginTop: 40, marginHorizontal: 20 }}
                         mode="contained"
-                        onPress={() => Linking.openURL('whatsapp://send?text=LISTA DE COMPRA:\n Arroz, Cerveja, Leite, Coca-Cola&')}
+                        onPress={() => Linking.openURL('whatsapp://send?text=LISTA DE COMPRA:\n Arroz, Cerveja, Leite&')}
                     >
                         Compartilhar com o  Whatsapp
                     </Button>
@@ -181,8 +181,7 @@ const Listas = () => {
                         buttonColor='#FFFFFF'
                         style={{ marginTop: 20, marginBottom: 20, marginHorizontal: 20, borderColor: '#5DB075' }}
                         mode="outlined"
-                        onPress={() => Linking.openURL('mailto:despensadigital@gmail.com?subject=Lista do mercado&body= LISTA DE COMPRAS:\n Arroz, Cerveja, Leite, Coca-Cola')}
-                        title="giulianna.lancellotti@gmail.com"
+                        onPress={() => Linking.openURL('mailto:giulianna.lancellotti@gmail.com?subject=Lista do mercado&body= LISTA DE COMPRAS:\n Arroz, Cerveja, Leite')}
                     >
                         Compartilhar com o e-mail
                     </Button>
