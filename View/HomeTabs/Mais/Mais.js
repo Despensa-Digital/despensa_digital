@@ -14,7 +14,7 @@ const Mais = () => {
                     marginHorizontal: 50
                 }}>
                 Estou na tela Mais
-            </Text> 
+            </Text>
             <Button
                 rippleColor="rgba(0, 0, 0, .32)"
                 buttonColor='red'

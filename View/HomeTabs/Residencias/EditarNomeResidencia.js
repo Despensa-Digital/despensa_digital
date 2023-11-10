@@ -5,7 +5,9 @@ import { View, StyleSheet } from 'react-native';
 import BottomSheet  from '@gorhom/bottom-sheet';
 import { TextInput } from 'react-native-paper';
 
-const EditarNomeResidencia = ({setModal, modal}) => {
+import  { updateNomeResidencia } from '../../../Controller/Residencia/residenciaController';
+
+const EditarNomeResidencia = ({residenciaId,editarNomeResidencia,setModal, modal}) => {
     const bottomSheetRef = useRef();
     const snapPoints = useMemo(() => ['25%', '45%'], []);
     const handleSheetChanges = useCallback((index) => {
@@ -16,8 +18,15 @@ const EditarNomeResidencia = ({setModal, modal}) => {
       }, []);
 
     // variables
-    const [nomeResidencia, setNomeResidencia] = React.useState("")
+    const [nomeResidencia, setNomeResidencia] = React.useState(editarNomeResidencia)
 
+
+    const alterarNomeResidencia = ()=>{
+      updateNomeResidencia(residenciaId, nomeResidencia,true,false)
+      .then(
+        setModal(false)
+      )
+    }
     return (
               <BottomSheet
                 ref={bottomSheetRef}
@@ -41,7 +50,7 @@ const EditarNomeResidencia = ({setModal, modal}) => {
                     textColor='white'
                     style={styles.buttonSave}
                     mode="contained"
-                    onPress={() => setModal(false)}>
+                    onPress={() => alterarNomeResidencia()}>
                     Salvar alteração
                   </Button>
 

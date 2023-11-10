@@ -1,24 +1,52 @@
 import { PaperProvider, Text, Button } from 'react-native-paper';
 
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { View, StyleSheet,  SafeAreaView} from 'react-native';
 import BottomSheet  from '@gorhom/bottom-sheet';
 import { TextInput } from 'react-native-paper';
 import ModalExcluir from './ModalExcluir';
 
-const EditarMembro = ({setModal, modal}) => {
-    const bottomSheetRef = useRef();
-    const snapPoints = useMemo(() => ['25%', '70%'], []);
-    const handleSheetChanges = useCallback((index) => {
-        console.log('handleSheetChanges', index);
-        if (index === -1) {
-            setModal(false);
-        }
-      }, []);
+import {updateNomeMembro,deleteMembro} from '../../../Controller/Residencia/residenciaController';
 
-    // variables
-    const [nomeMembro, setNomeMembro] = React.useState("")
-    const [modalConfirmarExclusaoMembro, setModalConfirmarExclusaoMembro] = useState(false);
+const EditarMembro = ({residenciaId, editarMembro, setModal, modal}) => {
+  const bottomSheetRef = useRef();
+  const snapPoints = useMemo(() => ['25%', '70%'], []);
+  const handleSheetChanges = useCallback((index) => {
+      console.log('handleSheetChanges', index);
+      if (index === -1) {
+          setModal(false);
+      }
+    }, []);
+
+  // variables
+  const [membro, setMembro] = React.useState(editarMembro)
+  const [nomeMembro, setNomeMembro] = useState(editarMembro.nome);
+  const [modalConfirmarExclusaoMembro, setModalConfirmarExclusaoMembro] = useState(false);
+ 
+
+  // useEffect(() => {
+    
+  // }, [])
+
+  const alterarNomeMembro = () =>{
+    const membroAtualizado = membro
+    membroAtualizado.nome = nomeMembro
+    setMembro(membroAtualizado)
+    updateNomeMembro(residenciaId, membro)
+      .then(
+        setModal(false)
+      )
+  }
+  
+
+
+  const excluirMembro = () =>{
+    deleteMembro(residenciaId, membro)
+      .then(
+        setModal(false)
+        // Adicionar um navigate para retornar a tela de gerenciamento de residencias
+      )
+  }
 
     return (
               <BottomSheet
@@ -28,7 +56,13 @@ const EditarMembro = ({setModal, modal}) => {
                 onChange={handleSheetChanges}
                 enablePanDownToClose={true}
                 >
-                 {modalConfirmarExclusaoMembro && (<ModalExcluir setModal={setModalConfirmarExclusaoMembro} modal={modalConfirmarExclusaoMembro}/>)}
+                 {modalConfirmarExclusaoMembro && 
+                  (<ModalExcluir 
+                    resetModal={setModalConfirmarExclusaoMembro} 
+                    modal={modalConfirmarExclusaoMembro} 
+                    onExcluir={excluirMembro}
+                  />)
+                }
 
                 <View style={styles.contentContainer}>
                 <Button
@@ -54,7 +88,7 @@ const EditarMembro = ({setModal, modal}) => {
                     textColor='white'
                     style={styles.buttonSave}
                     mode="contained"
-                    onPress={() => setModal(false)}>
+                    onPress={() => alterarNomeMembro()}>
                     Salvar alteração
                   </Button>
 

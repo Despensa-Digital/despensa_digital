@@ -4,8 +4,12 @@ import { View, StyleSheet, Modal } from 'react-native';
 import { PaperProvider, Text, Button, List } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 
-const ModalExcluir =  ({setModal, modal}) => {
-  const navigation = useNavigation();
+const ModalExcluir =  ({setModal, modal, onExcluir}) => {
+  // const navigation = useNavigation();
+
+
+ 
+
 
   return (
       <Modal
@@ -14,7 +18,7 @@ const ModalExcluir =  ({setModal, modal}) => {
         visible={modal}
         //animationType="fade"
         onRequestClose={() => {
-          //setModal(true)
+          //resetModal(true)
         }}>
 
         <View style={styles.centeredView}>
@@ -25,7 +29,10 @@ const ModalExcluir =  ({setModal, modal}) => {
                     buttonColor={'#ff0000'}
                     style={styles.buttonModal}
                     mode="contained"
-                    onPress={() => setModal(false)}>
+                    onPress={() => {
+                      onExcluir();
+                      setModal(false);
+                    }}>
                     Remover
                   </Button>
                   <Button

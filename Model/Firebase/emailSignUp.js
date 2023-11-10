@@ -1,4 +1,5 @@
 import auth from '@react-native-firebase/auth';
+import { postConsumidor } from '../../Controller/Consumidor/consumidorController';
 
 const emailSignUp = (name, email, password) => {
     auth()
@@ -9,10 +10,18 @@ const emailSignUp = (name, email, password) => {
                 displayName: name
             })
             userCredential.user.sendEmailVerification();
-            console.log('Usuário criado: ' + userCredential.user);
+            const data = {
+                id: userCredential.user.uid,
+                nome: name,
+                email: email,
+                foto: ""
+            }
+            postConsumidor(data)
         })
         .then(() => {
-            console.log('User account created & signed in!');          
+            
+            console.log('User account created & signed in!');
+
         })
         .catch(error => {
             if (error.code === 'auth/email-already-in-use') {

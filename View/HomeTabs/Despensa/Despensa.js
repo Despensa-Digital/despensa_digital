@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View, FlatList, ScrollView, StyleSheet } from 'react-native'
 import { Appbar, Avatar, Button, Divider, FAB, PaperProvider, Searchbar, Text, TextInput } from 'react-native-paper';
 import CategoryAvatar from '../Componentes/CategoryAvatar';
 import ListComponent from '../Componentes/ListComponent';
+import { getProdutos } from '../../../Controller/Produtos/produtosController';
 
 const Despensa = ({ navigation }) => {
 
@@ -27,6 +28,14 @@ const Despensa = ({ navigation }) => {
         { name: 'Milk', image: require('../../../Assets/Products/Milk.png'), expire: '30/09/2023', key: 5 },
         { name: 'Rice', image: require('../../../Assets/Products/Rice.png'), expire: '30/09/2023', key: 6 },
     ]
+
+
+    useEffect(()=>{
+        getProdutos()
+            // .then((doc)=>{
+            //     console.log(doc)
+            // })
+    },[])
 
     return (
         <PaperProvider>

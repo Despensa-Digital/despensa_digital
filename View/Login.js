@@ -11,12 +11,18 @@ import { EmailLogin } from '../Controller/Login/emailLogin';
 //Alterar futuramente
 import { googleSignIn } from '../Model/Firebase/googleSignIn';
 
+import { postConsumidor } from '../Controller/Consumidor/consumidorController';
+
+
+
 const Login = ({ navigation, user }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const [status, setStatus] = useState(true);
     const [showPass, setShowPass] = useState("eye");
+
+
 
     const [visible, setVisible] = useState(false);
     const hideDialog = () => {
@@ -28,8 +34,10 @@ const Login = ({ navigation, user }) => {
     useEffect(() => {
         if (user != null) {
             if (!user.emailVerified) {
-                console.log('ESTOU AQUI')
                 setVisible(true);           
+            }else{
+                // console.log('Usuario verificado, botão de login precionado');
+                // logar()
             }
         }
     }, [user]);
@@ -40,6 +48,12 @@ const Login = ({ navigation, user }) => {
         setShowPass(showPass === 'eye' ? 'eye-off' : 'eye');
     };
 
+
+    // const logar = async ()=>{
+        
+    // }
+
+  
     
     return (
         <PaperProvider >
@@ -58,7 +72,12 @@ const Login = ({ navigation, user }) => {
                 <GoogleSigninButton
                     size={GoogleSigninButton.Size.Wide}
                     color={GoogleSigninButton.Color.Light}
-                    onPress={() => googleSignIn().then(() => console.log('Signed in with Google!'))}
+                    // onPress={() => googleSignIn()}
+                    onPress={() => googleSignIn().then((response)=>{
+                        const consumer = response.user
+                        postConsumidor(consumer)
+                        }
+                    )}
                 />
             </View>
 

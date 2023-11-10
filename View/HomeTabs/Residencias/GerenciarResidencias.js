@@ -1,6 +1,6 @@
 import { PaperProvider, Text, Button, List } from 'react-native-paper';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
@@ -9,15 +9,35 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import NovaResidencia from './NovaResidencia';
 import { useNavigation } from '@react-navigation/native';
 
+
+import { getResidencias} from '../../../Controller/Residencia/residenciaController';
 const GerenciarResidencias = () => {
     const navigation = useNavigation();
     const [modal, setModal] = useState(false);
+    const [residencias, setResidencias] = useState([]);
+
+    
+useEffect(()=>{
+  carregarResidencia()
+},[])
+
+
+const carregarResidencia = ()=>{
+  getResidencias()
+      .then(dados => {
+          setResidencias(dados)
+          
+      })
+
+}
+
+
 
     return (
-        <PaperProvider style={styles.raiz}>
+      <PaperProvider style={styles.raiz}>
        <GestureHandlerRootView style={(modal ? styles.container_blur: styles.container)}>
 
-                <List.Item
+                {/* <List.Item
                     title="Minha casa"
                     onPress={() => navigation.navigate('EditarResidencia')}
                     style={styles.listItem}
@@ -63,9 +83,20 @@ const GerenciarResidencias = () => {
                 <List.Item
                     title="Casa do Roberto"
                     onPress={() => navigation.navigate('EditarResidencia')}
-                    style={styles.listItem}
+                    style={styles.listItem}   
                     right={props => <List.Icon {...props} icon="greenhouse" />}
-                  />
+                  /> */}
+                  {
+                    residencias.map((residencia, index)=>(
+                      <List.Item
+                        key={index}
+                        title={residencia.data.nome}
+                        style={styles.listItem}
+                        right={props => <List.Icon {...props} icon="greenhouse" />}
+                        onPress={() => navigation.navigate('EditarResidencia', {residenciaId: residencia.id})}
+                      />
+                    ))
+                  }
 
                 <Button
                     buttonColor={(modal? '#2b5536':'#5DB075')}

@@ -52,6 +52,10 @@ export default function App() {
         if (initializing) setInitializing(false);
     }
 
+
+    
+
+
     useEffect(() => {
         const subscriber = auth().onUserChanged(onAuthStateChanged);
         console.log('Estou no useEffect');
@@ -59,6 +63,10 @@ export default function App() {
             if (user.emailVerified) {
                 console.log('email verificado: ' + user.emailVerified);
                 setIsEmailVerified(true);
+                console.log("Usuario retornado", user)
+                //Adicionar a verificação de adição do Consumidor
+               // console.log("User", user)
+              
             } else {
                 console.log('email verificado: ' + user.emailVerified);                        
             }
@@ -69,7 +77,7 @@ export default function App() {
 
         return subscriber; // unsubscribe on unmount
     }, [user]);
-
+    
     
     if (initializing) return null;
 

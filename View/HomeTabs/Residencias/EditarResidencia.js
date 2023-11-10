@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import { PaperProvider, Text, Button, List } from 'react-native-paper';
@@ -8,10 +8,34 @@ import EditarNomeResidencia from './EditarNomeResidencia';
 import EditarMembro from './EditarMembro';
 import ModalExcluir from './ModalExcluir';
 
-const EditarResidencia = ({navigation}) => {
+import  { getResidencia, deleteResidencia } from '../../../Controller/Residencia/residenciaController';
+
+
+const EditarResidencia = ({route,navigation}) => {
+    const {residenciaId} = route.params;
+    const [residencia, setResidencia] = useState({membros:[]});
+    const [editarMembro, setEditarMembro] = useState({})
+
+
     const [modalMembro, setModalMembro] = useState(false);
     const [modalResidencia, setModalResidencia] = useState(false);
     const [modalEditarMembro, setModalEditarMembro] = useState(false);
+    const [modalConfirmarExclusaoResidencia, setModalConfirmarExclusaoResidencia] = useState(false);
+
+    useEffect(()=>{
+        editarResidencia(residenciaId, setResidencia);
+      return editarResidencia()
+    },[])
+
+    const editarResidencia = (id, callback) =>{
+      getResidencia(id,callback)
+        
+    }
+
+    const excluirResidencia = ()=>{
+      deleteResidencia(residenciaId)
+    }
+
     const abrirFecharModalMembro = (valor) => {
       if (modalResidencia == true || modalEditarMembro == true){
         return
@@ -24,14 +48,15 @@ const EditarResidencia = ({navigation}) => {
       }
       setModalResidencia(valor)
     }
-    const abrirFecharModalEditarMembro = (valor) => {
+    const abrirFecharModalEditarMembro = (valor, membro) => {
       if (modalMembro == true || modalResidencia == true){
         return
       }
       setModalEditarMembro(valor)
+      setEditarMembro(membro)
     }
 
-    const [modalConfirmarExclusaoResidencia, setModalConfirmarExclusaoResidencia] = useState(false);
+    
 
   return (
     <PaperProvider style={styles.raiz}>
@@ -39,17 +64,17 @@ const EditarResidencia = ({navigation}) => {
 
        <Text style={styles.tituloEditar}>Editar</Text>
             <List.Item
-                title="Primeira residência"
+                title= {residencia.nome}
                 onPress={() => abrirFecharModalResidencia(!modalResidencia)}
                     style={styles.listItem}
 
             />
-            <List.Item
+            {/* <List.Item
                 title="Segunda residencia"
                 onPress={() => abrirFecharModalResidencia(!modalResidencia)}
                                     style={styles.listItem}
 
-              />
+              /> */}
 
             <Text style={styles.tituloMembro}>Membro</Text>
             <Button
@@ -61,7 +86,7 @@ const EditarResidencia = ({navigation}) => {
             Adicionar novo membro
             </Button>
           
-              <List.Item
+              {/* <List.Item
                  title="Primeiro membro"
                  onPress={() => abrirFecharModalEditarMembro(!modalMembro)}
                  style={styles.listItem}
@@ -72,7 +97,16 @@ const EditarResidencia = ({navigation}) => {
                  onPress={() => abrirFecharModalEditarMembro(!modalMembro)}
                 style={styles.listItem}
 
-               />
+               /> */}
+              {residencia.membros.map((membro, index) => (
+                <List.Item
+                  key={index}
+                  title={membro.nome}
+                  description={membro.admin? "Administrador": null}
+                  onPress={() => abrirFecharModalEditarMembro(!modalMembro,membro)}
+                  style={styles.listItem}
+                />
+              ))}
 
                   <Button
                     textColor={(modalMembro || modalResidencia || modalEditarMembro || modalConfirmarExclusaoResidencia? 'gray':'white')}
@@ -94,10 +128,10 @@ const EditarResidencia = ({navigation}) => {
                     Voltar
                 </Button>
                 
-     {modalMembro && (<NovoMembro setModal={abrirFecharModalMembro} modal={modalMembro}/>)}
-     {modalResidencia && (<EditarNomeResidencia setModal={abrirFecharModalResidencia} modal={modalResidencia}/>)}
-     {modalEditarMembro && (<EditarMembro setModal={abrirFecharModalEditarMembro} modal={modalEditarMembro}/>)}
-     {modalConfirmarExclusaoResidencia && (<ModalExcluir setModal={setModalConfirmarExclusaoResidencia} modal={modalConfirmarExclusaoResidencia}/>)}
+     {modalMembro && (<NovoMembro  residenciaId={residenciaId} setModal={abrirFecharModalMembro} modal={modalMembro}/>)}
+     {modalResidencia && (<EditarNomeResidencia residenciaId={residenciaId} editarNomeResidencia={residencia.nome}  setModal={abrirFecharModalResidencia} modal={modalResidencia}/>)}
+     {modalEditarMembro && (<EditarMembro residenciaId={residenciaId}  editarMembro={editarMembro} setModal={abrirFecharModalEditarMembro} modal={modalEditarMembro}/>)}
+     {modalConfirmarExclusaoResidencia && (<ModalExcluir setModal={setModalConfirmarExclusaoResidencia} modal={modalConfirmarExclusaoResidencia} onExcluir={excluirResidencia}/>)}
 
     </GestureHandlerRootView>
     </PaperProvider>

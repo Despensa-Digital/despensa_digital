@@ -7,7 +7,6 @@ const emailSignIn = (email, senha) => {
         .signInWithEmailAndPassword(email, senha)
         .then(() => {
             console.log('signed in!');
-            
         })
         .catch(error => {              
             if (error.code === 'auth/invalid-email') {
