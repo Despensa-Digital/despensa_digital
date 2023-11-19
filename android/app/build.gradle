@@ -81,9 +81,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace 'com.anonymous.despensa_digital'
+    namespace 'com.despensadigital'
     defaultConfig {
-        applicationId 'com.anonymous.despensa_digital'
+        applicationId 'com.despensadigital'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

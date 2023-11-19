@@ -1,4 +1,4 @@
-package com.anonymous.despensa_digital;
+package com.despensadigital;
 
 import android.os.Build;
 import android.os.Bundle;

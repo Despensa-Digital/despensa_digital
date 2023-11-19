@@ -1,10 +1,14 @@
 {
   "expo": {
     "plugins": [
-      "@react-native-google-signin/google-signin"
+      "@react-native-google-signin/google-signin",
+      "@react-native-firebase/app",
+      "@react-native-firebase/perf",
+      "@react-native-firebase/crashlytics",
+      "@react-native-firebase/auth"
     ],
-    "name": "despensa_digital",
-    "slug": "despensa_digital",
+    "name": "despensadigital",
+    "slug": "despensadigital",
     "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
@@ -25,7 +29,12 @@
       "adaptiveIcon": {
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.despensa_digital"
+      "package": "com.despensadigital"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "226859ec-a4da-4b7d-ac74-aa973615ed7e"
+      }
     }
   }
 }
