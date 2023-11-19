@@ -2,70 +2,46 @@ import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { View, StyleSheet, Modal } from 'react-native';
 
 import { PaperProvider, Text, Button, List } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
 
 const ModalExcluir =  ({setModal, modal, onExcluir}) => {
   // const navigation = useNavigation();
 
-
- 
-
-
   return (
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modal}
-        //animationType="fade"
-        onRequestClose={() => {
-          //resetModal(true)
-        }}>
-
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-                  <Text style={styles.textoModal}>Tem certeza de que deseja remover? Todas as suas informações serão perdidas.</Text>
-                  <Button
-                    textColor={'white'}
-                    buttonColor={'#ff0000'}
-                    style={styles.buttonModal}
-                    mode="contained"
-                    onPress={() => {
-                      onExcluir();
-                      setModal(false);
-                    }}>
-                    Remover
-                  </Button>
-                  <Button
-                    textColor={'#5DB075'}
-                    buttonColor={'white'}
-                    style={styles.buttonModal}
-                    mode="outlined"
-                    theme={{ colors: { outline: '#5DB075' }}}
-                    onPress={() => setModal(false)}>
-                    Cancelar
-                  </Button>
-          </View>
+    <Modal
+      animationType="slide"
+      transparent={true}
+      visible={modal}
+      onRequestClose={() => {
+        // Handle modal close
+      }}>
+      <View style={styles.centeredView}>
+        <View style={styles.modalView}>
+          <Text style={styles.textoModal}>
+            Tem certeza de que deseja remover? Todas as suas informações serão perdidas.
+          </Text>
+          <Button
+            buttonColor="#ff0000"
+            style={styles.buttonModal}
+            mode="contained"
+            onPress={() => setModal(false)}>
+            Remover
+          </Button>
+          <Button
+            buttonColor="white"
+            style={styles.buttonModal}
+            mode="outlined"
+            onPress={() => setModal(false)}
+            textColor='#5DB075'
+            theme={{ colors: { outline: '#5DB075' } }}>
+            Cancelar
+          </Button>
         </View>
+      </View>
       </Modal>
   );
 };
 
 const styles = StyleSheet.create({
-<<<<<<< HEAD
-  textoModal: {
-    marginBottom: 10,
-    marginHorizontal: 15,
-    alignSelf: 'center',
-    fontSize: 17,
-    fontFamily: 'Roboto',
-    textAlign: 'justify',
-  },
-  buttonModal: {
-    marginBottom: 10,
-    borderRadius: 20,
-    width: 300,
-  },
-=======
   container: {
     flex: 1,
     padding: 24,
@@ -126,7 +102,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     width:300,
    },
->>>>>>> a5a7f7aebe32395b622237451ec7d90d3d636312
   centeredView: {
     flex: 1,
     justifyContent: 'center',
@@ -138,11 +113,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 30,
     padding: 40,
-<<<<<<< HEAD
-    width: 400,
-=======
     width:400,
->>>>>>> a5a7f7aebe32395b622237451ec7d90d3d636312
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
@@ -153,12 +124,6 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
-<<<<<<< HEAD
-});
-
-export default ModalExcluir;
-=======
   });
 
 export default ModalExcluir;
->>>>>>> a5a7f7aebe32395b622237451ec7d90d3d636312

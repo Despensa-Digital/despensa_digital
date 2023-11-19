@@ -15,12 +15,12 @@ function HomeStackScreen() {
           name="Home"
           component={HomeScreen}
           options={{
-            headerRight: () => <AppBarGerenciarResidenciasButton />
-          }}
+            headerRight: () => <AppBarGerenciarResidenciasButton />,
+        }}
+
         />
       </HomeStack.Group>
 
-      {/* Grupo de telas de Gerenciar Residência */}
       <HomeStack.Group>
         <HomeStack.Screen
           name="GerenciarResidencias"
@@ -29,6 +29,9 @@ function HomeStackScreen() {
             title: "Gerenciar Residências"
           }}
         />
+      </HomeStack.Group>
+
+
         <HomeStack.Screen
           name="EditarResidencia"
           component={EditarResidencia}
@@ -36,8 +39,6 @@ function HomeStackScreen() {
             title: "Minha Residência"
           }}
         />
-      </HomeStack.Group>
-
     </HomeStack.Navigator>
   );
 }

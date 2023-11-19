@@ -1,6 +1,11 @@
+<<<<<<< HEAD
 import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
+=======
+import React, { useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+>>>>>>> 10788763862e2067daddbb780cbee5230e371f94
 import { PaperProvider, Text, Button, List } from 'react-native-paper';
 
 import NovoMembro from './NovoMembro';
@@ -57,7 +62,7 @@ const EditarResidencia = ({route,navigation}) => {
 
   return (
     <PaperProvider style={styles.raiz}>
-      <GestureHandlerRootView style={modalMembro || modalResidencia || modalEditarMembro || modalConfirmarExclusaoResidencia ? styles.container_blur : styles.container}>
+      <View style={modalMembro || modalResidencia || modalEditarMembro || modalConfirmarExclusaoResidencia ? styles.container_blur : styles.container}>
 
         <Text style={styles.tituloEditar}>Editar</Text>
         <List.Item
@@ -73,7 +78,7 @@ const EditarResidencia = ({route,navigation}) => {
 
         <Text style={styles.tituloMembro}>Membro</Text>
         <Button
-          color={modalMembro || modalResidencia || modalEditarMembro || modalConfirmarExclusaoResidencia ? '#2b5536' : '#5DB075'}
+          buttonColor={modalMembro || modalResidencia || modalEditarMembro || modalConfirmarExclusaoResidencia ? '#2b5536' : '#5DB075'}
           textColor={modalMembro || modalResidencia || modalEditarMembro || modalConfirmarExclusaoResidencia ? 'gray' : 'white'}
           style={{ marginTop: 15, marginHorizontal: 20, marginBottom: 20 }}
           mode="contained"
@@ -108,7 +113,7 @@ const EditarResidencia = ({route,navigation}) => {
 
         <Button
           textColor={modalMembro || modalResidencia || modalEditarMembro || modalConfirmarExclusaoResidencia ? 'gray' : 'white'}
-          color={modalMembro || modalResidencia || modalEditarMembro || modalConfirmarExclusaoResidencia ? '#800000' : '#ff0000'}
+          buttonColor={modalMembro || modalResidencia || modalEditarMembro || modalConfirmarExclusaoResidencia ? '#800000' : '#ff0000'}
           style={styles.buttonExcluir}
           mode="contained"
           onPress={() => setModalConfirmarExclusaoResidencia(true)}
@@ -118,7 +123,7 @@ const EditarResidencia = ({route,navigation}) => {
 
         <Button
           textColor={modalMembro || modalResidencia || modalEditarMembro || modalConfirmarExclusaoResidencia ? '#2b5536' : '#5DB075'}
-          color={modalMembro || modalResidencia || modalEditarMembro || modalConfirmarExclusaoResidencia ? 'gray' : 'white'}
+          buttonColor={modalMembro || modalResidencia || modalEditarMembro || modalConfirmarExclusaoResidencia ? 'gray' : 'white'}
           theme={{ colors: { outline: '#5DB075' } }}
           style={styles.buttonVoltar}
           mode="outlined"
@@ -131,8 +136,7 @@ const EditarResidencia = ({route,navigation}) => {
         {modalResidencia && (<EditarNomeResidencia setModal={abrirFecharModalResidencia} modal={modalResidencia} />)}
         {modalEditarMembro && (<EditarMembro setModal={abrirFecharModalEditarMembro} modal={modalEditarMembro} />)}
         {modalConfirmarExclusaoResidencia && (<ModalExcluir setModal={setModalConfirmarExclusaoResidencia} modal={modalConfirmarExclusaoResidencia} />)}
-
-      </GestureHandlerRootView>
+      </View>
     </PaperProvider>
   );
 };

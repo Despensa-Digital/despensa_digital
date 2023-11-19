@@ -5,9 +5,6 @@ import { Button, IconButton, Modal, PaperProvider, Portal, Switch, Text, TextInp
 //Adicionar props nos estados
 const EditarProduto = ({ navigation }) => {
 
-    const [codigoDeBarras, setCodigoDeBarras] = useState('');
-    const [nomeProduto, setNomeProduto] = useState('');
-    const [marca, setMarca] = useState('');
     const [dataValidade, setDataValidade] = useState('');
     const [notificarVencimento, setNotificarVencimento] = useState(false);
     const [dataNotificacao, setDataNotificacao] = useState('');
@@ -15,11 +12,35 @@ const EditarProduto = ({ navigation }) => {
     const [notificarVencimentoStyle, setNotificarVencimentoStyle] = useState(styles.notificarVencimentoEnabled);
     const [preco, setPreco] = useState('');
     const [localCompra, setLocalCompra] = useState('');
-    const [categoria, setCategoria] = useState('');
-    const [unidadeMedida, setUnidadeMedida] = useState('');
-    const [peso, setPeso] = useState('');
-    const [quantidade, setQuantidade] = useState('0');
     const [subButton, setSubButton]= useState(false);
+    const [codigoDeBarras, setCodigoDeBarras] = useState(product.codigoDeBarras);
+    const [nomeProduto, setNomeProduto] = useState(product.name);
+    const [marca, setMarca] = useState(product.marca);
+    const [categoria, setCategoria] = useState(product.categoria);
+    const [unidadeMedida, setUnidadeMedida] = useState(product.unidadeMedida);
+    const [peso, setPeso] = useState(product.peso);
+    const [quantidade, setQuantidade] = useState(product.quantidade);
+    const [disableButton, setDisableButton]= useState(false);
+    
+    const editarProduto = () => {
+        const produtoEditado = {
+            produtoEditado: true,
+            key: product.key,
+            codigoDeBarras: codigoDeBarras,
+            nomeProduto: nomeProduto,
+            marca: marca,
+            categoria: categoria,
+            unidadeMedida: unidadeMedida,
+            peso: peso,
+            quantidade: quantidade
+        }
+
+        navigation.navigate({
+            name: 'Despensa',
+            params: produtoEditado,
+            merge: true
+        })
+    }
 
     const maisQuantidade = () =>{
        const sum = parseInt(quantidade) + 1;
@@ -106,60 +127,6 @@ const EditarProduto = ({ navigation }) => {
                     error={false}
                     value={marca}
                     onChangeText={marca => setMarca(marca)}
-                />
-
-                <TextInput
-                    style={{ marginTop: 10, marginHorizontal: 20 }}
-                    label="Data de validade"
-                    mode="outlined"
-                    error={false}
-                    value={dataValidade}
-                    onChangeText={dataValidade => setDataValidade(dataValidade)}
-                />
-
-                <View
-                    style={notificarVencimentoStyle}
-                >
-                    <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginStart: 15, marginEnd: 10, marginVertical: 10 }} >
-                        <Text variant='labelLarge'>Notificar vencimento do produto</Text>
-                        <Switch value={notificarVencimento} onValueChange={notificarVencimento => setNotificarVencimento(notificarVencimento)} />
-                    </View>
-                    <View style={{ display: `${notificarVencimentoView}`, flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', marginStart: 15, marginVertical: 10 }}>
-                        <TextInput
-                            keyboardType='numeric'
-                            maxLength={2}
-                            textAlign='center'
-                            style={{ marginEnd: 10, width: 70, textAlign: 'center' }}
-                            label="Dias"
-                            mode="outlined"
-                            error={false}
-                            value={dataNotificacao}
-                            onChangeText={dataNotificacao => setDataNotificacao(dataNotificacao)}
-                        />
-                        <Text variant='bodyMedium'>antes da validade.</Text>
-                    </View>
-
-                </View>
-
-
-                <TextInput
-                    style={{ marginTop: 10, marginHorizontal: 20 }}
-                    keyboardType='numeric'
-                    label="Preço"
-                    mode="outlined"
-                    error={false}
-                    value={preco}
-                    onChangeText={preco => setPreco(preco)}
-                />
-
-                <TextInput
-                    style={{ marginTop: 10, marginHorizontal: 20 }}
-                    keyboardType='numeric'
-                    label="Local da compra"
-                    mode="outlined"
-                    error={false}
-                    value={localCompra}
-                    onChangeText={localCompra => setLocalCompra(localCompra)}
                 />
 
                 <TextInput
