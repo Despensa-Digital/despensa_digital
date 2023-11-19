@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { View, FlatList, ScrollView } from 'react-native'
+import { View, FlatList, ScrollView, Image } from 'react-native'
 import { Appbar, Avatar, Button, Divider, PaperProvider, Text, TextInput, IconButton } from 'react-native-paper';
 import { signOut } from '../../../Model/Firebase/signOut';
 import ProfileAvatar from '../Componentes/ProfileAvatar';
@@ -59,24 +59,13 @@ const HomeScreen = () => {
         return (
             <PaperProvider>
                 <View style={{ 
-                    color: '#00000088', 
                     textAlign: 'center', 
-                    fontSize: 20, 
-                    marginTop: 50,
-                    marginHorizontal: 50
+                    marginTop: 230,
                 }}>
-                    <Text>
-                        Nenhuma Residencia encontrada!
+                    <Image source={require('../../../Assets/Products/Rice.png')} style={{ alignSelf: "center", width: 120, height: 120 }} /> 
+                    <Text style={{color:'black', textAlign: "center", fontSize: 20,}}>
+                        Nenhuma Residencia encontrada!{"\n"}Acesse a seção de residencias e crie uma nova.
                     </Text>
-                    <Text>
-                        Por favor cadastre uma residencia clicando em:
-                    </Text>
-                    <IconButton
-                        icon="home-group-plus"
-                        size={40}
-                        iconColor='#5DB075'
-                        onPress={() => navigation.navigate('GerenciarResidencias')}
-                    />
                 </View>
             </PaperProvider>
         )
