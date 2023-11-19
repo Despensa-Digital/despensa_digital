@@ -3,6 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { TextInput, Button, Text } from 'react-native-paper';
 import { BottomSheet } from '@gorhom/bottom-sheet';
 import ModalExcluir from './ModalExcluir';
+import {updateNomeMembro,deleteMembro} from '../../../Controller/Residencia/residenciaController';
 
 const EditarMembro = ({ setModal, modal }) => {
   const bottomSheetRef = useRef();
@@ -18,6 +19,28 @@ const EditarMembro = ({ setModal, modal }) => {
   const [nomeMembro, setNomeMembro] = useState('');
   const [modalConfirmarExclusaoMembro, setModalConfirmarExclusaoMembro] = useState(false);
 
+
+  const alterarNomeMembro = () =>{
+    const membroAtualizado = membro
+    membroAtualizado.nome = nomeMembro
+    setMembro(membroAtualizado)
+    updateNomeMembro(residenciaId, membro)
+      .then(
+        setModal(false)
+      )
+  }
+  
+
+
+  const excluirMembro = () =>{
+    deleteMembro(residenciaId, membro)
+      .then(
+        setModal(false)
+        // Adicionar um navigate para retornar a tela de gerenciamento de residencias
+      )
+  }
+
+  
   return (
     <BottomSheet
       ref={bottomSheetRef}
@@ -27,7 +50,7 @@ const EditarMembro = ({ setModal, modal }) => {
       enablePanDownToClose={true}
     >
       {modalConfirmarExclusaoMembro && (
-        <ModalExcluir setModal={setModalConfirmarExclusaoMembro} modal={modalConfirmarExclusaoMembro} />
+        <ModalExcluir onExcluir={excluirMembro} setModal={setModalConfirmarExclusaoMembro} modal={modalConfirmarExclusaoMembro} />
       )}
 
       <View style={styles.contentContainer}>
@@ -52,7 +75,8 @@ const EditarMembro = ({ setModal, modal }) => {
           color='#5DB075'
           style={styles.buttonSave}
           mode='contained'
-          onPress={() => setModal(false)}
+          //          onPress={() => setModal(false), alterarNomeMembro()}
+          onPress={() => alterarNomeMembro()}
         >
           Salvar alteração
         </Button>

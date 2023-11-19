@@ -14,7 +14,7 @@ const ListComponent = (props) => {
                     title={product.name}
                     description={`Data de validade: ${product.expire}`}
                     left={() => <Avatar.Image source={product.image} style={{ backgroundColor: 'transparent' }} size={60} />}
-                    onPress={() => navigation.navigate('EditarProduto',{product}) }
+                    onPress={() => navigation.navigate('EditarProduto')}
                 />
             </View>
             <Divider style={{ height: 1 }} />

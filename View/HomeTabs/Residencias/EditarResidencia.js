@@ -1,32 +1,59 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import { PaperProvider, Text, Button, List } from 'react-native-paper';
+
 import NovoMembro from './NovoMembro';
 import EditarNomeResidencia from './EditarNomeResidencia';
 import EditarMembro from './EditarMembro';
 import ModalExcluir from './ModalExcluir';
+import  { getResidencia, deleteResidencia } from '../../../Controller/Residencia/residenciaController';
 
-const EditarResidencia = ({ navigation }) => {
-  const [modalMembro, setModalMembro] = useState(false);
-  const [modalResidencia, setModalResidencia] = useState(false);
-  const [modalEditarMembro, setModalEditarMembro] = useState(false);
-  const [modalConfirmarExclusaoResidencia, setModalConfirmarExclusaoResidencia] = useState(false);
 
-  const abrirFecharModalMembro = (valor) => {
-    if (modalResidencia || modalEditarMembro) return;
-    setModalMembro(valor);
-  };
+const EditarResidencia = ({route,navigation}) => {
+    const {residenciaId} = route.params;
+    const [residencia, setResidencia] = useState({membros:[]});
+    const [editarMembro, setEditarMembro] = useState({})
 
-  const abrirFecharModalResidencia = (valor) => {
-    if (modalMembro || modalEditarMembro) return;
-    setModalResidencia(valor);
-  };
 
-  const abrirFecharModalEditarMembro = (valor) => {
-    if (modalMembro || modalResidencia) return;
-    setModalEditarMembro(valor);
-  };
+    const [modalMembro, setModalMembro] = useState(false);
+    const [modalResidencia, setModalResidencia] = useState(false);
+    const [modalEditarMembro, setModalEditarMembro] = useState(false);
+    const [modalConfirmarExclusaoResidencia, setModalConfirmarExclusaoResidencia] = useState(false);
+
+    useEffect(()=>{
+        editarResidencia(residenciaId, setResidencia);
+      return editarResidencia()
+    },[])
+
+    const editarResidencia = (id, callback) =>{
+      getResidencia(id,callback)
+        
+    }
+
+    const excluirResidencia = ()=>{
+      deleteResidencia(residenciaId)
+    }
+
+    const abrirFecharModalMembro = (valor) => {
+      if (modalResidencia == true || modalEditarMembro == true){
+        return
+      }
+      setModalMembro(valor)
+    }
+    const abrirFecharModalResidencia = (valor) => {
+      if (modalMembro == true || modalEditarMembro == true){
+        return
+      }
+      setModalResidencia(valor)
+    }
+    const abrirFecharModalEditarMembro = (valor, membro) => {
+      if (modalMembro == true || modalResidencia == true){
+        return
+      }
+      setModalEditarMembro(valor)
+      setEditarMembro(membro)
+    }
 
   return (
     <PaperProvider style={styles.raiz}>
@@ -54,6 +81,19 @@ const EditarResidencia = ({ navigation }) => {
         >
           Adicionar novo membro
         </Button>
+
+
+      {/**
+                           {residencia.membros.map((membro, index) => (
+                <List.Item
+                  key={index}
+                  title={membro.nome}
+                  description={membro.admin? "Administrador": null}
+                  onPress={() => abrirFecharModalEditarMembro(!modalMembro,membro)}
+                  style={styles.listItem}
+                />
+              ))}
+       */}
 
         <List.Item
           title="Primeiro membro"

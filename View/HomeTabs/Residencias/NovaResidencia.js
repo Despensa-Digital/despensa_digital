@@ -1,11 +1,15 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Text, Button, TextInput } from 'react-native-paper';
+import { PaperProvider, Text, Button } from 'react-native-paper';
+
+import { useCallback, useMemo, useRef, useState } from 'react';
+import { View, StyleSheet, SafeAreaView } from 'react-native';
 import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
+import { TextInput } from 'react-native-paper';
+
+import { postResidencia } from '../../../Controller/Residencia/residenciaController';
 
 const NovaResidencia = ({ setModal, modal }) => {
   const bottomSheetRef = useRef();
-  const snapPoints = useMemo(() => ['25%', '45%', '60%'], []);
+  const snapPoints = useMemo(() => ['25%', '45%'], []);
   const handleSheetChanges = useCallback((index) => {
     console.log('handleSheetChanges', index);
     if (index === -1) {
@@ -13,25 +17,37 @@ const NovaResidencia = ({ setModal, modal }) => {
     }
   }, []);
 
+  // variables
+  const [nomeResidencia, setNomeResidencia] = useState("");
+
+  // renders
   const renderBackdrop = useCallback(
-    (props) => (
+    props => (
       <BottomSheetBackdrop
         {...props}
-        pressBehavior="none"
-        opacity={0.5}
+        disappearsOnIndex={1}
+        appearsOnIndex={2}
+        opacity={1}
         enableTouchThrough={false}
       />
     ),
     []
   );
 
-  const [nomeResidencia, setNomeResidencia] = useState('');
+  const adicionarResidencia = () =>{
+    postResidencia(nomeResidencia)
+    .then(
+      setModal(false)
+    )
+  }
+  
+
 
   return (
     <BottomSheet
       style={{ flex: 1 }}
       ref={bottomSheetRef}
-      index={modal ? 1 : -1}
+      index={(modal ? 1 : -1)}
       snapPoints={snapPoints}
       onChange={handleSheetChanges}
       enablePanDownToClose={true}
@@ -41,30 +57,29 @@ const NovaResidencia = ({ setModal, modal }) => {
         <Text style={styles.textBox}>Nova Residência</Text>
         <TextInput
           style={styles.textInput}
-          mode="outlined"
-          outlineColor="black"
+          mode='outlined'
+          outlineColor='black'
           label="Nome da residência"
           value={nomeResidencia}
-          onChangeText={(nome) => setNomeResidencia(nome)}
+          onChangeText={nomeResidencia => setNomeResidencia(nomeResidencia)}
         />
 
         <Button
-          color="#5DB075"
+          buttonColor='#5DB075'
+          textColor='white'
           style={styles.buttonSave}
           mode="contained"
-          onPress={() => setModal(false)}
-        >
+          onPress={() => adicionarResidencia()}>
           Salvar nova residência
         </Button>
 
         <Button
-          color="white"
-          textColor="#5DB075"
+          buttonColor='white'
+          textColor='#5DB075'
           theme={{ colors: { outline: '#5DB075' } }}
           style={styles.buttonCancel}
           mode="outlined"
-          onPress={() => setModal(false)}
-        >
+          onPress={() => adicionarResidencia()}>
           Cancelar
         </Button>
       </View>
@@ -94,11 +109,16 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginHorizontal: 20,
   },
+
   buttonSave: {
     marginTop: 10,
     marginHorizontal: 20,
+
   },
-  textBox: { alignSelf: 'center', fontSize: 25 },
+
+  textBox: { alignSelf: 'center', fontSize: 25 }
 });
+
+
 
 export default NovaResidencia;

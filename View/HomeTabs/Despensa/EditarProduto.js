@@ -3,46 +3,23 @@ import { View, ScrollView, StyleSheet } from 'react-native'
 import { Button, IconButton, Modal, PaperProvider, Portal, Switch, Text, TextInput } from 'react-native-paper';
 
 //Adicionar props nos estados
-const EditarProduto = ({route, navigation}) => {
-    const {product} = route.params;
-    //console.log(product.name)
+const EditarProduto = ({ navigation }) => {
 
-    const [codigoDeBarras, setCodigoDeBarras] = useState(product.codigoDeBarras);
-    const [nomeProduto, setNomeProduto] = useState(product.name);
-    const [marca, setMarca] = useState(product.marca);
-    const [dataValidade, setDataValidade] = useState(product.expire);
+    const [codigoDeBarras, setCodigoDeBarras] = useState('');
+    const [nomeProduto, setNomeProduto] = useState('');
+    const [marca, setMarca] = useState('');
+    const [dataValidade, setDataValidade] = useState('');
     const [notificarVencimento, setNotificarVencimento] = useState(false);
     const [dataNotificacao, setDataNotificacao] = useState('');
     const [notificarVencimentoView, setNotificarVencimentoView] = useState('none');
     const [notificarVencimentoStyle, setNotificarVencimentoStyle] = useState(styles.notificarVencimentoEnabled);
     const [preco, setPreco] = useState('');
     const [localCompra, setLocalCompra] = useState('');
-    const [categoria, setCategoria] = useState(product.categoria);
-    const [unidadeMedida, setUnidadeMedida] = useState(product.unidadeMedida);
-    const [peso, setPeso] = useState(product.peso);
-    const [quantidade, setQuantidade] = useState(product.quantidade);
-    const [disableButton, setDisableButton]= useState(false);
-    
-    const editarProduto = () => {
-        const produtoEditado = {
-            produtoEditado: true,
-            key: product.key,
-            codigoDeBarras: codigoDeBarras,
-            nomeProduto: nomeProduto,
-            marca: marca,
-            dataValidade: dataValidade,
-            categoria: categoria,
-            unidadeMedida: unidadeMedida,
-            peso: peso,
-            quantidade: quantidade
-        }
-
-        navigation.navigate({
-            name: 'Despensa',
-            params: produtoEditado,
-            merge: true
-        })
-    }
+    const [categoria, setCategoria] = useState('');
+    const [unidadeMedida, setUnidadeMedida] = useState('');
+    const [peso, setPeso] = useState('');
+    const [quantidade, setQuantidade] = useState('0');
+    const [subButton, setSubButton]= useState(false);
 
     const maisQuantidade = () =>{
        const sum = parseInt(quantidade) + 1;
@@ -58,9 +35,9 @@ const EditarProduto = ({route, navigation}) => {
     useEffect(() => {
         if(quantidade <= 0) {
             setQuantidade('0');
-            setDisableButton(true);
+            setSubButton(true);
         } else {
-            setDisableButton(false);
+            setSubButton(false);
         }
     }, [quantidade])
 
@@ -81,8 +58,6 @@ const EditarProduto = ({route, navigation}) => {
         }
 
     }, [notificarVencimento])
-
-    
     return (
         <PaperProvider>
             <ScrollView style={{ backgroundColor: '#fff' }}>
@@ -113,7 +88,7 @@ const EditarProduto = ({route, navigation}) => {
                     mode="outlined"
                     error={false}
                     value={codigoDeBarras}
-                    onChangeText={codigoDeBarras => setCodigoDeBarras(codigoDeBarras)}
+                    onChangeText={codigoDeBarras => setCodigoDeBarras(CodigoDebarras)}
                 />
                 <TextInput
                     style={{ marginTop: 10, marginHorizontal: 20 }}
@@ -231,7 +206,7 @@ const EditarProduto = ({route, navigation}) => {
                         mode='outlined'
                         iconColor='red'                                      
                         style={{ marginEnd: 10, marginTop: 10, borderColor: 'red' }}
-                        disabled={disableButton}
+                        disabled={subButton}
                         onPress={menosQuantidade}
                     />
                     <TextInput
@@ -253,7 +228,7 @@ const EditarProduto = ({route, navigation}) => {
                         mode='outlined'
                         iconColor='green'
                         style={{ marginTop: 10, borderColor: 'green' }}                       
-                        onPress={maisQuantidade}
+                        onPress={(maisQuantidade)}
                     />
                 </View>
 
@@ -261,8 +236,8 @@ const EditarProduto = ({route, navigation}) => {
                     buttonColor='#5DB075'
                     style={{ marginTop: 20, marginHorizontal: 20 }}
                     mode="contained"
-                    onPress={editarProduto}>
-                    Salvar
+                    onPress={() => console.log('pressed')}>
+                    Adicionar
                 </Button>
 
                 <Button

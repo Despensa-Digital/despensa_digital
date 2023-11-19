@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native'
 import { Button, IconButton, Modal, PaperProvider, Portal, Switch, Text, TextInput } from 'react-native-paper';
 
-const AdicionarProduto = ({ navigation }, lastProductId) => {
+const AdicionarProduto = ({ navigation }) => {
 
     const [codigoDeBarras, setCodigoDeBarras] = useState('');
     const [nomeProduto, setNomeProduto] = useState('');
@@ -18,31 +18,7 @@ const AdicionarProduto = ({ navigation }, lastProductId) => {
     const [unidadeMedida, setUnidadeMedida] = useState('');
     const [peso, setPeso] = useState('');
     const [quantidade, setQuantidade] = useState('0');
-    const [disableButton, setDisableButton]= useState(false);
-
-    const salvarProduto = () => {
-        const novoProduto = {
-            produtoEditado: false,
-            key: lastProductId,
-            codigoDeBarras: codigoDeBarras,
-            name: nomeProduto,
-            marca: marca,
-            image: require('../../../Assets/Products/Rice.png'),
-            expire: dataValidade,
-            categoria: categoria,
-            unidadeMedida: unidadeMedida,
-            peso: peso,
-            quantidade: quantidade
-        }
-
-    
-
-        navigation.navigate({
-            name: 'Despensa',
-            params: novoProduto,
-            merge: true
-        })
-    }
+    const [subButton, setSubButton]= useState(false);
 
     const maisQuantidade = () =>{
        const sum = parseInt(quantidade) + 1;
@@ -58,9 +34,9 @@ const AdicionarProduto = ({ navigation }, lastProductId) => {
     useEffect(() => {
         if(quantidade <= 0) {
             setQuantidade('0');
-            setDisableButton(true);
+            setSubButton(true);
         } else {
-            setDisableButton(false);
+            setSubButton(false);
         }
     }, [quantidade])
 
@@ -229,7 +205,7 @@ const AdicionarProduto = ({ navigation }, lastProductId) => {
                         mode='outlined'
                         iconColor='red'                                      
                         style={{ marginEnd: 10, marginTop: 10, borderColor: 'red' }}
-                        disabled={disableButton}
+                        disabled={subButton}
                         onPress={menosQuantidade}
                     />
                     <TextInput
@@ -259,7 +235,7 @@ const AdicionarProduto = ({ navigation }, lastProductId) => {
                     buttonColor='#5DB075'
                     style={{ marginTop: 20, marginHorizontal: 20 }}
                     mode="contained"
-                    onPress={salvarProduto}>
+                    onPress={() => console.log('pressed')}>
                     Adicionar
                 </Button>
 

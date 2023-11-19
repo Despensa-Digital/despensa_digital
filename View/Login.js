@@ -1,12 +1,19 @@
 import { useState, useEffect } from 'react';
 import { Appbar, Button, Dialog, Divider, PaperProvider, Portal, Text, TextInput, TouchableRipple } from 'react-native-paper';
+import { GoogleSigninButton } from '@react-native-google-signin/google-signin';
 import { View } from 'react-native';
+import { signOut } from '../Model/Firebase/signOut';
 
 //import do Controller
 import { EmailLogin } from '../Controller/Login/emailLogin';
 
 //import da Model
 //Alterar futuramente
+import { googleSignIn } from '../Model/Firebase/googleSignIn';
+
+import { postConsumidor } from '../Controller/Consumidor/consumidorController';
+
+
 
 const Login = ({ navigation, user }) => {
     const [email, setEmail] = useState('');
@@ -15,18 +22,22 @@ const Login = ({ navigation, user }) => {
     const [status, setStatus] = useState(true);
     const [showPass, setShowPass] = useState("eye");
 
+
+
     const [visible, setVisible] = useState(false);
     const hideDialog = () => {
         setVisible(false);
 
-        // signOut();
+        signOut();
     }
 
     useEffect(() => {
         if (user != null) {
             if (!user.emailVerified) {
-                console.log('ESTOU AQUI')
                 setVisible(true);           
+            }else{
+                // console.log('Usuario verificado, botão de login precionado');
+                // logar()
             }
         }
     }, [user]);
@@ -37,10 +48,38 @@ const Login = ({ navigation, user }) => {
         setShowPass(showPass === 'eye' ? 'eye-off' : 'eye');
     };
 
+
+    // const logar = async ()=>{
+        
+    // }
+
+  
     
     return (
         <PaperProvider >
-      
+            <Text
+                style={{
+                    color: '#00000077',
+                    textAlign: 'center',
+                    fontSize: 16,
+                    marginTop: 20,
+                    marginHorizontal: 40
+                }}>
+                Se conectar usando uma conta Google (cadastro automático)
+            </Text>
+
+            <View style={{ marginVertical: 30, alignSelf: 'center' }}>
+                <GoogleSigninButton
+                    size={GoogleSigninButton.Size.Wide}
+                    color={GoogleSigninButton.Color.Light}
+                    // onPress={() => googleSignIn()}
+                    onPress={() => googleSignIn().then((response)=>{
+                        const consumer = response.user
+                        postConsumidor(consumer)
+                        }
+                    )}
+                />
+            </View>
 
             <Divider horizontalInset bold />
 

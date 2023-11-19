@@ -1,7 +1,10 @@
+import { PaperProvider, Text, Button } from 'react-native-paper';
+
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Text, Button, TextInput } from 'react-native-paper';
+import { Dimensions, View, StyleSheet, SafeAreaView } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
+
+import { TextInput } from 'react-native-paper';
 
 const NovoMembro = ({ setModal, modal }) => {
   const bottomSheetRef = useRef();
@@ -13,13 +16,15 @@ const NovoMembro = ({ setModal, modal }) => {
     }
   }, []);
 
-  const [nomeMembro, setNomeMembro] = useState("");
-  const [emailMembro, setEmailMembro] = useState("");
+  // variables
+  const [nomeMembro, setNomeMembro] = React.useState("");
+  const [emailMembro, setEmailMembro] = React.useState("");
+
 
   return (
     <BottomSheet
       ref={bottomSheetRef}
-      index={modal ? 1 : -1}
+      index={(modal ? 1 : -1)}
       snapPoints={snapPoints}
       onChange={handleSheetChanges}
       enablePanDownToClose={true}
@@ -33,7 +38,7 @@ const NovoMembro = ({ setModal, modal }) => {
           outlineColor='black'
           label="Nome"
           value={nomeMembro}
-          onChangeText={setNomeMembro}
+          onChangeText={nomeMembro => setNomeMembro(nomeMembro)}
         />
         <TextInput
           style={styles.textInput}
@@ -41,11 +46,12 @@ const NovoMembro = ({ setModal, modal }) => {
           outlineColor='black'
           label="E-mail"
           value={emailMembro}
-          onChangeText={setEmailMembro}
+          onChangeText={emailMembro => setEmailMembro(emailMembro)}
         />
 
         <Button
-          color='#5DB075'
+          buttonColor='#5DB075'
+          textColor='white'
           style={styles.buttonSave}
           mode="contained"
           onPress={() => setModal(false)}>
@@ -53,7 +59,7 @@ const NovoMembro = ({ setModal, modal }) => {
         </Button>
 
         <Button
-          color='white'
+          buttonColor='white'
           textColor='#5DB075'
           theme={{ colors: { outline: '#5DB075' } }}
           style={styles.buttonCancel}
@@ -70,11 +76,13 @@ const styles = StyleSheet.create({
   sheetStyle: {
     backgroundColor: 'transparent',
   },
+
   container: {
+    //position: "absolute",
     flex: 1,
     backgroundColor: 'transparent',
     borderRadius: 10,
-    borderColor: '#fff',
+    borderColor: '#fff'
   },
   contentContainer: {
     flex: 1,
@@ -88,12 +96,18 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginHorizontal: 20,
   },
+
   buttonSave: {
     marginTop: 10,
     marginHorizontal: 20,
+
   },
+
   textBox: { alignSelf: 'center', fontSize: 25 },
+
   textSubtitulo: { alignSelf: 'center', fontSize: 15 }
 });
+
+
 
 export default NovoMembro;

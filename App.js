@@ -45,6 +45,10 @@ export default function App() {
         if (initializing) setInitializing(false);
     }
 
+
+    
+
+
     useEffect(() => {
         // const subscriber = auth().onUserChanged(onAuthStateChanged);
         console.log('Estou no useEffect');
@@ -52,6 +56,10 @@ export default function App() {
             if (user.emailVerified) {
                 console.log('email verificado: ' + user.emailVerified);
                 setIsEmailVerified(true);
+                console.log("Usuario retornado", user)
+                //Adicionar a verificação de adição do Consumidor
+               // console.log("User", user)
+              
             } else {
                 console.log('email verificado: ' + user.emailVerified);                        
             }
@@ -63,7 +71,7 @@ export default function App() {
         setIsEmailVerified(true)
         // return subscriber; // unsubscribe on unmount
     }, [user]);
-
+    
     
     if (initializing) return null;
 
@@ -71,6 +79,19 @@ export default function App() {
     return (
 
         < >
+            {/* Botão importado da biblioteca GoogleSignIn
+            <GoogleSigninButton               
+                size={GoogleSigninButton.Size.Wide}
+                color={GoogleSigninButton.Color.Light}
+                onPress={() => googleSignIn().then(() => console.log('Signed in with Google!'))}               
+            />
+            <LoginListener />
+            <Button title="Create User" onPress={emailSignUp} />
+            <Button title="Login User" onPress={emailSignIn} />
+            <Button title="Log Off" onPress={signOut} />
+            <Button title="Log Off" onPress={signOut} />
+            <Button title='Forgot Password' onPress={forgotPassword} /> */}
+            {/* <ReenvirEmailRecuperacao /> */}
 
             <NavigationContainer
                 theme={theme}
