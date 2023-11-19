@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { PaperProvider, Text, Button, List } from 'react-native-paper';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import NovaResidencia from './NovaResidencia';
 import { useNavigation } from '@react-navigation/native';
 
@@ -11,8 +10,10 @@ const GerenciarResidencias = () => {
 
   return (
     <PaperProvider style={styles.raiz}>
-      <GestureHandlerRootView style={modal ? styles.container_blur : styles.container}>
+      <View style={styles.container}>
+      <NovaResidencia setModal={setModal} modal={modal} />
 
+        {/*style={modal ? styles.container_blur : styles.container} */}
         {residencias.map((residencia, index) => (
           <List.Item
             key={index}
@@ -24,8 +25,8 @@ const GerenciarResidencias = () => {
         ))}
 
         <Button
-          color={modal ? '#2b5536' : '#5DB075'}
-          textColor={modal ? 'gray' : 'white'}
+          buttonColor={'#5DB075'}
+          textColor={'white'}
           style={styles.addButton}
           mode="contained"
           onPress={() => setModal(!modal)}
@@ -33,9 +34,8 @@ const GerenciarResidencias = () => {
           Adicionar nova residência
         </Button>
 
-        {modal && (<NovaResidencia setModal={setModal} modal={modal} />)}
 
-      </GestureHandlerRootView>
+      </View>
     </PaperProvider>
   );
 };
@@ -59,16 +59,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 24,
-    backgroundColor: 'transparent',
-  },
-  container_blur: {
-    flex: 1,
-    padding: 24,
-    backgroundColor: 'grey',
   },
   addButton: {
     position: 'absolute',
-    bottom: 10,
+    bottom:10,
     alignSelf: 'center',
     width: 300,
   },
@@ -77,6 +71,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 3,
     marginBottom: 0,
   },
+
 });
 
 export default GerenciarResidencias;

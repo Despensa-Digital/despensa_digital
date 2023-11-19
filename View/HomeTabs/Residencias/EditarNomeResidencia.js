@@ -1,31 +1,23 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Modal } from 'react-native';
 import { TextInput, Button, Text } from 'react-native-paper';
-import { BottomSheet } from '@gorhom/bottom-sheet';
 
 const EditarNomeResidencia = ({ setModal, modal }) => {
-  const bottomSheetRef = useRef();
-  const snapPoints = useMemo(() => ['25%', '45%'], []);
-
   const handleSheetChanges = useCallback((index) => {
-    console.log('handleSheetChanges', index);
-    if (index === -1) {
-      setModal(false);
-    }
+    setModal(false);
   }, []);
 
   const [nomeResidencia, setNomeResidencia] = useState('');
 
   return (
-    <BottomSheet
-      ref={bottomSheetRef}
-      index={modal ? 1 : -1}
-      snapPoints={snapPoints}
-      onChange={handleSheetChanges}
-      enablePanDownToClose={true}
+    <Modal
+      visible={modal}
+      transparent={true}
+      onRequestClose={() => setModal(false)}
     >
-      <View style={styles.contentContainer}>
-        <Text style={styles.textBox}>Editar nome da residência</Text>
+      <View style={styles.modalContainer}>
+        <View style={styles.modalContent}>
+          <Text style={styles.textBox}>Editar nome da residência</Text>
         <TextInput
           style={styles.textInput}
           mode='outlined'
@@ -35,7 +27,7 @@ const EditarNomeResidencia = ({ setModal, modal }) => {
           onChangeText={(nome) => setNomeResidencia(nome)}
         />
         <Button
-          color='#5DB075'
+          buttonColor='#5DB075'
           style={styles.buttonSave}
           mode='contained'
           onPress={() => setModal(false)}
@@ -44,15 +36,18 @@ const EditarNomeResidencia = ({ setModal, modal }) => {
         </Button>
 
         <Button
-          color='white'
+          buttonColor='white'
           style={styles.buttonCancel}
           mode='outlined'
           onPress={() => setModal(false)}
+          textColor='#5DB075'
+          theme={{ colors: { outline: '#5DB075' } }}
         >
           Cancelar
         </Button>
       </View>
-    </BottomSheet>
+      </View>
+    </Modal>
   );
 };
 
@@ -69,12 +64,23 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   buttonCancel: {
-    marginTop: 10,
-    marginHorizontal: 20,
+    alignSelf:'stretch'
   },
   buttonSave: {
-    marginTop: 10,
-    marginHorizontal: 20,
+    alignSelf:'stretch'
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+
+  },
+  modalContent: {
+    backgroundColor: '#fff',
+    padding: 60,
+    borderRadius: 10,
+    alignItems: 'center',
   },
   textBox: { alignSelf: 'center', fontSize: 25 },
   textSubtitulo: { alignSelf: 'center', fontSize: 15 },

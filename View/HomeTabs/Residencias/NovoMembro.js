@@ -1,31 +1,24 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Modal } from 'react-native';
 import { Text, Button, TextInput } from 'react-native-paper';
-import BottomSheet from '@gorhom/bottom-sheet';
 
 const NovoMembro = ({ setModal, modal }) => {
-  const bottomSheetRef = useRef();
-  const snapPoints = useMemo(() => ['25%', '65%'], []);
   const handleSheetChanges = useCallback((index) => {
-    console.log('handleSheetChanges', index);
-    if (index === -1) {
-      setModal(false);
-    }
+    setModal(false);
   }, []);
 
   const [nomeMembro, setNomeMembro] = useState("");
   const [emailMembro, setEmailMembro] = useState("");
 
   return (
-    <BottomSheet
-      ref={bottomSheetRef}
-      index={modal ? 1 : -1}
-      snapPoints={snapPoints}
-      onChange={handleSheetChanges}
-      enablePanDownToClose={true}
+    <Modal
+      visible={modal}
+      transparent={true}
+      onRequestClose={handleSheetChanges}
     >
-      <View style={styles.contentContainer}>
-        <Text style={styles.textBox}>Adicionar novo membro</Text>
+      <View style={styles.modalContainer}>
+        <View style={styles.modalContent}>
+          <Text style={styles.textBox}>Adicionar novo membro</Text>
         <Text style={styles.textSubtitulo}>Para adicionar um novo membro digite o e-mail e nome abaixo:</Text>
         <TextInput
           style={styles.textInput}
@@ -45,7 +38,7 @@ const NovoMembro = ({ setModal, modal }) => {
         />
 
         <Button
-          color='#5DB075'
+          buttonColor='#5DB075'
           style={styles.buttonSave}
           mode="contained"
           onPress={() => setModal(false)}>
@@ -53,7 +46,7 @@ const NovoMembro = ({ setModal, modal }) => {
         </Button>
 
         <Button
-          color='white'
+          colbuttonColoror='white'
           textColor='#5DB075'
           theme={{ colors: { outline: '#5DB075' } }}
           style={styles.buttonCancel}
@@ -62,7 +55,9 @@ const NovoMembro = ({ setModal, modal }) => {
           Cancelar
         </Button>
       </View>
-    </BottomSheet>
+      </View>
+
+    </Modal>
   );
 };
 
@@ -85,12 +80,23 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   buttonCancel: {
-    marginTop: 10,
-    marginHorizontal: 20,
+    alignSelf:'stretch'
   },
   buttonSave: {
-    marginTop: 10,
-    marginHorizontal: 20,
+    alignSelf:'stretch'
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+
+  },
+  modalContent: {
+    backgroundColor: '#fff',
+    padding: 60,
+    borderRadius: 10,
+    alignItems: 'center',
   },
   textBox: { alignSelf: 'center', fontSize: 25 },
   textSubtitulo: { alignSelf: 'center', fontSize: 15 }

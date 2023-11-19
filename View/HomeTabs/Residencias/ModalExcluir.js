@@ -20,17 +20,19 @@ const ModalExcluir = ({ setModal, modal }) => {
             Tem certeza de que deseja remover? Todas as suas informações serão perdidas.
           </Text>
           <Button
-            color="#ff0000"
+            buttonColor="#ff0000"
             style={styles.buttonModal}
             mode="contained"
             onPress={() => setModal(false)}>
             Remover
           </Button>
           <Button
-            color="#5DB075"
+            buttonColor="white"
             style={styles.buttonModal}
             mode="outlined"
-            onPress={() => setModal(false)}>
+            onPress={() => setModal(false)}
+            textColor='#5DB075'
+            theme={{ colors: { outline: '#5DB075' } }}>
             Cancelar
           </Button>
         </View>

@@ -1,38 +1,27 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Modal } from 'react-native';
 import { TextInput, Button, Text } from 'react-native-paper';
-import { BottomSheet } from '@gorhom/bottom-sheet';
 import ModalExcluir from './ModalExcluir';
 
 const EditarMembro = ({ setModal, modal }) => {
-  const bottomSheetRef = useRef();
-  const snapPoints = useMemo(() => ['25%', '70%'], []);
   
-  const handleSheetChanges = useCallback((index) => {
-    console.log('handleSheetChanges', index);
-    if (index === -1) {
-      setModal(false);
-    }
-  }, []);
-
   const [nomeMembro, setNomeMembro] = useState('');
   const [modalConfirmarExclusaoMembro, setModalConfirmarExclusaoMembro] = useState(false);
 
   return (
-    <BottomSheet
-      ref={bottomSheetRef}
-      index={modal ? 1 : -1}
-      snapPoints={snapPoints}
-      onChange={handleSheetChanges}
-      enablePanDownToClose={true}
+    <Modal
+      visible={modal}
+      transparent={true}
+      onRequestClose={() => setModal(false)}
     >
+      <View style={styles.modalContainer}>
       {modalConfirmarExclusaoMembro && (
         <ModalExcluir setModal={setModalConfirmarExclusaoMembro} modal={modalConfirmarExclusaoMembro} />
       )}
 
-      <View style={styles.contentContainer}>
+        <View style={styles.modalContent}>
         <Button
-          color='red'
+          buttonColor='red'
           style={styles.buttonRemover}
           mode='contained'
           onPress={() => setModalConfirmarExclusaoMembro(true)}
@@ -49,7 +38,7 @@ const EditarMembro = ({ setModal, modal }) => {
           onChangeText={(text) => setNomeMembro(text)}
         />
         <Button
-          color='#5DB075'
+          buttonColor='#5DB075'
           style={styles.buttonSave}
           mode='contained'
           onPress={() => setModal(false)}
@@ -58,15 +47,19 @@ const EditarMembro = ({ setModal, modal }) => {
         </Button>
 
         <Button
-          color='#5DB075'
+          buttonColor='white'
           style={styles.buttonCancel}
           mode='outlined'
           onPress={() => setModal(false)}
+          textColor='#5DB075'
+          theme={{ colors: { outline: '#5DB075' } }}
         >
           Cancelar
         </Button>
       </View>
-    </BottomSheet>
+      </View>
+
+    </Modal>
   );
 };
 
@@ -83,12 +76,23 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   buttonCancel: {
-    marginTop: 10,
-    marginHorizontal: 20,
+    alignSelf:'stretch'
   },
   buttonSave: {
-    marginTop: 50,
-    marginHorizontal: 20,
+    alignSelf:'stretch'
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+
+  },
+  modalContent: {
+    backgroundColor: '#fff',
+    padding: 60,
+    borderRadius: 10,
+    alignItems: 'center',
   },
   buttonRemover: {
     marginTop: 20,
