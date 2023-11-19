@@ -1,6 +1,8 @@
 {
   "expo": {
-    "plugins": ["@react-native-google-signin/google-signin"],
+    "plugins": [
+      "@react-native-google-signin/google-signin"
+    ],
     "name": "despensa_digital",
     "slug": "despensa_digital",
     "version": "1.0.0",
@@ -15,13 +17,15 @@
     ],
     "ios": {
       "googleServicesFile": "./GoogleService-Info.plist",
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "despensaDigital"
     },
     "android": {
       "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.anonymous.despensa_digital"
     }
   }
 }
