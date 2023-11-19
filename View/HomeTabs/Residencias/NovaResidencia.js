@@ -8,7 +8,7 @@ import { TextInput } from 'react-native-paper';
 
 const NovaResidencia = ({setModal, modal}) => {
     const bottomSheetRef = useRef();
-    const snapPoints = useMemo(() => ['25%', '45%'], []);
+    const snapPoints = useMemo(() => ['45%', '60%'], []);
     const handleSheetChanges = useCallback((index) => {
         console.log('handleSheetChanges', index);
         if (index === -1) {
@@ -24,10 +24,10 @@ const NovaResidencia = ({setModal, modal}) => {
     props => (
       <BottomSheetBackdrop
         {...props}
-        disappearsOnIndex={1}
-        appearsOnIndex={2}
-        opacity={1}
-        enableTouchThrough={false}
+       disappearsOnIndex={-1}
+        
+        
+       
       />
     ),
     []
@@ -38,11 +38,11 @@ const NovaResidencia = ({setModal, modal}) => {
               <BottomSheet
               style={{ flex: 1 }}
                 ref={bottomSheetRef}
-                index={(modal? 1: -1)}
+                index={(modal? 0: -1)}
                 snapPoints={snapPoints}
                 onChange={handleSheetChanges}
                 enablePanDownToClose={true}
-                backdropComponent={renderBackdrop}
+                backdropComponent={renderBackdrop}                    
                 >
                 <View style={styles.contentContainer}>
                   <Text style={styles.textBox}>Nova Residência</Text>
@@ -51,9 +51,9 @@ const NovaResidencia = ({setModal, modal}) => {
                         mode= 'outlined'
                         outlineColor= 'black'
                         label="Nome da residência"
-                        value={nomeResidencia}
+                        value={nomeResidencia}                       
                         onChangeText={nomeResidencia => setNomeResidencia(nomeResidencia)}
-                      />
+                      />                      
 
                   <Button
                     buttonColor='#5DB075'
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'transparent',
         borderRadius: 10,
-        borderColor: '#fff',
+        borderColor: '#fff', 
     },
   contentContainer: {
 
