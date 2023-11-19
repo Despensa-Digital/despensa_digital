@@ -2,26 +2,27 @@ import { useState, useEffect } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native'
 import { Button, IconButton, Modal, PaperProvider, Portal, Switch, Text, TextInput } from 'react-native-paper';
 
-//Adicionar props nos estados
-const EditarProduto = ({ navigation }) => {
-
-    const [dataValidade, setDataValidade] = useState('');
+//Adicionar props nos estados [adicionado props mockados]
+const EditarProduto = ({route, navigation}) => {
+    const {product} = route.params;
+    
+    const [codigoDeBarras, setCodigoDeBarras] = useState(product.codigoDeBarras);
+    const [nomeProduto, setNomeProduto] = useState(product.name);
+    const [marca, setMarca] = useState(product.marca);
+    const [dataValidade, setDataValidade] = useState(product.expire);
     const [notificarVencimento, setNotificarVencimento] = useState(false);
     const [dataNotificacao, setDataNotificacao] = useState('');
     const [notificarVencimentoView, setNotificarVencimentoView] = useState('none');
     const [notificarVencimentoStyle, setNotificarVencimentoStyle] = useState(styles.notificarVencimentoEnabled);
     const [preco, setPreco] = useState('');
     const [localCompra, setLocalCompra] = useState('');
-    const [subButton, setSubButton]= useState(false);
-    const [codigoDeBarras, setCodigoDeBarras] = useState(product.codigoDeBarras);
-    const [nomeProduto, setNomeProduto] = useState(product.name);
-    const [marca, setMarca] = useState(product.marca);
     const [categoria, setCategoria] = useState(product.categoria);
     const [unidadeMedida, setUnidadeMedida] = useState(product.unidadeMedida);
     const [peso, setPeso] = useState(product.peso);
     const [quantidade, setQuantidade] = useState(product.quantidade);
     const [disableButton, setDisableButton]= useState(false);
     
+    //este metodo faz parte do mock
     const editarProduto = () => {
         const produtoEditado = {
             produtoEditado: true,
@@ -29,12 +30,14 @@ const EditarProduto = ({ navigation }) => {
             codigoDeBarras: codigoDeBarras,
             nomeProduto: nomeProduto,
             marca: marca,
+            dataValidade: dataValidade,
             categoria: categoria,
             unidadeMedida: unidadeMedida,
             peso: peso,
             quantidade: quantidade
         }
 
+        //manda o objeto produtoEditado para o array de mocks na Despensa.js
         navigation.navigate({
             name: 'Despensa',
             params: produtoEditado,
@@ -56,9 +59,9 @@ const EditarProduto = ({ navigation }) => {
     useEffect(() => {
         if(quantidade <= 0) {
             setQuantidade('0');
-            setSubButton(true);
+            setDisableButton(true);
         } else {
-            setSubButton(false);
+            setDisableButton(false);
         }
     }, [quantidade])
 
@@ -78,7 +81,7 @@ const EditarProduto = ({ navigation }) => {
             setNotificarVencimentoStyle(styles.notificarVencimentoEnabled);
         }
 
-    }, [notificarVencimento])
+    }, [notificarVencimento])   
     return (
         <PaperProvider>
             <ScrollView style={{ backgroundColor: '#fff' }}>
@@ -109,7 +112,7 @@ const EditarProduto = ({ navigation }) => {
                     mode="outlined"
                     error={false}
                     value={codigoDeBarras}
-                    onChangeText={codigoDeBarras => setCodigoDeBarras(CodigoDebarras)}
+                    onChangeText={codigoDeBarras => setCodigoDeBarras(codigoDeBarras)}
                 />
                 <TextInput
                     style={{ marginTop: 10, marginHorizontal: 20 }}
@@ -127,6 +130,60 @@ const EditarProduto = ({ navigation }) => {
                     error={false}
                     value={marca}
                     onChangeText={marca => setMarca(marca)}
+                />
+
+                <TextInput
+                    style={{ marginTop: 10, marginHorizontal: 20 }}
+                    label="Data de validade"
+                    mode="outlined"
+                    error={false}
+                    value={dataValidade}
+                    onChangeText={dataValidade => setDataValidade(dataValidade)}
+                />
+
+                <View
+                    style={notificarVencimentoStyle}
+                >
+                    <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginStart: 15, marginEnd: 10, marginVertical: 10 }} >
+                        <Text variant='labelLarge'>Notificar vencimento do produto</Text>
+                        <Switch value={notificarVencimento} onValueChange={notificarVencimento => setNotificarVencimento(notificarVencimento)} />
+                    </View>
+                    <View style={{ display: `${notificarVencimentoView}`, flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', marginStart: 15, marginVertical: 10 }}>
+                        <TextInput
+                            keyboardType='numeric'
+                            maxLength={2}
+                            textAlign='center'
+                            style={{ marginEnd: 10, width: 70, textAlign: 'center' }}
+                            label="Dias"
+                            mode="outlined"
+                            error={false}
+                            value={dataNotificacao}
+                            onChangeText={dataNotificacao => setDataNotificacao(dataNotificacao)}
+                        />
+                        <Text variant='bodyMedium'>antes da validade.</Text>
+                    </View>
+
+                </View>
+
+
+                <TextInput
+                    style={{ marginTop: 10, marginHorizontal: 20 }}
+                    keyboardType='numeric'
+                    label="Preço"
+                    mode="outlined"
+                    error={false}
+                    value={preco}
+                    onChangeText={preco => setPreco(preco)}
+                />
+
+                <TextInput
+                    style={{ marginTop: 10, marginHorizontal: 20 }}
+                    keyboardType='numeric'
+                    label="Local da compra"
+                    mode="outlined"
+                    error={false}
+                    value={localCompra}
+                    onChangeText={localCompra => setLocalCompra(localCompra)}
                 />
 
                 <TextInput
@@ -173,7 +230,7 @@ const EditarProduto = ({ navigation }) => {
                         mode='outlined'
                         iconColor='red'                                      
                         style={{ marginEnd: 10, marginTop: 10, borderColor: 'red' }}
-                        disabled={subButton}
+                        disabled={disableButton}
                         onPress={menosQuantidade}
                     />
                     <TextInput
@@ -195,7 +252,7 @@ const EditarProduto = ({ navigation }) => {
                         mode='outlined'
                         iconColor='green'
                         style={{ marginTop: 10, borderColor: 'green' }}                       
-                        onPress={(maisQuantidade)}
+                        onPress={maisQuantidade}
                     />
                 </View>
 
@@ -203,8 +260,8 @@ const EditarProduto = ({ navigation }) => {
                     buttonColor='#5DB075'
                     style={{ marginTop: 20, marginHorizontal: 20 }}
                     mode="contained"
-                    onPress={() => console.log('pressed')}>
-                    Adicionar
+                    onPress={editarProduto}>
+                    Salvar
                 </Button>
 
                 <Button

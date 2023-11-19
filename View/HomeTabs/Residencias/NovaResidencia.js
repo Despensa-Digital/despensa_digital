@@ -7,21 +7,6 @@ import { postResidencia } from '../../../Controller/Residencia/residenciaControl
 const NovaResidencia = ({ setModal, modal }) => {
   // variables
   const [nomeResidencia, setNomeResidencia] = useState("");
-
-  // renders
-  const renderBackdrop = useCallback(
-    props => (
-      <BottomSheetBackdrop
-        {...props}
-        disappearsOnIndex={1}
-        appearsOnIndex={2}
-        opacity={1}
-        enableTouchThrough={false}
-      />
-    ),
-    []
-  );
-
   const adicionarResidencia = () =>{
     postResidencia(nomeResidencia)
     .then(
@@ -34,7 +19,7 @@ const NovaResidencia = ({ setModal, modal }) => {
     <Modal
       visible={modal}
       transparent={true}
-      onRequestClose={() => setModal(false)}
+      onRequestClose={() => setModal(falseZ)}
     >
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>

@@ -28,10 +28,25 @@ import BottomTabs from './View/HomeTabs/BottomTabs';
 import { LogBox } from 'react-native';
 LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
 LogBox.ignoreAllLogs();//Ignore all log notifications
+import notifee, { EventType } from '@notifee/react-native';
 
 
 const Stack = createNativeStackNavigator();
 export default function App() {
+
+    useEffect(() => {
+        return notifee.onForegroundEvent(({ type, detail }) => {
+            switch (type) {
+                case EventType.DISMISSED:
+                    console.log('User dismissed notification', detail.notification);
+                    break;
+                case EventType.PRESS:
+                    console.log('User pressed notification', detail.notification);
+                    break;
+            }
+        });
+    }, []);
+
 
     //Firebase
     // Set an initializing state whilst Firebase connects
@@ -46,7 +61,7 @@ export default function App() {
         text: '#000',
           secondaryContainer: 'transparent', // Use transparent to disable the little highlighting oval
         },
-      };
+    };
 
     // Handle user state changes
     function onAuthStateChanged(user) {
@@ -69,7 +84,7 @@ export default function App() {
                 console.log("Usuario retornado", user)
               
             } else {
-                console.log('email verificado: ' + user.emailVerified);                        
+                console.log('email verificado: ' + user.emailVerified);
             }
 
         } else {
@@ -79,8 +94,8 @@ export default function App() {
 
         return subscriber; // unsubscribe on unmount
     }, [user]);
-    
-    
+
+
     if (initializing) return null;
 
 
@@ -123,17 +138,17 @@ export default function App() {
                                 options={{
                                     headerShown: false
                                 }}
-                                />
+                            />
                         </>
                     ) : (
                         <>
                             <Stack.Screen
-                                name="Login"                               
+                                name="Login"
                                 options={{
                                     title: 'Login',
                                     headerRight: () => <AppBarButton />
                                 }}>
-                                {(props) => <Login {...props} user={user}/>}
+                                {(props) => <Login {...props} user={user} />}
                             </Stack.Screen>
                             <Stack.Screen
                                 name="RecuperarSenha"
@@ -142,21 +157,21 @@ export default function App() {
                                     title: 'Recuperar Senha'
                                 }}
                             />
-                            <Stack.Screen 
-                                name="ReenviarEmailRecuperacao" 
-                                component={ReenvirEmailRecuperacao} 
+                            <Stack.Screen
+                                name="ReenviarEmailRecuperacao"
+                                component={ReenvirEmailRecuperacao}
                                 options={{
                                     title: 'Reenviar E-mail'
                                 }}
                             />
-                            
+
                             {/* <Stack.Screen
                                 name="Cadastro"
                                 component={Cadastro}
                                 options={{
                                     title: 'Cadastrar'
                                 }}/> */}
-                            
+
                             <Stack.Screen
                                 name="CadastroEmail"
                                 component={CadastroEmail}

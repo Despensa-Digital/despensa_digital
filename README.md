@@ -24,5 +24,9 @@ Projeto Despensa Digital
 
 - Problena build do EAS
     > No matching client found for package name 'com.anonymous.despensa_digital'
+    . troquei tudo por com.despensadigital
+
+- Rebuildar APP
+    npx expo prebuild --clean --platform android
 
 ## Como executar (expo)
