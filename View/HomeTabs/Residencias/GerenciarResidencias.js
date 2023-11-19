@@ -1,9 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { PaperProvider, Text, Button, List } from 'react-native-paper';
-import NovaResidencia from './NovaResidencia';
-import { useNavigation } from '@react-navigation/native';
-
+import { PaperProvider, Button, List } from 'react-native-paper';
 import NovaResidencia from './NovaResidencia';
 import { useNavigation } from '@react-navigation/native';
 

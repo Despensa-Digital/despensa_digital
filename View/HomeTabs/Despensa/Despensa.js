@@ -3,7 +3,7 @@ import { View, FlatList, ScrollView, StyleSheet } from 'react-native'
 import { Appbar, Avatar, Button, Divider, FAB, PaperProvider, Searchbar, Text, TextInput } from 'react-native-paper';
 import CategoryAvatar from '../Componentes/CategoryAvatar';
 import ListComponent from '../Componentes/ListComponent';
-import { getProdutos } from '../../../Controller/Produtos/produtosController';
+// import { getProdutos } from '../../../Controller/Produtos/produtosController';
 
 const Despensa = ({ navigation }) => {
 
@@ -31,7 +31,7 @@ const Despensa = ({ navigation }) => {
 
 
     useEffect(()=>{
-        getProdutos()
+        //getProdutos()
             // .then((doc)=>{
             //     console.log(doc)
             // })
