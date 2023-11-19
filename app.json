@@ -22,7 +22,7 @@
     "ios": {
       "googleServicesFile": "./GoogleService-Info.plist",
       "supportsTablet": true,
-      "bundleIdentifier": "despensaDigital"
+      "bundleIdentifier": "despensadigital"
     },
     "android": {
       "googleServicesFile": "./google-services.json",
