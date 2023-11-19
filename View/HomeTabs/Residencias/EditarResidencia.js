@@ -1,11 +1,5 @@
-<<<<<<< HEAD
-import React, { useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
-=======
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
->>>>>>> 10788763862e2067daddbb780cbee5230e371f94
 import { PaperProvider, Text, Button, List } from 'react-native-paper';
 
 import NovoMembro from './NovoMembro';

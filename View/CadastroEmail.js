@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Appbar, Button, Divider, PaperProvider, Text, TextInput, TouchableRipple, HelperText } from 'react-native-paper';
+import { GoogleSigninButton } from '@react-native-google-signin/google-signin';
 import { View } from 'react-native';
 
 //import do Controller
@@ -34,10 +35,10 @@ const CadastroEmail = ({navigation}) => {
         cadastrarEmail(nome, email, password);
         navigation.popToTop();
     }
-      
+
     return(
         <PaperProvider>
-            
+
 
             <TextInput
                 style={{ marginTop: 20, marginHorizontal: 20 }}
@@ -47,7 +48,7 @@ const CadastroEmail = ({navigation}) => {
                 value={nome}
                 onChangeText={nome => setNome(nome)}
             />
-            
+
             {/* <TextInput
                 style={{ marginTop: 20, marginHorizontal: 20 }}
                 label="Celular"
@@ -59,7 +60,7 @@ const CadastroEmail = ({navigation}) => {
             <HelperText
                     style={{ marginVertical: 0, marginHorizontal: 20 }}
             >Ex.: (12) 91234-5678</HelperText> */}
-            
+
             <TextInput
                 style={{ marginTop: 20, marginHorizontal: 20 }}
                 label="E-mail"
@@ -109,8 +110,10 @@ const CadastroEmail = ({navigation}) => {
             </Button>
 
            </PaperProvider>
-        
+
     )
 }
+
+
 
 export default CadastroEmail;
