@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native'
 import { Button, IconButton, Modal, PaperProvider, Portal, Switch, Text, TextInput } from 'react-native-paper';
 
-const AdicionarProduto = ({ navigation }) => {
+import scheduleNotificationControl from '../../../Controller/Despensa/scheduleNotificationControl';
+
+const AdicionarProduto = ({ navigation }, lastProductId) => {
 
     const [codigoDeBarras, setCodigoDeBarras] = useState('');
     const [nomeProduto, setNomeProduto] = useState('');
@@ -18,25 +20,54 @@ const AdicionarProduto = ({ navigation }) => {
     const [unidadeMedida, setUnidadeMedida] = useState('');
     const [peso, setPeso] = useState('');
     const [quantidade, setQuantidade] = useState('0');
-    const [subButton, setSubButton]= useState(false);
+    const [disableButton, setDisableButton] = useState(false);
 
-    const maisQuantidade = () =>{
-       const sum = parseInt(quantidade) + 1;
-       setQuantidade(sum.toString()); 
+    //dado mockado
+    const salvarProduto = () => {
+        const novoProduto = {
+            produtoEditado: false,
+            key: lastProductId,
+            codigoDeBarras: codigoDeBarras,
+            name: nomeProduto,
+            marca: marca,
+            image: require('../../../Assets/Products/Rice.png'),
+            expire: dataValidade,
+            categoria: categoria,
+            unidadeMedida: unidadeMedida,
+            peso: peso,
+            quantidade: quantidade
+        }
+
+        //Cria notificacao
+        //Adicionar id como parametro
+        if (notificarVencimento) {
+            scheduleNotificationControl(dataValidade, dataNotificacao, nomeProduto, codigoDeBarras);
+        }
+
+        navigation.navigate({
+            name: 'Despensa',
+            params: novoProduto,
+            merge: true
+        })
     }
-    
-    const menosQuantidade = () =>{
+
+    const maisQuantidade = () => {
+        const sum = parseInt(quantidade) + 1;
+        setQuantidade(sum.toString());
+    }
+
+    const menosQuantidade = () => {
         const sub = parseInt(quantidade) - 1;
-        setQuantidade(sub.toString()); 
+        setQuantidade(sub.toString());
     }
-    
-   
+
+
     useEffect(() => {
-        if(quantidade <= 0) {
+        if (quantidade <= 0) {
             setQuantidade('0');
-            setSubButton(true);
+            setDisableButton(true);
         } else {
-            setSubButton(false);
+            setDisableButton(false);
         }
     }, [quantidade])
 
@@ -203,9 +234,9 @@ const AdicionarProduto = ({ navigation }) => {
                         icon="minus"
                         size={24}
                         mode='outlined'
-                        iconColor='red'                                      
+                        iconColor='red'
                         style={{ marginEnd: 10, marginTop: 10, borderColor: 'red' }}
-                        disabled={subButton}
+                        disabled={disableButton}
                         onPress={menosQuantidade}
                     />
                     <TextInput
@@ -226,7 +257,7 @@ const AdicionarProduto = ({ navigation }) => {
                         size={24}
                         mode='outlined'
                         iconColor='green'
-                        style={{ marginTop: 10, borderColor: 'green' }}                       
+                        style={{ marginTop: 10, borderColor: 'green' }}
                         onPress={(maisQuantidade)}
                     />
                 </View>
@@ -235,7 +266,7 @@ const AdicionarProduto = ({ navigation }) => {
                     buttonColor='#5DB075'
                     style={{ marginTop: 20, marginHorizontal: 20 }}
                     mode="contained"
-                    onPress={() => console.log('pressed')}>
+                    onPress={salvarProduto}>
                     Adicionar
                 </Button>
 
@@ -251,7 +282,7 @@ const AdicionarProduto = ({ navigation }) => {
 
             <Portal>
                 <Modal visible={visible} dismissable={false} dismissableBackButton={false} contentContainerStyle={styles.containerStyle}>
-                    <Text variant='titleMedium' style={{textAlign:'center'}}>Você tem certeza que quer sair sem adicionar o produto?</Text>
+                    <Text variant='titleMedium' style={{ textAlign: 'center' }}>Você tem certeza que quer sair sem adicionar o produto?</Text>
 
                     <Button
                         textColor='#000'
@@ -262,14 +293,14 @@ const AdicionarProduto = ({ navigation }) => {
                         Sair sem adicionar
                     </Button>
 
-                <Button
-                    textColor='#5DB075'
-                    buttonColor='#FFFFFF'
-                    style={{ marginTop: 20, marginBottom: 20, marginHorizontal: 20, borderColor: '#5DB075' }}
-                    mode="outlined"
-                    onPress={hideModal}>
-                    Cancelar
-                </Button>
+                    <Button
+                        textColor='#5DB075'
+                        buttonColor='#FFFFFF'
+                        style={{ marginTop: 20, marginBottom: 20, marginHorizontal: 20, borderColor: '#5DB075' }}
+                        mode="outlined"
+                        onPress={hideModal}>
+                        Cancelar
+                    </Button>
                 </Modal>
             </Portal>
 
