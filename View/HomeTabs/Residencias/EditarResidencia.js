@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { PaperProvider, Text, Button, List } from 'react-native-paper';
+import { PaperProvider, Text, Button, List, Divider } from 'react-native-paper';
 
 import NovoMembro from './NovoMembro';
 import EditarNomeResidencia from './EditarNomeResidencia';
@@ -21,7 +21,7 @@ const EditarResidencia = ({route,navigation}) => {
     const [modalConfirmarExclusaoResidencia, setModalConfirmarExclusaoResidencia] = useState(false);
 
     useEffect(()=>{
-        editarResidencia(residenciaId, setResidencia);
+      editarResidencia(residenciaId, setResidencia);
       return editarResidencia()
     },[])
 
@@ -41,6 +41,7 @@ const EditarResidencia = ({route,navigation}) => {
       setModalMembro(valor)
     }
     const abrirFecharModalResidencia = (valor) => {
+      console.log(residencia)
       if (modalMembro == true || modalEditarMembro == true){
         return
       }
@@ -57,18 +58,13 @@ const EditarResidencia = ({route,navigation}) => {
   return (
     <PaperProvider style={styles.raiz}>
       <View style={modalMembro || modalResidencia || modalEditarMembro || modalConfirmarExclusaoResidencia ? styles.container_blur : styles.container}>
-
-        <Text style={styles.tituloEditar}>Editar</Text>
-        <List.Item
-          title="Primeira residência"
-          onPress={() => abrirFecharModalResidencia(!modalResidencia)}
-          style={styles.listItem}
-        />
-        <List.Item
-          title="Segunda residencia"
-          onPress={() => abrirFecharModalResidencia(!modalResidencia)}
-          style={styles.listItem}
-        />
+      <List.Item
+              key={"nome-edit-residencia"}
+              title={residencia.nome}
+              onPress={() => abrirFecharModalResidencia(!modalResidencia)}
+              style={styles.listItem}
+              right={props => <List.Icon {...props} icon="pencil" />}
+              />
 
         <Text style={styles.tituloMembro}>Membro</Text>
         <Button
@@ -94,16 +90,15 @@ const EditarResidencia = ({route,navigation}) => {
               ))}
        */}
 
-        <List.Item
-          title="Primeiro membro"
-          onPress={() => abrirFecharModalEditarMembro(!modalMembro)}
-          style={styles.listItem}
-        />
-        <List.Item
-          title="Segundo membro"
-          onPress={() => abrirFecharModalEditarMembro(!modalMembro)}
-          style={styles.listItem}
-        />
+        {residencia.membros.map((membro, index) => (
+          <List.Item
+            key={index}
+            title={membro.nome}
+            style={styles.listItem}
+
+            onPress={() => abrirFecharModalEditarMembro(!modalMembro)}
+            />
+        ))}
 
         <Button
           textColor={modalMembro || modalResidencia || modalEditarMembro || modalConfirmarExclusaoResidencia ? 'gray' : 'white'}
@@ -141,6 +136,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 3,
     marginBottom: 0,
   },
+
   container: {
     flex: 1,
     padding: 24,
@@ -167,7 +163,7 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto"
   },
   tituloMembro: {
-    marginTop: 10,
+    marginTop: 50,
     marginHorizontal: 15,
     alignSelf: 'flex-start',
     fontSize: 20,

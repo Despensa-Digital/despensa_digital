@@ -104,7 +104,8 @@ const buscarIdResidenciaAtual = async ()=>{
 const adicionarResidencia = async (nome)=>{
     const id = await consumidor.buscarConsumidorLogado();
     const  userAtual = await consumidor.buscarConsumidor(id)
-  
+    console.log("id", id)
+    console.log("userAtual", userAtual)
     DB_RESIDENCIA.add({
         nome:nome,
         current_residencia: false,

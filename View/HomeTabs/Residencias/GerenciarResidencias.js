@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { PaperProvider, Button, List } from 'react-native-paper';
+import { StyleSheet, View, ScrollView } from 'react-native';
+import { PaperProvider, Button, List, IconButton } from 'react-native-paper';
 import NovaResidencia from './NovaResidencia';
 import { useNavigation } from '@react-navigation/native';
 
@@ -19,7 +19,7 @@ const GerenciarResidencias = () => {
       getResidencias()
           .then(dados => {
               setResidencias(dados)
-              
+              console.log(dados)
           })
     
     }
@@ -28,17 +28,18 @@ const GerenciarResidencias = () => {
     <PaperProvider style={styles.raiz}>
       <View style={styles.container}>
       <NovaResidencia setModal={setModal} modal={modal} />
-
-        {/*style={modal ? styles.container_blur : styles.container} */}
-        {residencias.map((residencia, index) => (
-          <List.Item
-            key={index}
-            title={residencia}
-            onPress={() => navigation.navigate('EditarResidencia', {residenciaId: residencia.id})}
-            style={styles.listItem}
-            right={props => <List.Icon {...props} icon="greenhouse" />}
-          />
-        ))}
+      <ScrollView  showsVerticalScrollIndicator={false}>
+          {residencias.map((residencia, index) => (
+            <List.Item
+              key={index}
+              title={residencia.data.nome}
+              onPress={() => navigation.navigate('EditarResidencia', {residenciaId: residencia.id})}
+              style={styles.listItem}
+              left={props => <List.Icon {...props} icon="greenhouse" />}
+              right={props => <IconButton {...props} icon="dots-vertical"  />}
+              />
+          ))}
+        </ScrollView>
 
         <Button
           buttonColor={'#5DB075'}

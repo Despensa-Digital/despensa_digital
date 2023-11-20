@@ -47,7 +47,7 @@ const NovaResidencia = ({ setModal, modal }) => {
           theme={{ colors: { outline: '#5DB075' } }}
           style={styles.buttonCancel}
           mode="outlined"
-          onPress={() => adicionarResidencia()}>
+          onPress={() => setModal(false)}>
           Cancelar
         </Button>
        </View>
