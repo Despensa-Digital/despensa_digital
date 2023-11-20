@@ -77,11 +77,13 @@ const styles = StyleSheet.create({
     alignSelf:'stretch'
   },
   buttonCancel: {
-    alignSelf:'stretch'
+    alignSelf:'stretch',
+    marginTop: 20,
   },
 
   buttonSave: {
-    alignSelf:'stretch'
+    alignSelf:'stretch',
+    marginTop: 20,
   },
   textBox: { alignSelf: 'center', fontSize: 25 },
   modalContainer: {
@@ -93,9 +95,10 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     backgroundColor: '#fff',
-    padding: 60,
+    padding: 50,
     borderRadius: 10,
     alignItems: 'center',
+    alignSelf:'stretch',
   },
 });
 

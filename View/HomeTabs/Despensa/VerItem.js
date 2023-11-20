@@ -1,22 +1,20 @@
 import { useState, useEffect } from 'react';
-import { View, FlatList, ScrollView, StyleSheet } from 'react-native'
-import { Appbar, Avatar, Button, Divider, FAB, PaperProvider, Searchbar, Text, TextInput } from 'react-native-paper';
+import { View, FlatList, ScrollView, StyleSheet, Image } from 'react-native'
+import { FAB, PaperProvider, Text, List} from 'react-native-paper';
 import CategoryAvatar from '../Componentes/CategoryAvatar';
-import ListComponent from '../Componentes/ListComponent';
+import ListProduct from '../Componentes/ListProduct';
 
-const Despensa = ({ route, navigation }) => {
+const VerItem = ({ route, navigation }) => {
 
     const [searchQuery, setSearchQuery] = useState('');
 
     const onChangeSearch = query => setSearchQuery(query);
 
-    const [products, setProducts] = useState([
-        { key: 1, codigoDeBarras: '1234567891234', name: 'Cerveja', marca: 'Brahma', image: require('../../../Assets/Products/beer.png'), expire: '30/09/2023', quantidade: '6', categoria: 'Geladeira', peso: '350', unidadeMedida: 'mL'   },
-        { key: 2, codigoDeBarras: '1234567891234', name: 'Café', marca: 'Pilão', image: require('../../../Assets/Products/Coffee.png'), expire: '30/09/2023', quantidade: '1', categoria: 'Armário da Cozinha', peso: '500', unidadeMedida: 'g' },
-        { key: 3, codigoDeBarras: '1234567891234', name: 'Coca-Cola', marca: 'Coca-Cola', image: require('../../../Assets/Products/Cola.png'), expire: '30/09/2023', quantidade: '1', categoria: 'Geladeira', peso: '200', unidadeMedida: 'mL'  },
-        { key: 4, codigoDeBarras: '1234567891234', name: 'Suco de Laranja', marca: 'Xandô', image: require('../../../Assets/Products/Juice.png'), expire: '30/09/2023', quantidade: '1', categoria: 'Geladeira', peso: '1', unidadeMedida: 'L'  },
-        { key: 5, codigoDeBarras: '1234567891234', name: 'Leite', marca: 'Parmalat', image: require('../../../Assets/Products/Milk.png'), expire: '30/09/2023', quantidade: '1', categoria: 'Geladeira', peso: '1', unidadeMedida: 'L'  },
-        { key: 6, codigoDeBarras: '1234567891234', name: 'Arroz', marca: 'Camil', image: require('../../../Assets/Products/Rice.png'), expire: '30/09/2023', quantidade: '1', categoria: 'Armário da Cozinha', peso: '1', unidadeMedida: 'kg'  },
+    const [product, setProduct] = useState(
+        { key: 1, codigoDeBarras: '1234567891234', name: 'Cerveja', expire: '30/09/2023', localCompra: 'Mercantil', preco: 'R$4,00' },
+    )
+        const [products, setProducts] = useState([
+        { key: 1, codigoDeBarras: '1234567891234', name: 'Cerveja', expire: '30/09/2023', localCompra: 'Mercantil', preco: 'R$4,00' },
     ])
 
    const [lastProductId, setLastProductId] = useState(7);
@@ -55,6 +53,11 @@ const Despensa = ({ route, navigation }) => {
         <PaperProvider>
             <ScrollView style={{ backgroundColor: '#fff' }}>
 
+            <List.Item
+                    description={'Produto: ${product.name}\n Código de barra: ${product.codigoDeBarra}'}
+                    left={props => <Image size={70} source= {require('../../../Assets/Products/Rice.png')}/>} 
+                    /*right={props => <Text>Produto: {product.name}{'\n'}Código de barra:{product.codigoDeBarra}</Text>}*/
+                />
                 <Text
                     variant="titleLarge"
                     style={{
@@ -64,7 +67,7 @@ const Despensa = ({ route, navigation }) => {
                     Unidades 
                 </Text>
                 <View>
-                    <ListComponent itens={products} />
+                    <ListProduct itens={products} />
                 </View>
 
 
@@ -72,7 +75,7 @@ const Despensa = ({ route, navigation }) => {
             <FAB
                 icon="plus"
                 style={styles.fab}
-                onPress={() => navigation.navigate('AdicionarProduto',lastProductId)}
+                onPress={() => navigation.navigate('AdicionarExistente',lastProductId)}
             />           
         </PaperProvider>
 
@@ -89,4 +92,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default Despensa;
+export default VerItem;

@@ -22,7 +22,7 @@ const EditarNomeResidencia = ({residenciaId,editarNomeResidencia,setModal, modal
     >
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
-          <Text style={styles.textBox}>Editar nome da residência</Text>
+          <Text style={styles.textBox}>Editar nome</Text>
         <TextInput
           style={styles.textInput}
           mode='outlined'
@@ -67,18 +67,22 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     marginHorizontal: 10,
     marginTop: 10,
+    alignSelf:'stretch',
   },
   buttonCancel: {
-    alignSelf:'stretch'
+    alignSelf:'stretch',
+    marginTop: 20,
   },
   buttonSave: {
-    alignSelf:'stretch'
+    alignSelf:'stretch',
+    marginTop: 20,
   },
   modalContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    alignSelf:'stretch',
 
   },
   modalContent: {
@@ -86,9 +90,10 @@ const styles = StyleSheet.create({
     padding: 60,
     borderRadius: 10,
     alignItems: 'center',
+    alignSelf:'stretch',
   },
   textBox: { alignSelf: 'center', fontSize: 25 },
-  textSubtitulo: { alignSelf: 'center', fontSize: 15 },
+  textSubtitulo: { alignSelf: 'stretch', fontSize: 15 },
 });
 
 export default EditarNomeResidencia;

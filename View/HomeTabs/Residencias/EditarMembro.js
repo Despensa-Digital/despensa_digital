@@ -49,7 +49,7 @@ const EditarMembro = ({ setModal, modal }) => {
           mode='contained'
           onPress={() => setModalConfirmarExclusaoMembro(true)}
         >
-          Remover membro da residência
+          Remover membro 
         </Button>
 
         <Text style={styles.textBox}>Editar nome do membro</Text>
@@ -98,12 +98,16 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     marginHorizontal: 10,
     marginTop: 20,
+    alignSelf:'stretch'
   },
   buttonCancel: {
-    alignSelf:'stretch'
+    alignSelf:'stretch',
+    marginTop: 20,
+
   },
   buttonSave: {
-    alignSelf:'stretch'
+    alignSelf:'stretch',
+    marginTop: 20,
   },
   modalContainer: {
     flex: 1,
@@ -117,11 +121,13 @@ const styles = StyleSheet.create({
     padding: 60,
     borderRadius: 10,
     alignItems: 'center',
+    alignSelf:'stretch',
   },
   buttonRemover: {
     marginTop: 20,
-    marginHorizontal: 20,
-    marginVertical: 20,
+    marginHorizontal: 5,
+    marginVertical: 5,
+    alignSelf:'stretch',
   },
   textBox: { alignSelf: 'center', fontSize: 25, marginTop: 20 },
 });

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native'
 import { Button, IconButton, Modal, PaperProvider, Portal, Switch, Text, TextInput } from 'react-native-paper';
 
-const AdicionarExistente ({ navigation }, lastProductId) => {
+const AdicionarExistente = ({ navigation }, lastProductId) => {
 
     const [nomeProduto, setNomeProduto] = useState('');
     const [dataValidade, setDataValidade] = useState('');

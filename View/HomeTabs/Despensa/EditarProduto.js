@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native'
-import { Button, IconButton, Modal, PaperProvider, Portal, Switch, Text, TextInput } from 'react-native-paper';
+import { Button, IconButton, Modal, PaperProvider, Portal, Text, TextInput } from 'react-native-paper';
 
 //Adicionar props nos estados
 const EditarProduto = ({route, navigation}) => {

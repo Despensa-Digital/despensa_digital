@@ -28,7 +28,7 @@ const ListComponent = (props) => {
 
                         />
                     }
-                    onPress={() => navigation.navigate('EditarProduto', { product })}
+                    onPress={() => navigation.navigate('VerItem', { product })}
                 />
             </View>
             <Divider style={{ height: 1 }} />
