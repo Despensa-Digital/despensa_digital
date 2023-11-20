@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import { View, FlatList, ScrollView, Image, TouchableOpacity } from 'react-native'
 import { Appbar, Avatar, Button, Divider, PaperProvider, Text, TextInput, IconButton } from 'react-native-paper';
 import { signOut } from '../../../Model/Firebase/signOut';
@@ -6,7 +6,7 @@ import ProfileAvatar from '../Componentes/ProfileAvatar';
 import ListComponent from '../Componentes/ListComponent';
 
 import { getResidenciaAtual } from '../../../Controller/Residencia/residenciaController';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
 
 const HomeScreen = () => {
@@ -46,6 +46,12 @@ const HomeScreen = () => {
         console.log("minha residencia", residencia)
     }, [])
 
+    useFocusEffect(
+        React.useCallback(() => {
+            carregarResidenciaAtual()
+            return () => console.log("lista atualizada");
+        }, [])
+      );
 
     const carregarResidenciaAtual = () => {
         getResidenciaAtual()
@@ -65,7 +71,7 @@ const HomeScreen = () => {
                     marginTop: 230,
                 }}>
                     <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.navigate('GerenciarResidencias')} hitSlop={{top: 20, bottom: 20, left: 50, right: 50}}>
-                        <Image source={require('../../../Assets/Home/empty.jpg')} style={{ alignSelf: "center", width: 190, height: 190 }} /> 
+                        <Image source={require('../../../Assets/Home/empty.jpg')} style={{ alignSelf: "center", width: 170, height: 170 }} /> 
                         <Text  style={{color:'black', textAlign: "center", fontSize: 18, paddingHorizontal: 20}}>
                         Parece que ainda não há residências vinculadas à sua conta. {"\n"}{"\n"}Clique aqui para criar uma nova residência.
                         </Text>
