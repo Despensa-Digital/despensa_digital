@@ -12,7 +12,7 @@ const GerenciarResidencias = () => {
     useEffect(()=>{
       carregarResidencia()
     },[])
-    
+
     useFocusEffect(
       React.useCallback(() => {
         carregarResidencia()
@@ -28,11 +28,16 @@ const GerenciarResidencias = () => {
           })
     
     }
+
+    const setModalComUpdate = (valor)=>{
+      setModal(valor);
+      carregarResidencia()
+    }
     
   return (
     <PaperProvider style={styles.raiz}>
       <View style={styles.container}>
-      <NovaResidencia setModal={setModal} modal={modal} />
+      <NovaResidencia setModal={setModalComUpdate} modal={modal} />
       <ScrollView  showsVerticalScrollIndicator={false}>
           {residencias.map((residencia, index) => (
             <List.Item
