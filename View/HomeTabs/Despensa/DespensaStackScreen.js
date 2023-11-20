@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Despensa from './Despensa';
 import AdicionarProduto from './AdicionarProduto';
 import EditarProduto from './EditarProduto';
+// import AdicionarExistente from './AdicionarExistente';
 
 const DespensaStack = createNativeStackNavigator();
 
@@ -18,6 +19,10 @@ function DespensaStackScreen() {
         name='EditarProduto'
         component={EditarProduto}
         options={{ title: 'Editar produto' }} />
+      {/* <DespensaStack.Screen
+        name='AdicionarExistente'
+        component={AdicionarExistente}
+        options={{ title: 'Adicionar produto' }} /> */}
     </DespensaStack.Navigator>
   );
 }

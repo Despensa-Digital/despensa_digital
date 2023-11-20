@@ -65,26 +65,6 @@ const EditarProduto = ({route, navigation}) => {
         <PaperProvider>
             <ScrollView style={{ backgroundColor: '#fff' }}>
 
-                <View
-
-                    style={{
-                        marginTop: 20,
-                        alignSelf: 'center',
-                        alignItems: 'center',
-                        backgroundColor: 'lightgrey',
-                        borderRadius: 15,
-                        width: 100,
-                        height: 100
-                    }}>
-                    <IconButton
-                        style={{ flex: 1 }}
-                        icon="camera-plus-outline"
-                        size={40}
-                        onPress={() => console.log('Pressed')}
-                    />
-
-                </View>
-
                 <TextInput
                     style={{ marginTop: 20, marginHorizontal: 20 }}
                     label="Código de barras"
