@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect} from 'react';
 import { StyleSheet, View, ScrollView } from 'react-native';
 import { PaperProvider, Button, List, IconButton } from 'react-native-paper';
 import NovaResidencia from './NovaResidencia';
-import { useNavigation } from '@react-navigation/native';
-
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
 import { getResidencias} from '../../../Controller/Residencia/residenciaController';
 const GerenciarResidencias = () => {
@@ -14,7 +13,13 @@ const GerenciarResidencias = () => {
       carregarResidencia()
     },[])
     
-    
+    useFocusEffect(
+      React.useCallback(() => {
+        carregarResidencia()
+        return () => console.log("lista atualizada");
+      }, [])
+    );
+
     const carregarResidencia = ()=>{
       getResidencias()
           .then(dados => {

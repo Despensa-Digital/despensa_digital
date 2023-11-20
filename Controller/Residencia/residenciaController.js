@@ -39,7 +39,7 @@ const deleteResidencia = (residenciaId) =>{
     try{
         return residencia.removerResidencia(residenciaId);
     }catch(error){
-        console.log("Erro ao criar uma Residencia: " + error);
+        console.log("Erro ao remover uma Residencia: " + error);
     }
 }
 

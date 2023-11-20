@@ -6,6 +6,11 @@ import { PaperProvider, Text, Button, List } from 'react-native-paper';
 const ModalExcluir =  ({setModal, modal, onExcluir}) => {
   // const navigation = useNavigation();
 
+  const excluirResidencia = () => {
+    onExcluir();
+    setModal(false);
+  }
+
   return (
     <Modal
       animationType="slide"
@@ -23,7 +28,7 @@ const ModalExcluir =  ({setModal, modal, onExcluir}) => {
             buttonColor="#ff0000"
             style={styles.buttonModal}
             mode="contained"
-            onPress={() => setModal(false)}>
+            onPress={() => excluirResidencia()}>
             Remover
           </Button>
           <Button

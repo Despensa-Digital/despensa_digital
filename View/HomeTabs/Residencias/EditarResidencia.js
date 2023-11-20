@@ -33,6 +33,14 @@ const EditarResidencia = ({route,navigation}) => {
     const excluirResidencia = ()=>{
       deleteResidencia(residenciaId)
     }
+    const setModalComRetorno = (valor) =>{
+      setModalConfirmarExclusaoResidencia(valor)
+
+      if (valor == false ) {
+        navigation.goBack()
+      }
+
+    }
 
     const abrirFecharModalMembro = (valor) => {
       if (modalResidencia == true || modalEditarMembro == true){
@@ -95,7 +103,6 @@ const EditarResidencia = ({route,navigation}) => {
             key={index}
             title={membro.nome}
             style={styles.listItem}
-
             onPress={() => abrirFecharModalEditarMembro(!modalMembro)}
             />
         ))}
@@ -122,9 +129,9 @@ const EditarResidencia = ({route,navigation}) => {
         </Button>
 
         {modalMembro && (<NovoMembro setModal={abrirFecharModalMembro} modal={modalMembro} />)}
-        {modalResidencia && (<EditarNomeResidencia setModal={abrirFecharModalResidencia} modal={modalResidencia} />)}
+        {modalResidencia && (<EditarNomeResidencia residenciaId={residenciaId} editarNomeResidencia={residencia.nome} setModal={abrirFecharModalResidencia} modal={modalResidencia} />)}
         {modalEditarMembro && (<EditarMembro setModal={abrirFecharModalEditarMembro} modal={modalEditarMembro} />)}
-        {modalConfirmarExclusaoResidencia && (<ModalExcluir setModal={setModalConfirmarExclusaoResidencia} modal={modalConfirmarExclusaoResidencia} />)}
+        {modalConfirmarExclusaoResidencia && (<ModalExcluir setModal={setModalComRetorno} modal={modalConfirmarExclusaoResidencia} onExcluir={excluirResidencia}/>)}
       </View>
     </PaperProvider>
   );
