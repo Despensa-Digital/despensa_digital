@@ -21,15 +21,12 @@ const AdicionarExistente ({ navigation }, lastProductId) => {
             expire: dataValidade,
         }
 
-    
-
         navigation.navigate({
             name: 'Despensa',
             params: novoProduto,
             merge: true
         })
     }
-
 
     //Modal
     const [visible, setVisible] = useState(false);
