@@ -4,7 +4,9 @@ import { Button, IconButton, Modal, PaperProvider, Portal, Switch, Text, TextInp
 
 import scheduleNotificationControl from '../../../Controller/Despensa/scheduleNotificationControl';
 
-const AdicionarProduto = ({ navigation }, lastProductId) => {
+const AdicionarProduto = ({ navigation, route} ) => {
+    //id mockado
+    const lastProductId = route.params;
 
     const [codigoDeBarras, setCodigoDeBarras] = useState('');
     const [nomeProduto, setNomeProduto] = useState('');
@@ -22,7 +24,7 @@ const AdicionarProduto = ({ navigation }, lastProductId) => {
     const [quantidade, setQuantidade] = useState('0');
     const [disableButton, setDisableButton] = useState(false);
 
-    //dado mockado
+    //dado mockado - envia o objeto novoProduto para products em Despensa.js
     const salvarProduto = () => {
         const novoProduto = {
             produtoEditado: false,

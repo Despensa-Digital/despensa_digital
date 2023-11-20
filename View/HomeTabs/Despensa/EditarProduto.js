@@ -3,9 +3,10 @@ import { View, ScrollView, StyleSheet } from 'react-native'
 import { Button, IconButton, Modal, PaperProvider, Portal, Switch, Text, TextInput } from 'react-native-paper';
 
 //Adicionar props nos estados [adicionado props mockados]
-const EditarProduto = ({route, navigation}) => {
-    const {product} = route.params;
-    
+const EditarProduto = ({ route, navigation }) => {
+
+    const product = route.params;
+
     const [codigoDeBarras, setCodigoDeBarras] = useState(product.codigoDeBarras);
     const [nomeProduto, setNomeProduto] = useState(product.name);
     const [marca, setMarca] = useState(product.marca);
@@ -20,8 +21,8 @@ const EditarProduto = ({route, navigation}) => {
     const [unidadeMedida, setUnidadeMedida] = useState(product.unidadeMedida);
     const [peso, setPeso] = useState(product.peso);
     const [quantidade, setQuantidade] = useState(product.quantidade);
-    const [disableButton, setDisableButton]= useState(false);
-    
+    const [disableButton, setDisableButton] = useState(false);
+
     //este metodo faz parte do mock
     const editarProduto = () => {
         const produtoEditado = {
@@ -45,19 +46,19 @@ const EditarProduto = ({route, navigation}) => {
         })
     }
 
-    const maisQuantidade = () =>{
-       const sum = parseInt(quantidade) + 1;
-       setQuantidade(sum.toString()); 
+    const maisQuantidade = () => {
+        const sum = parseInt(quantidade) + 1;
+        setQuantidade(sum.toString());
     }
-    
-    const menosQuantidade = () =>{
+
+    const menosQuantidade = () => {
         const sub = parseInt(quantidade) - 1;
-        setQuantidade(sub.toString()); 
+        setQuantidade(sub.toString());
     }
-    
-   
+
+
     useEffect(() => {
-        if(quantidade <= 0) {
+        if (quantidade <= 0) {
             setQuantidade('0');
             setDisableButton(true);
         } else {
@@ -81,7 +82,7 @@ const EditarProduto = ({route, navigation}) => {
             setNotificarVencimentoStyle(styles.notificarVencimentoEnabled);
         }
 
-    }, [notificarVencimento])   
+    }, [notificarVencimento])
     return (
         <PaperProvider>
             <ScrollView style={{ backgroundColor: '#fff' }}>
@@ -228,7 +229,7 @@ const EditarProduto = ({route, navigation}) => {
                         icon="minus"
                         size={24}
                         mode='outlined'
-                        iconColor='red'                                      
+                        iconColor='red'
                         style={{ marginEnd: 10, marginTop: 10, borderColor: 'red' }}
                         disabled={disableButton}
                         onPress={menosQuantidade}
@@ -251,7 +252,7 @@ const EditarProduto = ({route, navigation}) => {
                         size={24}
                         mode='outlined'
                         iconColor='green'
-                        style={{ marginTop: 10, borderColor: 'green' }}                       
+                        style={{ marginTop: 10, borderColor: 'green' }}
                         onPress={maisQuantidade}
                     />
                 </View>
@@ -276,7 +277,7 @@ const EditarProduto = ({route, navigation}) => {
 
             <Portal>
                 <Modal visible={visible} dismissable={false} dismissableBackButton={false} contentContainerStyle={styles.containerStyle}>
-                    <Text variant='titleMedium' style={{textAlign:'center'}}>Você tem certeza que quer sair sem adicionar o produto?</Text>
+                    <Text variant='titleMedium' style={{ textAlign: 'center' }}>Você tem certeza que quer sair sem adicionar o produto?</Text>
 
                     <Button
                         textColor='#000'
@@ -287,14 +288,14 @@ const EditarProduto = ({route, navigation}) => {
                         Sair sem adicionar
                     </Button>
 
-                <Button
-                    textColor='#5DB075'
-                    buttonColor='#FFFFFF'
-                    style={{ marginTop: 20, marginBottom: 20, marginHorizontal: 20, borderColor: '#5DB075' }}
-                    mode="outlined"
-                    onPress={hideModal}>
-                    Cancelar
-                </Button>
+                    <Button
+                        textColor='#5DB075'
+                        buttonColor='#FFFFFF'
+                        style={{ marginTop: 20, marginBottom: 20, marginHorizontal: 20, borderColor: '#5DB075' }}
+                        mode="outlined"
+                        onPress={hideModal}>
+                        Cancelar
+                    </Button>
                 </Modal>
             </Portal>
 

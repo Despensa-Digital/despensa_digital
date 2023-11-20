@@ -1,96 +1,45 @@
 import { useState } from 'react';
-import { View, FlatList, ScrollView } from 'react-native'
-import { Appbar, Avatar, Button, Divider, PaperProvider, Text, TextInput } from 'react-native-paper';
-import { signOut } from '../../../Model/Firebase/signOut';
-import ProfileAvatar from '../Componentes/ProfileAvatar';
-import ListComponent from '../Componentes/ListComponent';
+import { FlatList } from 'react-native'
+import { PaperProvider } from 'react-native-paper';
+
+import HomeListHeader from '../Componentes/HomeListHeader';
+import HomeRenderItem from '../Componentes/HomeRenderItem';
+import HomeEmptyList from '../Componentes/HomeEmptyList';
 
 const HomeScreen = () => {
 
-    const [textoQuadro, setTextoQuadro] = useState('Escreva aqui suas anotações...');
+    // const products = [
+    //     { name: 'Beer', image: require('../../../Assets/Products/beer.png'), expire: '30/09/2023', key: 1 },
+    //     { name: 'Coffee', image: require('../../../Assets/Products/Coffee.png'), expire: '30/09/2023', key: 2 },
+    //     { name: 'Cola', image: require('../../../Assets/Products/Cola.png'), expire: '30/09/2023', key: 3 },
+    //     { name: 'Juice', image: require('../../../Assets/Products/Juice.png'), expire: '30/09/2023', key: 4 },
+    //     { name: 'Milk', image: require('../../../Assets/Products/Milk.png'), expire: '30/09/2023', key: 5 },
+    //     { name: 'Rice', image: require('../../../Assets/Products/Rice.png'), expire: '30/09/2023', key: 6 },
+    // ]
 
-    const perfis = [
-        { name: 'Lucas', photo: require('../../../Assets/ProfileThumbnail/boy1.png') },
-        { name: 'Gabriel', photo: require('../../../Assets/ProfileThumbnail/boy2.png') },
-        { name: 'Carlos', photo: require('../../../Assets/ProfileThumbnail/boy3.png') },
-        { name: 'Julio', photo: require('../../../Assets/ProfileThumbnail/boy4.png') },
-        { name: 'Maria', photo: require('../../../Assets/ProfileThumbnail/girl1.png') },
-        { name: 'Clara', photo: require('../../../Assets/ProfileThumbnail/girl2.png') },
-        { name: 'Saitama', photo: require('../../../Assets/ProfileThumbnail/saitama.png') }
-    ];
-
-    const products = [
-        { name: 'Beer', image: require('../../../Assets/Products/beer.png'), expire: '30/09/2023', key: 1 },
-        { name: 'Coffee', image: require('../../../Assets/Products/Coffee.png'), expire: '30/09/2023', key: 2 },
-        { name: 'Cola', image: require('../../../Assets/Products/Cola.png'), expire: '30/09/2023', key: 3 },
-        { name: 'Juice', image: require('../../../Assets/Products/Juice.png'), expire: '30/09/2023', key: 4 },
-        { name: 'Milk', image: require('../../../Assets/Products/Milk.png'), expire: '30/09/2023', key: 5 },
-        { name: 'Rice', image: require('../../../Assets/Products/Rice.png'), expire: '30/09/2023', key: 6 },
-    ]
+    const [products, setProducts] = useState([
+        { key: 1, codigoDeBarras: '1234567891234', name: 'Cerveja', marca: 'Brahma', image: 'https://cdn-cosmos.bluesoft.com.br/products/7891149102488', expire: '30/09/2023', quantidade: '6', categoria: 'Geladeira', peso: '350', unidadeMedida: 'mL' },
+        { key: 2, codigoDeBarras: '1234567891234', name: 'Café', marca: 'Pilão', image: 'https://cdn-cosmos.bluesoft.com.br/products/7896089012453', expire: '30/09/2023', quantidade: '1', categoria: 'Armário da Cozinha', peso: '500', unidadeMedida: 'g' },
+        { key: 3, codigoDeBarras: '1234567891234', name: 'Coca-Cola', marca: 'Coca-Cola', image: 'https://cdn-cosmos.bluesoft.com.br/products/7894900019155', expire: '30/09/2023', quantidade: '1', categoria: 'Geladeira', peso: '200', unidadeMedida: 'mL' },
+        { key: 4, codigoDeBarras: '1234567891234', name: 'Suco de Laranja', marca: 'Xandô', image: 'https://cdn-cosmos.bluesoft.com.br/products/7896623100028', expire: '30/09/2023', quantidade: '1', categoria: 'Geladeira', peso: '1', unidadeMedida: 'L' },
+        { key: 5, codigoDeBarras: '1234567891234', name: 'Leite', marca: 'Parmalat', image: 'https://cdn-cosmos.bluesoft.com.br/products/3789603461001', expire: '30/09/2023', quantidade: '1', categoria: 'Geladeira', peso: '1', unidadeMedida: 'L' },
+        { key: 6, codigoDeBarras: '1234567891234', name: 'Arroz', marca: 'Camil', image: 'https://cdn-cosmos.bluesoft.com.br/products/7896006711117', expire: '30/09/2023', quantidade: '1', categoria: 'Armário da Cozinha', peso: '1', unidadeMedida: 'kg' },
+    ])
 
 
     return (
-        <PaperProvider>
-            <ScrollView >
-                <Text
-                    variant="titleMedium"
-                    style={{
-                        marginTop: 10,
-                        marginStart: 22
-                    }}>
-                    Membros
-                </Text>
-                <View style={{ flexDirection: 'row' }}>
-                    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                        {perfis.map(perfil =>
-                            <View key={perfil.name} style={{ display: 'flex', flexDirection: 'row', margin: 5 }}>
-                                <ProfileAvatar profileKey={perfil.name} name={perfil.name} photo={perfil.photo} />
-                            </View>
-                        )}
-                    </ScrollView>
-                </View>
-
-                <Text
-                    variant="titleMedium"
-                    style={{
-                        marginTop: 10,
-                        marginStart: 22
-                    }}>
-                    Quadro de avisos
-                </Text>
-                <View style={{ marginTop: 10, marginHorizontal: 22, height: 140, borderWidth: 2, borderColor: '#d9d9d9', borderRadius: 10 }}>
-                    <Text
-                        variant="titleSmall"
-                        style={{
-                            marginTop: 5,
-                            marginHorizontal: 10,
-                            color: '#49454F'
-                        }}>
-                        {textoQuadro}
-                    </Text>
-                </View>
-
-                {/* <TextInput 
-                maxLength={150} 
-                multiline 
-                style={{marginTop:10, marginHorizontal: 22}}
-                onChangeText={textoQuadro => setTextoQuadro(textoQuadro)}
-            /> */}
-
-                <Text
-                    variant="titleMedium"
-                    style={{
-                        marginTop: 10,
-                        marginStart: 22
-                    }}>
-                    Itens próximos do vencimento
-                </Text>
-                <View>               
-                    <ListComponent itens={products} />
-                </View>
-
-
-            </ScrollView>
+        <PaperProvider>          
+            <FlatList
+                style={{ backgroundColor: '#fff' }}
+                data={products}
+                keyExtractor={item => item.key}
+                ListHeaderComponent={HomeListHeader}
+                renderItem={({ item }) => <HomeRenderItem item={item} />}
+                ListEmptyComponent={HomeEmptyList}
+                onRefresh={() => console.log("refreshing")}
+                //if set to true, the UI will show a loading indicator
+                refreshing={false}
+            />
         </PaperProvider>
 
     );
