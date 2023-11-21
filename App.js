@@ -1,20 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Button, View, Text } from 'react-native';
-import { GoogleSigninButton } from '@react-native-google-signin/google-signin';
-import auth from '@react-native-firebase/auth';
 import { DefaultTheme } from 'react-native-paper';
 
 //Navigation
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
-//import da Model
-import { LoginListener } from './Model/Firebase/loginListener';
-import { emailSignUp } from './Model/Firebase/emailSignUp';
-import { emailSignIn } from './Model/Firebase/emailSignIn';
-import { signOut } from './Model/Firebase/signOut';
-import { googleSignIn } from './Model/Firebase/googleSignIn';
-import { forgotPassword } from './Model/Firebase/forgotPassword';
 
 //import da View
 import Login from './View/Login';
@@ -25,10 +15,12 @@ import ReenvirEmailRecuperacao from './View/ReenviarEmailRecuperacao';
 import AppBarButton from './View/AppBarButton';
 import BottomTabs from './View/HomeTabs/BottomTabs';
 
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs();//Ignore all log notifications
 
 
 const Stack = createNativeStackNavigator();
-
 export default function App() {
 
     //Firebase
@@ -40,7 +32,8 @@ export default function App() {
     const theme = {
         ...DefaultTheme,
         colors: {
-          ...DefaultTheme.colors,
+        card: "#fff",
+        text: '#000',
           secondaryContainer: 'transparent', // Use transparent to disable the little highlighting oval
         },
       };
@@ -57,7 +50,7 @@ export default function App() {
 
 
     useEffect(() => {
-        const subscriber = auth().onUserChanged(onAuthStateChanged);
+        // const subscriber = auth().onUserChanged(onAuthStateChanged);
         console.log('Estou no useEffect');
         if (user != null) {
             if (user.emailVerified) {
@@ -72,8 +65,9 @@ export default function App() {
         } else {
             setIsEmailVerified(false);
         }
-
-        return subscriber; // unsubscribe on unmount
+        setInitializing(false)
+        setIsEmailVerified(true)
+        // return subscriber; // unsubscribe on unmount
     }, [user]);
     
     
@@ -83,6 +77,7 @@ export default function App() {
     return (
 
         < >
+<<<<<<< HEAD
             {/* Botão importado da biblioteca GoogleSignIn
             <GoogleSigninButton               
                 size={GoogleSigninButton.Size.Wide}
@@ -96,9 +91,9 @@ export default function App() {
             <Button title="Log Off" onPress={signOut} />
             <Button title='Forgot Password' onPress={forgotPassword} /> */}
             {/* <ReenvirEmailRecuperacao /> */}
+=======
+>>>>>>> origin/luna_novo
 
-
-            {/*  */}
             <NavigationContainer
                 theme={theme}
             >

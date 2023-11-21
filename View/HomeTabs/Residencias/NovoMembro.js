@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { PaperProvider, Text, Button } from 'react-native-paper';
 
 import React, { useCallback, useMemo, useRef, useState } from 'react';
@@ -31,6 +32,29 @@ const NovoMembro = ({ setModal, modal }) => {
     >
       <View style={styles.contentContainer}>
         <Text style={styles.textBox}>Adicionar novo membro</Text>
+=======
+import React, { useCallback, useMemo, useRef, useState } from 'react';
+import { View, StyleSheet, Modal } from 'react-native';
+import { Text, Button, TextInput } from 'react-native-paper';
+
+const NovoMembro = ({ setModal, modal }) => {
+  const handleSheetChanges = useCallback((index) => {
+    setModal(false);
+  }, []);
+
+  const [nomeMembro, setNomeMembro] = useState("");
+  const [emailMembro, setEmailMembro] = useState("");
+
+  return (
+    <Modal
+      visible={modal}
+      transparent={true}
+      onRequestClose={handleSheetChanges}
+    >
+      <View style={styles.modalContainer}>
+        <View style={styles.modalContent}>
+          <Text style={styles.textBox}>Adicionar novo membro</Text>
+>>>>>>> origin/luna_novo
         <Text style={styles.textSubtitulo}>Para adicionar um novo membro digite o e-mail e nome abaixo:</Text>
         <TextInput
           style={styles.textInput}
@@ -38,7 +62,11 @@ const NovoMembro = ({ setModal, modal }) => {
           outlineColor='black'
           label="Nome"
           value={nomeMembro}
+<<<<<<< HEAD
           onChangeText={nomeMembro => setNomeMembro(nomeMembro)}
+=======
+          onChangeText={setNomeMembro}
+>>>>>>> origin/luna_novo
         />
         <TextInput
           style={styles.textInput}
@@ -46,12 +74,19 @@ const NovoMembro = ({ setModal, modal }) => {
           outlineColor='black'
           label="E-mail"
           value={emailMembro}
+<<<<<<< HEAD
           onChangeText={emailMembro => setEmailMembro(emailMembro)}
+=======
+          onChangeText={setEmailMembro}
+>>>>>>> origin/luna_novo
         />
 
         <Button
           buttonColor='#5DB075'
+<<<<<<< HEAD
           textColor='white'
+=======
+>>>>>>> origin/luna_novo
           style={styles.buttonSave}
           mode="contained"
           onPress={() => setModal(false)}>
@@ -59,7 +94,11 @@ const NovoMembro = ({ setModal, modal }) => {
         </Button>
 
         <Button
+<<<<<<< HEAD
           buttonColor='white'
+=======
+          colbuttonColoror='white'
+>>>>>>> origin/luna_novo
           textColor='#5DB075'
           theme={{ colors: { outline: '#5DB075' } }}
           style={styles.buttonCancel}
@@ -68,7 +107,13 @@ const NovoMembro = ({ setModal, modal }) => {
           Cancelar
         </Button>
       </View>
+<<<<<<< HEAD
     </BottomSheet>
+=======
+      </View>
+
+    </Modal>
+>>>>>>> origin/luna_novo
   );
 };
 
@@ -76,6 +121,7 @@ const styles = StyleSheet.create({
   sheetStyle: {
     backgroundColor: 'transparent',
   },
+<<<<<<< HEAD
 
   container: {
     //position: "absolute",
@@ -83,6 +129,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     borderRadius: 10,
     borderColor: '#fff'
+=======
+  container: {
+    flex: 1,
+    backgroundColor: 'transparent',
+    borderRadius: 10,
+    borderColor: '#fff',
+>>>>>>> origin/luna_novo
   },
   contentContainer: {
     flex: 1,
@@ -92,6 +145,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     marginTop: 10,
   },
+<<<<<<< HEAD
 
   buttonCancel: {
     marginTop: 10,
@@ -112,3 +166,29 @@ const styles = StyleSheet.create({
 
 
 export default NovoMembro;
+=======
+  buttonCancel: {
+    alignSelf:'stretch'
+  },
+  buttonSave: {
+    alignSelf:'stretch'
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+
+  },
+  modalContent: {
+    backgroundColor: '#fff',
+    padding: 60,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  textBox: { alignSelf: 'center', fontSize: 25 },
+  textSubtitulo: { alignSelf: 'center', fontSize: 15 }
+});
+
+export default NovoMembro;
+>>>>>>> origin/luna_novo

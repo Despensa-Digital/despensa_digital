@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { View, StyleSheet, Modal } from 'react-native';
 
@@ -47,10 +48,53 @@ const ModalExcluir =  ({setModal, modal, onExcluir}) => {
           </View>
         </View>
       </Modal>
+=======
+import React from 'react';
+import { View, StyleSheet, Modal } from 'react-native';
+import { Text, Button } from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
+
+const ModalExcluir = ({ setModal, modal }) => {
+  const navigation = useNavigation();
+
+  return (
+    <Modal
+      animationType="slide"
+      transparent={true}
+      visible={modal}
+      onRequestClose={() => {
+        // Handle modal close
+      }}>
+      <View style={styles.centeredView}>
+        <View style={styles.modalView}>
+          <Text style={styles.textoModal}>
+            Tem certeza de que deseja remover? Todas as suas informações serão perdidas.
+          </Text>
+          <Button
+            buttonColor="#ff0000"
+            style={styles.buttonModal}
+            mode="contained"
+            onPress={() => setModal(false)}>
+            Remover
+          </Button>
+          <Button
+            buttonColor="white"
+            style={styles.buttonModal}
+            mode="outlined"
+            onPress={() => setModal(false)}
+            textColor='#5DB075'
+            theme={{ colors: { outline: '#5DB075' } }}>
+            Cancelar
+          </Button>
+        </View>
+      </View>
+    </Modal>
+>>>>>>> origin/luna_novo
   );
 };
 
 const styles = StyleSheet.create({
+<<<<<<< HEAD
   container: {
     flex: 1,
     padding: 24,
@@ -111,6 +155,21 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     width:300,
    },
+=======
+  textoModal: {
+    marginBottom: 10,
+    marginHorizontal: 15,
+    alignSelf: 'center',
+    fontSize: 17,
+    fontFamily: 'Roboto',
+    textAlign: 'justify',
+  },
+  buttonModal: {
+    marginBottom: 10,
+    borderRadius: 20,
+    width: 300,
+  },
+>>>>>>> origin/luna_novo
   centeredView: {
     flex: 1,
     justifyContent: 'center',
@@ -122,7 +181,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 30,
     padding: 40,
+<<<<<<< HEAD
     width:400,
+=======
+    width: 400,
+>>>>>>> origin/luna_novo
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
@@ -133,6 +196,12 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
+<<<<<<< HEAD
   });
 
 export default ModalExcluir;
+=======
+});
+
+export default ModalExcluir;
+>>>>>>> origin/luna_novo

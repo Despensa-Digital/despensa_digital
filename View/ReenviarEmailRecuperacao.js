@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Appbar, Button, PaperProvider, Text, TextInput } from 'react-native-paper';
-import { forgotPassword } from '../Model/Firebase/forgotPassword';
 
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
