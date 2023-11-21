@@ -35,9 +35,6 @@ const Login = ({ navigation, user }) => {
         if (user != null) {
             if (!user.emailVerified) {
                 setVisible(true);           
-            }else{
-                // console.log('Usuario verificado, botão de login precionado');
-                // logar()
             }
         }
     }, [user]);
@@ -49,10 +46,14 @@ const Login = ({ navigation, user }) => {
     };
 
 
-    // const logar = async ()=>{
-        
-    // }
 
+    const logar = ()=>{
+        googleSignIn().then((response)=>{
+            const data = response.user
+            postConsumidor(data)
+            }
+        )
+    }
   
     
     return (
@@ -73,11 +74,7 @@ const Login = ({ navigation, user }) => {
                     size={GoogleSigninButton.Size.Wide}
                     color={GoogleSigninButton.Color.Light}
                     // onPress={() => googleSignIn()}
-                    onPress={() => googleSignIn().then((response)=>{
-                        const consumer = response.user
-                        postConsumidor(consumer)
-                        }
-                    )}
+                    onPress={() => logar()}
                 />
             </View>
 

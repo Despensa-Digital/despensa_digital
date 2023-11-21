@@ -11,7 +11,7 @@ const emailSignUp = (name, email, password) => {
             })
             userCredential.user.sendEmailVerification();
             const data = {
-                id: userCredential.user.uid,
+                uid: userCredential.user.uid,
                 nome: name,
                 email: email,
                 foto: ""

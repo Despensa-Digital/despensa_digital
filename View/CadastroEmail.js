@@ -49,18 +49,6 @@ const CadastroEmail = ({navigation}) => {
                 onChangeText={nome => setNome(nome)}
             />
             
-            {/* <TextInput
-                style={{ marginTop: 20, marginHorizontal: 20 }}
-                label="Celular"
-                mode="outlined"
-                error={false}
-                value={celular}
-                onChangeText={celular => setCelular(celular)}
-            />
-            <HelperText
-                    style={{ marginVertical: 0, marginHorizontal: 20 }}
-            >Ex.: (12) 91234-5678</HelperText> */}
-            
             <TextInput
                 style={{ marginTop: 20, marginHorizontal: 20 }}
                 label="E-mail"

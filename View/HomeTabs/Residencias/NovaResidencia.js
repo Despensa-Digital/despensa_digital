@@ -9,7 +9,7 @@ import { postResidencia } from '../../../Controller/Residencia/residenciaControl
 
 const NovaResidencia = ({ setModal, modal }) => {
   const bottomSheetRef = useRef();
-  const snapPoints = useMemo(() => ['25%', '45%'], []);
+  const snapPoints = useMemo(() => ['45%', '60%'], []);
   const handleSheetChanges = useCallback((index) => {
     console.log('handleSheetChanges', index);
     if (index === -1) {
@@ -25,10 +25,7 @@ const NovaResidencia = ({ setModal, modal }) => {
     props => (
       <BottomSheetBackdrop
         {...props}
-        disappearsOnIndex={1}
-        appearsOnIndex={2}
-        opacity={1}
-        enableTouchThrough={false}
+        disappearsOnIndex={-1}
       />
     ),
     []

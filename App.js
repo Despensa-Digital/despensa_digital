@@ -63,9 +63,7 @@ export default function App() {
             if (user.emailVerified) {
                 console.log('email verificado: ' + user.emailVerified);
                 setIsEmailVerified(true);
-                console.log("Usuario retornado", user)
                 //Adicionar a verificação de adição do Consumidor
-               // console.log("User", user)
               
             } else {
                 console.log('email verificado: ' + user.emailVerified);                        

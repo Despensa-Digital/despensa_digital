@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { View, FlatList, ScrollView, StyleSheet } from 'react-native'
-import { Appbar, Avatar, Button, Divider, FAB, PaperProvider, Searchbar, Text, TextInput } from 'react-native-paper';
+import { ActivityIndicator, MD2Colors,Appbar, Avatar, Button, Divider, FAB, PaperProvider, Searchbar, Text, TextInput } from 'react-native-paper';
 import CategoryAvatar from '../Componentes/CategoryAvatar';
 import ListComponent from '../Componentes/ListComponent';
 import { getProdutos } from '../../../Controller/Produtos/produtosController';
@@ -8,7 +8,8 @@ import { getProdutos } from '../../../Controller/Produtos/produtosController';
 const Despensa = ({ navigation }) => {
 
     const [searchQuery, setSearchQuery] = useState('');
-
+    const [produtos, setProdutos] = useState([])
+    const [loading, setLoading]= useState(true);
     const onChangeSearch = query => setSearchQuery(query);
 
     const categorias = [
@@ -20,23 +21,24 @@ const Despensa = ({ navigation }) => {
         { name: 'Lavanderia', photo: require('../../../Assets/Categories/WashingMachine.png') }
     ];
 
-    const products = [
-        { name: 'Beer', image: require('../../../Assets/Products/beer.png'), expire: '30/09/2023', key: 1 },
-        { name: 'Coffee', image: require('../../../Assets/Products/Coffee.png'), expire: '30/09/2023', key: 2 },
-        { name: 'Cola', image: require('../../../Assets/Products/Cola.png'), expire: '30/09/2023', key: 3 },
-        { name: 'Juice', image: require('../../../Assets/Products/Juice.png'), expire: '30/09/2023', key: 4 },
-        { name: 'Milk', image: require('../../../Assets/Products/Milk.png'), expire: '30/09/2023', key: 5 },
-        { name: 'Rice', image: require('../../../Assets/Products/Rice.png'), expire: '30/09/2023', key: 6 },
-    ]
-
 
     useEffect(()=>{
-        getProdutos()
-            // .then((doc)=>{
-            //     console.log(doc)
-            // })
+        getProdutos((produto)=>{
+            setProdutos(produto)
+            setLoading(false)
+        })
     },[])
 
+    
+
+
+    if(loading){
+        return (
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <ActivityIndicator animating={true} color={MD2Colors.grey400} />
+            </View>
+        )
+    }
     return (
         <PaperProvider>
             <ScrollView style={{ backgroundColor: '#fff' }}>
@@ -85,7 +87,9 @@ const Despensa = ({ navigation }) => {
                     />
                 </View>
                 <View>
-                    <ListComponent itens={products} />
+                    {/* <ListComponent itens={products} /> */}
+                    <ListComponent itens={produtos} />
+                    
                 </View>
 
 

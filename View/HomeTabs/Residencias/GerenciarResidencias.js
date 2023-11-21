@@ -37,55 +37,6 @@ const carregarResidencia = ()=>{
       <PaperProvider style={styles.raiz}>
        <GestureHandlerRootView style={(modal ? styles.container_blur: styles.container)}>
 
-                {/* <List.Item
-                    title="Minha casa"
-                    onPress={() => navigation.navigate('EditarResidencia')}
-                    style={styles.listItem}
-                    right={props => <List.Icon {...props} icon="greenhouse" />}
-
-                />
-                <List.Item
-                    title="Casa da mãe"
-                    onPress={() => navigation.navigate('EditarResidencia')}
-                    style={styles.listItem}
-                    right={props => <List.Icon {...props} icon="greenhouse" />}
-                  />
-                <List.Item
-                    title="Casa da praia"
-                    onPress={() => navigation.navigate('EditarResidencia')}
-                    style={styles.listItem}
-                    right={props => <List.Icon {...props} icon="greenhouse" />}
-                  />
-                <List.Item
-                    title="Casa da Luna"
-                    onPress={() => navigation.navigate('EditarResidencia')}
-                    style={styles.listItem}
-                    right={props => <List.Icon {...props} icon="greenhouse" />}
-                  />
-                <List.Item
-                    title="Casa do Vini"
-                    onPress={() => navigation.navigate('EditarResidencia')}
-                    style={styles.listItem}
-                    right={props => <List.Icon {...props} icon="greenhouse" />}
-                  />
-                <List.Item
-                    title="Casa do Fake"
-                    onPress={() => navigation.navigate('EditarResidencia')}
-                    style={styles.listItem}
-                    right={props => <List.Icon {...props} icon="greenhouse" />}
-                  />
-                <List.Item
-                    title="Casa do Yoichi"
-                    onPress={() => navigation.navigate('EditarResidencia')}
-                    style={styles.listItem}
-                    right={props => <List.Icon {...props} icon="greenhouse" />}
-                  />
-                <List.Item
-                    title="Casa do Roberto"
-                    onPress={() => navigation.navigate('EditarResidencia')}
-                    style={styles.listItem}   
-                    right={props => <List.Icon {...props} icon="greenhouse" />}
-                  /> */}
                   {
                     residencias.map((residencia, index)=>(
                       <List.Item
