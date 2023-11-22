@@ -10,8 +10,12 @@ import { postProdutos } from '../../../Controller/Produtos/produtosController';
 
 
 // import CameraProduto from './CameraProduto';
+import scheduleNotificationControl from '../../../Controller/Despensa/scheduleNotificationControl';
 
-const AdicionarProduto = ({ navigation }) => {
+const AdicionarProduto = ({ navigation, route} ) => {
+    //id mockado
+    const lastProductId = route.params;
+
     const [codigoDeBarras, setCodigoDeBarras] = useState('');
     const [nomeProduto, setNomeProduto] = useState('');
     const [marca, setMarca] = useState('');
@@ -28,6 +32,39 @@ const AdicionarProduto = ({ navigation }) => {
     const [quantidade, setQuantidade] = useState('0');
     const [subButton, setSubButton] = useState(false);
     const inputRef = useRef(null);
+   
+
+    const [disableButton, setDisableButton] = useState(false);
+
+    //dado mockado - envia o objeto novoProduto para products em Despensa.js
+    const salvarProdutoMockado = () => {
+        const novoProduto = {
+            produtoEditado: false,
+            key: lastProductId,
+            codigoDeBarras: codigoDeBarras,
+            name: nomeProduto,
+            marca: marca,
+            image: require('../../../Assets/Products/Rice.png'),
+            expire: dataValidade,
+            categoria: categoria,
+            unidadeMedida: unidadeMedida,
+            peso: peso,
+            quantidade: quantidade
+        }
+
+        //Cria notificacao
+        //Adicionar id como parametro
+        if (notificarVencimento) {
+            scheduleNotificationControl(dataValidade, dataNotificacao, nomeProduto, codigoDeBarras);
+        }
+
+        navigation.navigate({
+            name: 'Despensa',
+            params: novoProduto,
+            merge: true
+        })
+    }
+
     const maisQuantidade = () => {
         const sum = parseInt(quantidade) + 1;
         setQuantidade(sum.toString());
@@ -42,9 +79,9 @@ const AdicionarProduto = ({ navigation }) => {
     useEffect(() => {
         if (quantidade <= 0) {
             setQuantidade('0');
-            setSubButton(true);
+            setDisableButton(true);
         } else {
-            setSubButton(false);
+            setDisableButton(false);
         }
 
         
@@ -142,7 +179,7 @@ const AdicionarProduto = ({ navigation }) => {
         setIsActive(false)
     }
 
-    //Adicionar Produto
+    //Adicionar Produto na Despensa
     const salvarProduto = () => {
         const produto = {
             codigoDeBarras: codigoDeBarras,
@@ -339,7 +376,7 @@ const AdicionarProduto = ({ navigation }) => {
                         mode='outlined'
                         iconColor='red'
                         style={{ marginEnd: 10, marginTop: 10, borderColor: 'red' }}
-                        disabled={subButton}
+                        disabled={disableButton}
                         onPress={menosQuantidade}
                     />
                     <TextInput

@@ -1,9 +1,10 @@
 import React, { useState, useEffect} from 'react';
-import { View, FlatList, ScrollView, Image, TouchableOpacity } from 'react-native'
-import { Appbar, Avatar, Button, Divider, PaperProvider, Text, TextInput, IconButton } from 'react-native-paper';
-import { signOut } from '../../../Model/Firebase/signOut';
-import ProfileAvatar from '../Componentes/ProfileAvatar';
-import ListComponent from '../Componentes/ListComponent';
+import { FlatList, Image, TouchableOpacity } from 'react-native'
+import { PaperProvider, IconButton } from 'react-native-paper';
+
+import HomeListHeader from '../Componentes/HomeListHeader';
+import HomeRenderItem from '../Componentes/HomeRenderItem';
+import HomeEmptyList from '../Componentes/HomeEmptyList';
 import { getResidenciaAtual } from '../../../Controller/Residencia/residenciaController';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { removeResidenciaStorage } from '../../../Controller/Despensa/storage';
@@ -22,6 +23,15 @@ const HomeScreen = () => {
     //Residencia obtida: mostrar a lista de usuários
     //Itens próximos do vencimento?
     
+    const [products, setProducts] = useState([
+        { key: 1, codigoDeBarras: '1234567891234', name: 'Cerveja', marca: 'Brahma', image: 'https://cdn-cosmos.bluesoft.com.br/products/7891149102488', expire: '30/09/2023', quantidade: '6', categoria: 'Geladeira', peso: '350', unidadeMedida: 'mL' },
+        { key: 2, codigoDeBarras: '1234567891234', name: 'Café', marca: 'Pilão', image: 'https://cdn-cosmos.bluesoft.com.br/products/7896089012453', expire: '30/09/2023', quantidade: '1', categoria: 'Armário da Cozinha', peso: '500', unidadeMedida: 'g' },
+        { key: 3, codigoDeBarras: '1234567891234', name: 'Coca-Cola', marca: 'Coca-Cola', image: 'https://cdn-cosmos.bluesoft.com.br/products/7894900019155', expire: '30/09/2023', quantidade: '1', categoria: 'Geladeira', peso: '200', unidadeMedida: 'mL' },
+        { key: 4, codigoDeBarras: '1234567891234', name: 'Suco de Laranja', marca: 'Xandô', image: 'https://cdn-cosmos.bluesoft.com.br/products/7896623100028', expire: '30/09/2023', quantidade: '1', categoria: 'Geladeira', peso: '1', unidadeMedida: 'L' },
+        { key: 5, codigoDeBarras: '1234567891234', name: 'Leite', marca: 'Parmalat', image: 'https://cdn-cosmos.bluesoft.com.br/products/3789603461001', expire: '30/09/2023', quantidade: '1', categoria: 'Geladeira', peso: '1', unidadeMedida: 'L' },
+        { key: 6, codigoDeBarras: '1234567891234', name: 'Arroz', marca: 'Camil', image: 'https://cdn-cosmos.bluesoft.com.br/products/7896006711117', expire: '30/09/2023', quantidade: '1', categoria: 'Armário da Cozinha', peso: '1', unidadeMedida: 'kg' },
+    ])
+
 
     useEffect(() => {
         // removeResidenciaStorage()
@@ -33,7 +43,10 @@ const HomeScreen = () => {
             carregarResidenciaAtual()
             return () => console.log("lista atualizada");
         }, [])
-      );
+    );
+
+
+   
 
     const carregarResidenciaAtual = () => {
         getResidenciaAtual()
@@ -43,8 +56,7 @@ const HomeScreen = () => {
             
     }
 
-
-
+    
     if (residencia == null) {
         return (
             <PaperProvider>
@@ -58,79 +70,28 @@ const HomeScreen = () => {
                         Parece que ainda não há residências vinculadas à sua conta. {"\n"}{"\n"}Clique aqui para criar uma nova residência.
                         </Text>
                     </TouchableOpacity>
-
+    
                 </View>
             </PaperProvider>
         )
-    }
-    else {
+    }else{
         return (
-            <PaperProvider>
-                <ScrollView >
-                    <Text
-                        variant="titleMedium"
-                        style={{
-                            marginTop: 10,
-                            marginStart: 22
-                        }}>
-                        Membros
-                    </Text>
-                    <View style={{ flexDirection: 'row' }}>
-                        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                            {residencia.membros.map(perfil =>
-                                <View key={perfil.id} style={{ display: 'flex', flexDirection: 'row', margin: 5 }}>
-                                    <ProfileAvatar profileKey={perfil.id} name={perfil.nome} photo={perfil.foto} />
-                                </View>
-                            )}
-                        </ScrollView>
-                    </View>
-
-                    <Text
-                        variant="titleMedium"
-                        style={{
-                            marginTop: 10,
-                            marginStart: 22
-                        }}>
-                        Quadro de avisos
-                    </Text>
-                    <View style={{ marginTop: 10, marginHorizontal: 22, height: 140, borderWidth: 2, borderColor: '#d9d9d9', borderRadius: 10 }}>
-                        <Text
-                            variant="titleSmall"
-                            style={{
-                                marginTop: 5,
-                                marginHorizontal: 10,
-                                color: '#49454F'
-                            }}>
-                            {textoQuadro}
-                        </Text>
-                    </View>
-
-                    {/* <TextInput 
-                    maxLength={150} 
-                    multiline 
-                    style={{marginTop:10, marginHorizontal: 22}}
-                    onChangeText={textoQuadro => setTextoQuadro(textoQuadro)}
-                /> */}
-
-                    <Text
-                        variant="titleMedium"
-                        style={{
-                            marginTop: 10,
-                            marginStart: 22
-                        }}>
-                        Itens próximos do vencimento
-                    </Text>
-                    {/* <View>
-                        <ListComponent itens={products} />
-                    </View> */}
-
-
-                </ScrollView>
+            <PaperProvider>          
+                <FlatList
+                    style={{ backgroundColor: '#fff' }}
+                    data={products}
+                    keyExtractor={item => item.key}
+                    ListHeaderComponent={HomeListHeader}
+                    renderItem={({ item }) => <HomeRenderItem item={item} />}
+                    ListEmptyComponent={HomeEmptyList}
+                    onRefresh={() => console.log("refreshing")}
+                    //if set to true, the UI will show a loading indicator
+                    refreshing={false}
+                />
             </PaperProvider>
+        )
+    };
 
-        );
-    }
-
-};
+}
 
 export default HomeScreen;
