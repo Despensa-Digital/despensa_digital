@@ -1,7 +1,12 @@
 import { Button, PaperProvider, Text } from 'react-native-paper';
 import { signOut } from '../../../Model/Firebase/signOut';
+import { removeResidenciaStorage } from '../../../Controller/Despensa/storage';
 
 const Mais = () => {
+    const deslogar = ()=>{
+        removeResidenciaStorage()
+        signOut()
+    }
 
     return (
         <PaperProvider>          
@@ -20,7 +25,7 @@ const Mais = () => {
                 buttonColor='red'
                 style={{ marginTop: 50, marginHorizontal: 20 }}
                 mode="contained"
-                onPress={() => signOut()}>
+                onPress={() => deslogar()}>
                 Log out
             </Button>                  
         </PaperProvider>

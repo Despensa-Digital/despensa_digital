@@ -6,6 +6,7 @@ import ProfileAvatar from '../Componentes/ProfileAvatar';
 import ListComponent from '../Componentes/ListComponent';
 import { getResidenciaAtual } from '../../../Controller/Residencia/residenciaController';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import { removeResidenciaStorage } from '../../../Controller/Despensa/storage';
 
 
 const HomeScreen = () => {
@@ -23,8 +24,8 @@ const HomeScreen = () => {
     
 
     useEffect(() => {
+        // removeResidenciaStorage()
         carregarResidenciaAtual()
-        
     }, [])
 
     useFocusEffect(
@@ -38,7 +39,6 @@ const HomeScreen = () => {
         getResidenciaAtual()
             .then(doc => {
                 setResidencia(doc)
-                console.log("Home", residencia)
             })
             
     }

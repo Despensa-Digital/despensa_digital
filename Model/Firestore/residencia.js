@@ -1,5 +1,11 @@
 import firestore from '@react-native-firebase/firestore';
 import consumidor from "./consumidor";
+import { getResidencia } from '../../Controller/Residencia/residenciaController';
+import { getResidenciaStorage } from '../../Controller/Despensa/storage';
+
+
+
+
 
 
 const DB_RESIDENCIA = firestore().collection("Residencia");
@@ -53,9 +59,10 @@ const buscarResidencia = (residenciaId, callback)=>{
 
 
 const buscarResidenciaAtual = async ()=>{
-    // const current_id = await consumidor.buscarConsumidorLogado();
-    // const residenciaRef =  DB_RESIDENCIA
-
+    
+    const residenciaId = getResidenciaStorage()
+    console.log("Houve retorno",residenciaId)
+    const residenciaRef =  await DB_RESIDENCIA.doc(residenciaId).get();
     // return residenciaRef.get()
     //     .then(snap =>{
     //         let dados = {};
@@ -74,6 +81,11 @@ const buscarResidenciaAtual = async ()=>{
     //         return dados
     //     }
     // )
+    if(!residenciaRef.exists)
+        return null
+
+    return residenciaRef.data()
+    
 
 }
 

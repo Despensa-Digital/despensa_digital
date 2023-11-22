@@ -14,8 +14,15 @@ const buscarConsumidores = async () =>{
 }
 
 const buscarConsumidorLogado = async () =>{
-    const id = auth().currentUser.uid;
-    return id;
+    const id =  auth().currentUser.uid;
+    const consumidorRef = await DB_CONSUMIDORES.doc(id).get()
+
+
+    const consumidorLogado = consumidorRef.data();
+        
+    console.log("Consumidor Logado", consumidorLogado)
+
+    return consumidorLogado;
 }
 
 const buscarConsumidor  = async (id) =>{

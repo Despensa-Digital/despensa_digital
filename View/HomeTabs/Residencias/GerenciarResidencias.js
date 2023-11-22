@@ -6,6 +6,7 @@ import { View, ScrollView ,StyleSheet } from 'react-native';
 import NovaResidencia from './NovaResidencia';
 import { useNavigation, useFocusEffect  } from '@react-navigation/native';
 import { getResidencias } from '../../../Controller/Residencia/residenciaController';
+import { setResidenciaStorage } from '../../../Controller/Despensa/storage';
 
 
 const GerenciarResidencias = () => {
@@ -16,7 +17,6 @@ const GerenciarResidencias = () => {
 
   useEffect(() => {
     carregarResidencia()
-    console.log("Minhas residencias", residencias);
   }, [])
 
   useFocusEffect(
@@ -42,6 +42,10 @@ const GerenciarResidencias = () => {
   }
 
 
+  const switchCurrentResidencia = (data) =>{
+    setResidenciaStorage(data)
+  }
+
   return (
     <PaperProvider style={styles.raiz}>
       <View style={styles.container}>
@@ -51,10 +55,10 @@ const GerenciarResidencias = () => {
             <List.Item
               key={index}
               title={residencia.data.nome}
-              onPress={() => navigation.navigate('EditarResidencia', { residenciaId: residencia.id })}
+             
               style={styles.listItem}
-              left={props => <List.Icon {...props} icon="greenhouse" />}
-              right={props => <IconButton {...props} icon="dots-vertical" />}
+              left={props => <IconButton {...props} icon="greenhouse" onPress={()=> switchCurrentResidencia(residencia.id) }/>}
+              right={props => <IconButton {...props} icon="dots-vertical"  onPress={() => navigation.navigate('EditarResidencia', { residenciaId: residencia.id })}/>}
             />
           ))}
         </ScrollView>

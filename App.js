@@ -24,6 +24,7 @@ import RecuperarSenha from './View/RecuperarSenha';
 import ReenvirEmailRecuperacao from './View/ReenviarEmailRecuperacao';
 import AppBarButton from './View/AppBarButton';
 import BottomTabs from './View/HomeTabs/BottomTabs';
+import { setResidenciaAtivaStorage } from './Controller/Despensa/storage';
 
 
 
@@ -64,7 +65,7 @@ export default function App() {
                 console.log('email verificado: ' + user.emailVerified);
                 setIsEmailVerified(true);
                 //Adicionar a verificação de adição do Consumidor
-              
+                setResidenciaAtivaStorage()
             } else {
                 console.log('email verificado: ' + user.emailVerified);                        
             }
