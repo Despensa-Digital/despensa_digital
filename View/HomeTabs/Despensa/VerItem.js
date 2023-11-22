@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { View, FlatList, ScrollView, StyleSheet, Image } from 'react-native'
-import { FAB, PaperProvider, Text, List} from 'react-native-paper';
+import { View, FlatList, ScrollView, StyleSheet, Image, TouchableOpacity} from 'react-native'
+import { FAB, PaperProvider, Text, List } from 'react-native-paper';
 import CategoryAvatar from '../Componentes/CategoryAvatar';
 import ListProduct from '../Componentes/ListProduct';
 
@@ -69,7 +69,13 @@ const VerItem = ({ route, navigation }) => {
                 <View>
                     <ListProduct itens={products} />
                 </View>
-
+                <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.navigate('EditarProduto',{product})} hitSlop={{top: 20, bottom: 20, left: 50, right: 50}}>
+                <List.Item
+                    description={'Editar Item'}
+                    /*right={props => <Text>Produto: {product.name}{'\n'}Código de barra:{product.codigoDeBarra}</Text>}*/
+                />
+                    </TouchableOpacity>
+            
 
             </ScrollView>
             <FAB

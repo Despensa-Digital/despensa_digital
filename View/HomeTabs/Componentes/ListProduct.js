@@ -12,7 +12,7 @@ const ListProduct = (props) => {
                 <List.Item
                     key={product.key}
                     left={props => <Text>{`Data de validade: ${product.expire}\nLocal de compra: ${product.localCompra}\nPreço: ${product.preco}`}</Text>} 
-                    right={props => <IconButton {...props} icon="pencil" onPress={() => navigation.navigate('EditarProduto',{product})} />}
+                    right={props => <IconButton {...props} icon="pencil" onPress={() => navigation.navigate('EditarUnidade',{product})} />}
                     onPress={() => navigation.navigate('VerItem', { product })}
                 />
             </View>
