@@ -4,7 +4,6 @@ import { Appbar, Avatar, Button, Divider, PaperProvider, Text, TextInput, IconBu
 import { signOut } from '../../../Model/Firebase/signOut';
 import ProfileAvatar from '../Componentes/ProfileAvatar';
 import ListComponent from '../Componentes/ListComponent';
-
 import { getResidenciaAtual } from '../../../Controller/Residencia/residenciaController';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
@@ -21,29 +20,11 @@ const HomeScreen = () => {
     //Exibir a primeira residencia
     //Residencia obtida: mostrar a lista de usuários
     //Itens próximos do vencimento?
-    const photoDefault = '../../../Assets/ProfileThumbnail/saitama.png';
-    // const perfis = [
-    //     { name: 'Lucas', photo: require('../../../Assets/ProfileThumbnail/boy1.png') },
-    //     { name: 'Gabriel', photo: require('../../../Assets/ProfileThumbnail/boy2.png') },
-    //     { name: 'Carlos', photo: require('../../../Assets/ProfileThumbnail/boy3.png') },
-    //     { name: 'Julio', photo: require('../../../Assets/ProfileThumbnail/boy4.png') },
-    //     { name: 'Maria', photo: require('../../../Assets/ProfileThumbnail/girl1.png') },
-    //     { name: 'Clara', photo: require('../../../Assets/ProfileThumbnail/girl2.png') },
-    //     { name: 'Saitama', photo: require('../../../Assets/ProfileThumbnail/saitama.png') }
-    // ];
-
-    const products = [
-        { name: 'Beer', image: require('../../../Assets/Products/beer.png'), expire: '30/09/2023', key: 1 },
-        { name: 'Coffee', image: require('../../../Assets/Products/Coffee.png'), expire: '30/09/2023', key: 2 },
-        { name: 'Cola', image: require('../../../Assets/Products/Cola.png'), expire: '30/09/2023', key: 3 },
-        { name: 'Juice', image: require('../../../Assets/Products/Juice.png'), expire: '30/09/2023', key: 4 },
-        { name: 'Milk', image: require('../../../Assets/Products/Milk.png'), expire: '30/09/2023', key: 5 },
-        { name: 'Rice', image: require('../../../Assets/Products/Rice.png'), expire: '30/09/2023', key: 6 },
-    ]
+    
 
     useEffect(() => {
         carregarResidenciaAtual()
-        console.log("minha residencia", residencia)
+        
     }, [])
 
     useFocusEffect(
@@ -57,8 +38,9 @@ const HomeScreen = () => {
         getResidenciaAtual()
             .then(doc => {
                 setResidencia(doc)
+                console.log("Home", residencia)
             })
-
+            
     }
 
 
@@ -94,17 +76,10 @@ const HomeScreen = () => {
                         Membros
                     </Text>
                     <View style={{ flexDirection: 'row' }}>
-                        {/* <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                            {perfis.map(perfil =>
-                                <View key={perfil.name} style={{ display: 'flex', flexDirection: 'row', margin: 5 }}>
-                                    <ProfileAvatar profileKey={perfil.name} name={perfil.name} photo={perfil.photo} />
-                                </View>
-                            )}
-                        </ScrollView> */}
                         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                             {residencia.membros.map(perfil =>
                                 <View key={perfil.id} style={{ display: 'flex', flexDirection: 'row', margin: 5 }}>
-                                    <ProfileAvatar profileKey={perfil.id} name={perfil.nome} photo={perfil.foto ? perfil.foto : photoDefault} />
+                                    <ProfileAvatar profileKey={perfil.id} name={perfil.nome} photo={perfil.foto} />
                                 </View>
                             )}
                         </ScrollView>
@@ -145,9 +120,9 @@ const HomeScreen = () => {
                         }}>
                         Itens próximos do vencimento
                     </Text>
-                    <View>
+                    {/* <View>
                         <ListComponent itens={products} />
-                    </View>
+                    </View> */}
 
 
                 </ScrollView>
