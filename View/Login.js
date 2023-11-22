@@ -42,6 +42,13 @@ const Login = ({ navigation, user }) => {
         }
     }, [user]);
 
+    const logar = ()=>{
+        googleSignIn().then((response)=>{
+            const data = response.user
+            postConsumidor(data)
+            }
+        )
+    }
 
     const changeSecureTextEntry = value => {
         setStatus(status === false ? true : false);
@@ -73,11 +80,7 @@ const Login = ({ navigation, user }) => {
                     size={GoogleSigninButton.Size.Wide}
                     color={GoogleSigninButton.Color.Light}
                     // onPress={() => googleSignIn()}
-                    onPress={() => googleSignIn().then((response)=>{
-                        const consumer = response.user
-                        postConsumidor(consumer)
-                        }
-                    )}
+                    onPress={() => logar()}
                 />
             </View>
 

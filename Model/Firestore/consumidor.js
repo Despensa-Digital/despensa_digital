@@ -46,17 +46,15 @@ const buscarConsumidoresEmTempoReal = async() =>{
 
 const adicionarConsumidor = async (consumer) => {
    console.log("Modelll",consumer)
-    DB_CONSUMIDORES.doc(consumer.id).get()
+   DB_CONSUMIDORES.doc(consumer.uid).get()
         .then((doc) => {
             if (!doc.exists) {
-                console.log("Entrei aqui");
-                DB_CONSUMIDORES.doc(consumer.id).set({
+                DB_CONSUMIDORES.doc(consumer.uid).set({                    
                     email: consumer.email,
                     nome: consumer.nome,
                     fotoUrl: consumer.foto ? consumer.foto : default_photo
-                })
-                    .then((id) => {
-                        console.log("Usuário criado com sucesso. " + id)
+                }).then((doc) => {
+                        console.log("Usuário criado com sucesso. ", doc.id)
                     })
                     .catch(error => {
                         return error

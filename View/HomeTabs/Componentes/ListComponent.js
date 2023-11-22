@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { View } from 'react-native';
-import { Avatar, Divider, List } from 'react-native-paper';
+import { Avatar, Divider, List,Badge } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
 
