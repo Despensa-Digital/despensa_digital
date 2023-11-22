@@ -1,13 +1,15 @@
-import { useEffect, useState } from 'react';
-import { View, FlatList, ScrollView } from 'react-native'
+import React, { useState, useEffect} from 'react';
+import { View, FlatList, ScrollView, Image, TouchableOpacity } from 'react-native'
 import { Appbar, Avatar, Button, Divider, PaperProvider, Text, TextInput, IconButton } from 'react-native-paper';
 import { signOut } from '../../../Model/Firebase/signOut';
 import ProfileAvatar from '../Componentes/ProfileAvatar';
 import ListComponent from '../Componentes/ListComponent';
 import { getResidenciaAtual } from '../../../Controller/Residencia/residenciaController';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
 
 const HomeScreen = () => {
+    const navigation = useNavigation();
 
     const [textoQuadro, setTextoQuadro] = useState('Escreva aqui suas anotações...');
     //const [membros, setMembros] = useState([]);
@@ -25,6 +27,12 @@ const HomeScreen = () => {
         
     }, [])
 
+    useFocusEffect(
+        React.useCallback(() => {
+            carregarResidenciaAtual()
+            return () => console.log("lista atualizada");
+        }, [])
+      );
 
     const carregarResidenciaAtual = () => {
         getResidenciaAtual()
@@ -41,24 +49,16 @@ const HomeScreen = () => {
         return (
             <PaperProvider>
                 <View style={{ 
-                    color: '#00000088', 
                     textAlign: 'center', 
-                    fontSize: 20, 
-                    marginTop: 50,
-                    marginHorizontal: 50
+                    marginTop: 230,
                 }}>
-                    <Text>
-                        Nenhuma Residencia encontrada!
-                    </Text>
-                    <Text>
-                        Por favor cadastre uma residencia clicando em:
-                    </Text>
-                    <IconButton
-                        icon="home-group-plus"
-                        size={40}
-                        iconColor='#5DB075'
-                        onPress={() => navigation.navigate('GerenciarResidencias')}
-                    />
+                    <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.navigate('GerenciarResidencias')} hitSlop={{top: 20, bottom: 20, left: 50, right: 50}}>
+                        {/* <Image source={require('../../../Assets/Home/empty.jpg')} style={{ alignSelf: "center", width: 170, height: 170 }} />  */}
+                        <Text  style={{color:'black', textAlign: "center", fontSize: 18, paddingHorizontal: 20}}>
+                        Parece que ainda não há residências vinculadas à sua conta. {"\n"}{"\n"}Clique aqui para criar uma nova residência.
+                        </Text>
+                    </TouchableOpacity>
+
                 </View>
             </PaperProvider>
         )

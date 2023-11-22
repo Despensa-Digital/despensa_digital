@@ -1,36 +1,12 @@
-import { PaperProvider, Text, Button } from 'react-native-paper';
-
-import { useCallback, useMemo, useRef, useState } from 'react';
-import { View, StyleSheet, SafeAreaView } from 'react-native';
-import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
-import { TextInput } from 'react-native-paper';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
+import { View, StyleSheet, Modal } from 'react-native';
+import { Text, Button, TextInput } from 'react-native-paper';
 
 import { postResidencia } from '../../../Controller/Residencia/residenciaController';
 
 const NovaResidencia = ({ setModal, modal }) => {
-  const bottomSheetRef = useRef();
-  const snapPoints = useMemo(() => ['45%', '60%'], []);
-  const handleSheetChanges = useCallback((index) => {
-    console.log('handleSheetChanges', index);
-    if (index === -1) {
-      setModal(false);
-    }
-  }, []);
-
   // variables
   const [nomeResidencia, setNomeResidencia] = useState("");
-
-  // renders
-  const renderBackdrop = useCallback(
-    props => (
-      <BottomSheetBackdrop
-        {...props}
-        disappearsOnIndex={-1}
-      />
-    ),
-    []
-  );
-
   const adicionarResidencia = () =>{
     postResidencia(nomeResidencia)
     .then(
@@ -39,18 +15,14 @@ const NovaResidencia = ({ setModal, modal }) => {
   }
   
 
-
   return (
-    <BottomSheet
-      style={{ flex: 1 }}
-      ref={bottomSheetRef}
-      index={(modal ? 1 : -1)}
-      snapPoints={snapPoints}
-      onChange={handleSheetChanges}
-      enablePanDownToClose={true}
-      backdropComponent={renderBackdrop}
+    <Modal
+      visible={modal}
+      transparent={true}
+      onRequestClose={() => setModal(falseZ)}
     >
-      <View style={styles.contentContainer}>
+      <View style={styles.modalContainer}>
+        <View style={styles.modalContent}>
         <Text style={styles.textBox}>Nova Residência</Text>
         <TextInput
           style={styles.textInput}
@@ -62,8 +34,7 @@ const NovaResidencia = ({ setModal, modal }) => {
         />
 
         <Button
-          buttonColor='#5DB075'
-          textColor='white'
+          buttonColor="#5DB075"
           style={styles.buttonSave}
           mode="contained"
           onPress={() => adicionarResidencia()}>
@@ -71,17 +42,18 @@ const NovaResidencia = ({ setModal, modal }) => {
         </Button>
 
         <Button
-          buttonColor='white'
-          textColor='#5DB075'
+          buttonColor="white"
+          textColor="#5DB075"
           theme={{ colors: { outline: '#5DB075' } }}
           style={styles.buttonCancel}
           mode="outlined"
-          onPress={() => adicionarResidencia()}>
+          onPress={() => setModal(false)}>
           Cancelar
         </Button>
-      </View>
-    </BottomSheet>
+       </View>
 
+      </View>
+    </Modal>
   );
 };
 
@@ -89,7 +61,6 @@ const styles = StyleSheet.create({
   sheetStyle: {
     backgroundColor: 'transparent',
   },
-
   container: {
     flex: 1,
     backgroundColor: 'transparent',
@@ -97,27 +68,38 @@ const styles = StyleSheet.create({
     borderColor: '#fff',
   },
   contentContainer: {
-
     flex: 1,
   },
   textInput: {
     backgroundColor: 'white',
     marginHorizontal: 10,
     marginTop: 10,
+    alignSelf:'stretch'
   },
-
   buttonCancel: {
-    marginTop: 10,
-    marginHorizontal: 20,
+    alignSelf:'stretch',
+    marginTop: 20,
   },
 
   buttonSave: {
-    marginTop: 10,
-    marginHorizontal: 20,
+    alignSelf:'stretch',
+    marginTop: 20,
+  },
+  textBox: { alignSelf: 'center', fontSize: 25 },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
 
   },
-
-  textBox: { alignSelf: 'center', fontSize: 25 }
+  modalContent: {
+    backgroundColor: '#fff',
+    padding: 50,
+    borderRadius: 10,
+    alignItems: 'center',
+    alignSelf:'stretch',
+  },
 });
 
 

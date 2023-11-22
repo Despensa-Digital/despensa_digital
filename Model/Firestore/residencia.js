@@ -47,30 +47,33 @@ const buscarResidencia = (residenciaId, callback)=>{
 }
 
 
-const buscarResidenciaAtual = async ()=>{
-    const current_id = await consumidor.buscarConsumidorLogado();
-    const residenciaRef =  DB_RESIDENCIA
 
-    return residenciaRef.get()
-        .then(snap =>{
-            let dados = {};
-            snap.forEach((doc) =>{
-                if(Array.isArray(doc.data().membros)){
-                    const membroLogado = doc.data().membros.find(membro => membro.id === current_id)
-                    if(membroLogado && doc.exists && doc.data().current_residencia){
-                        console.log("Encontrei!", doc.data().nome)
-                        dados = doc.data()
-                    }else{
-                        console.log("Nada encontrado")
-                        dados = null
-                    }
-                }
-            })
+
+
+
+
+const buscarResidenciaAtual = async ()=>{
+    // const current_id = await consumidor.buscarConsumidorLogado();
+    // const residenciaRef =  DB_RESIDENCIA
+
+    // return residenciaRef.get()
+    //     .then(snap =>{
+    //         let dados = {};
+    //         snap.forEach((doc) =>{
+    //             if(Array.isArray(doc.data().membros)){
+    //                 const membroLogado = doc.data().membros.find(membro => membro.id === current_id)
+    //                 if(membroLogado && doc.exists && doc.data().current_residencia){
+    //                     dados = doc.data()
+    //                 }else{
+    //                     dados = null
+    //                 }
+    //             }
+    //         })
 
             
-            return dados
-        }
-    )
+    //         return dados
+    //     }
+    // )
 
 }
 
