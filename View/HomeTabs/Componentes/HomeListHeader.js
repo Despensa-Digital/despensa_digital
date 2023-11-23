@@ -4,20 +4,20 @@ import {  Text } from 'react-native-paper';
 import ProfileAvatar from '../Componentes/ProfileAvatar';
 
 //Componente para o ListHeader do FlatList [partes da tela que não são itens da lista]
-const HomeListHeader = () => {
+const HomeListHeader = ({membros}) => {
 
     const [textoQuadro, setTextoQuadro] = useState('Escreva aqui suas anotações...');
 
     //dados mockados -- remover no futuro
-    const perfis = [
-        { name: 'Lucas', photo: require('../../../Assets/ProfileThumbnail/boy1.png') },
-        { name: 'Gabriel', photo: require('../../../Assets/ProfileThumbnail/boy2.png') },
-        { name: 'Carlos', photo: require('../../../Assets/ProfileThumbnail/boy3.png') },
-        { name: 'Julio', photo: require('../../../Assets/ProfileThumbnail/boy4.png') },
-        { name: 'Maria', photo: require('../../../Assets/ProfileThumbnail/girl1.png') },
-        { name: 'Clara', photo: require('../../../Assets/ProfileThumbnail/girl2.png') },
-        { name: 'Saitama', photo: require('../../../Assets/ProfileThumbnail/saitama.png') }
-    ];
+    // const perfis = [
+    //     { name: 'Lucas', photo: require('../../../Assets/ProfileThumbnail/boy1.png') },
+    //     { name: 'Gabriel', photo: require('../../../Assets/ProfileThumbnail/boy2.png') },
+    //     { name: 'Carlos', photo: require('../../../Assets/ProfileThumbnail/boy3.png') },
+    //     { name: 'Julio', photo: require('../../../Assets/ProfileThumbnail/boy4.png') },
+    //     { name: 'Maria', photo: require('../../../Assets/ProfileThumbnail/girl1.png') },
+    //     { name: 'Clara', photo: require('../../../Assets/ProfileThumbnail/girl2.png') },
+    //     { name: 'Saitama', photo: require('../../../Assets/ProfileThumbnail/saitama.png') }
+    // ];
 
     return (
         <>
@@ -31,9 +31,9 @@ const HomeListHeader = () => {
             </Text>
             <View style={{ flexDirection: 'row' }}>
                 <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                    {perfis.map(perfil =>
-                        <View key={perfil.name} style={{ display: 'flex', flexDirection: 'row', margin: 5 }}>
-                            <ProfileAvatar profileKey={perfil.name} name={perfil.name} photo={perfil.photo} />
+                    {membros.map(perfil =>
+                        <View key={perfil.id} style={{ display: 'flex', flexDirection: 'row', margin: 5 }}>
+                            <ProfileAvatar profileKey={perfil.id} name={perfil.nome} photo={perfil.foto} />
                         </View>
                     )}
                 </ScrollView>

@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import { View, FlatList, ScrollView, StyleSheet } from 'react-native'
-import { ActivityIndicator, MD2Colors,Appbar, Avatar, Button, Divider, FAB, PaperProvider, Searchbar, Text, TextInput } from 'react-native-paper';
+import { ActivityIndicator, MD2Colors, Appbar, Avatar, Button, Divider, FAB, PaperProvider, Searchbar, Text, TextInput } from 'react-native-paper';
 
-import ListComponent from '../Componentes/ListComponent';
 import { getProdutos } from '../../../Controller/Produtos/produtosController';
 
 import FastImage from 'react-native-fast-image';
@@ -13,23 +12,14 @@ import DespensaRenderItem from '../Componentes/DespensaRenderItem';
 import DespensaEmptyList from '../Componentes/DespensaEmptyList';
 
 
-    
+
 const Despensa = ({ route, navigation }) => {
     const [searchQuery, setSearchQuery] = useState('');
     const [produtos, setProdutos] = useState([])
-    const [loading, setLoading]= useState(true);
+    const [loading, setLoading] = useState(true);
 
     const onChangeSearch = query => setSearchQuery(query);
     //--MOCK--
-    // const [products, setProducts] = useState([
-    //     { key: 1, codigoDeBarras: '1234567891234', name: 'Cerveja', marca: 'Brahma', image: require('../../../Assets/Products/beer.png'), expire: '30/09/2023', quantidade: '6', categoria: 'Geladeira', peso: '350', unidadeMedida: 'mL'   },
-    //     { key: 2, codigoDeBarras: '1234567891234', name: 'Café', marca: 'Pilão', image: require('../../../Assets/Products/Coffee.png'), expire: '30/09/2023', quantidade: '1', categoria: 'Armário da Cozinha', peso: '500', unidadeMedida: 'g' },
-    //     { key: 3, codigoDeBarras: '1234567891234', name: 'Coca-Cola', marca: 'Coca-Cola', image: require('../../../Assets/Products/Cola.png'), expire: '30/09/2023', quantidade: '1', categoria: 'Geladeira', peso: '200', unidadeMedida: 'mL'  },
-    //     { key: 4, codigoDeBarras: '1234567891234', name: 'Suco de Laranja', marca: 'Xandô', image: require('../../../Assets/Products/Juice.png'), expire: '30/09/2023', quantidade: '1', categoria: 'Geladeira', peso: '1', unidadeMedida: 'L'  },
-    //     { key: 5, codigoDeBarras: '1234567891234', name: 'Leite', marca: 'Parmalat', image: require('../../../Assets/Products/Milk.png'), expire: '30/09/2023', quantidade: '1', categoria: 'Geladeira', peso: '1', unidadeMedida: 'L'  },
-    //     { key: 6, codigoDeBarras: '1234567891234', name: 'Arroz', marca: 'Camil', image: require('../../../Assets/Products/Rice.png'), expire: '30/09/2023', quantidade: '1', categoria: 'Armário da Cozinha', peso: '1', unidadeMedida: 'kg'  },
-    // ])
-
     const [products, setProducts] = useState([
         { key: 1, codigoDeBarras: '1234567891234', name: 'Cerveja', marca: 'Brahma', image: 'https://cdn-cosmos.bluesoft.com.br/products/7891149102488', expire: '30/09/2023', quantidade: '6', categoria: 'Geladeira', peso: '350', unidadeMedida: 'mL' },
         { key: 2, codigoDeBarras: '1234567891234', name: 'Café', marca: 'Pilão', image: 'https://cdn-cosmos.bluesoft.com.br/products/7896089012453', expire: '30/09/2023', quantidade: '1', categoria: 'Armário da Cozinha', peso: '500', unidadeMedida: 'g' },
@@ -40,12 +30,12 @@ const Despensa = ({ route, navigation }) => {
     ])
 
 
-    useEffect(()=>{
-        getProdutos((produto)=>{
+    useEffect(() => {
+        getProdutos((produto) => {
             setProdutos(produto)
             setLoading(false)
         })
-    },[])
+    }, [])
 
     // const [products, setProducts] = useState([])
 
@@ -79,14 +69,14 @@ const Despensa = ({ route, navigation }) => {
             setLastProductId(lastProductId + 1)
         }
     }, [route.params]);
-    if(loading){
+    if (loading) {
         return (
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <ActivityIndicator animating={true} color={MD2Colors.grey400} />
+            <View style={{ flex: 1, justifyContent: 'center' }}>
+                <ActivityIndicator animating={true} color="#00ff00" />
             </View>
         )
     }
-    
+
     //--FIM DO MOCK--    
     return (
         <PaperProvider>

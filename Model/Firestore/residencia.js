@@ -60,8 +60,7 @@ const buscarResidencia = (residenciaId, callback)=>{
 
 const buscarResidenciaAtual = async ()=>{
     
-    const residenciaId = getResidenciaStorage()
-    console.log("Houve retorno",residenciaId)
+    const residenciaId = await getResidenciaStorage()
     const residenciaRef =  await DB_RESIDENCIA.doc(residenciaId).get();
     // return residenciaRef.get()
     //     .then(snap =>{

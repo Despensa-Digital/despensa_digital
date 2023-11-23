@@ -3,28 +3,26 @@ import consumidor from '../../Model/Firestore/consumidor'
 const storage = new MMKV({id:"DespensaApp"})
 
 
-export const setResidenciaAtivaStorage = async ()=>{
-    const consumidorLogado =  await consumidor.buscarConsumidorLogado()
-
-    
-
-}
 
 
-export const setResidenciaStorage = (data)=>{
+
+
+export const setResidenciaStorage = async (data)=>{
+    const consumidorLogado = await consumidor.buscarConsumidorLogado();
     const residenciaId = data
-    storage.set("minhaResidencia", residenciaId)
-   
+    storage.set(`user.${consumidorLogado}`, residenciaId)
 }
 
 
-export const getResidenciaStorage = ()=>{
-    const residenciaId = storage.getString('minhaResidencia')
+export const getResidenciaStorage =  async ()=>{
+    const consumidorLogado = await consumidor.buscarConsumidorLogado();
+    const residenciaId = storage.getString(`user.${consumidorLogado}`)
     return residenciaId;
 }
 
 
-export const removeResidenciaStorage = ()=>{
-    storage.delete('minhaResidencia')
+export const removeResidenciaStorage = async ()=>{
+    const consumidorLogado =  await consumidor.buscarConsumidorLogado()
+    storage.delete(`user.${consumidorLogado}`)
 }
 

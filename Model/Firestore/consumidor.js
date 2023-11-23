@@ -13,17 +13,11 @@ const buscarConsumidores = async () =>{
     return consumers;
 }
 
-const buscarConsumidorLogado = async () =>{
+const buscarConsumidorLogado = async() =>{
     const id =  auth().currentUser.uid;
-    const consumidorRef = await DB_CONSUMIDORES.doc(id).get()
-
-
-    const consumidorLogado = consumidorRef.data();
-        
-    console.log("Consumidor Logado", consumidorLogado)
-
-    return consumidorLogado;
+    return id;
 }
+
 
 const buscarConsumidor  = async (id) =>{
     const subscriber = await DB_CONSUMIDORES.doc(id)

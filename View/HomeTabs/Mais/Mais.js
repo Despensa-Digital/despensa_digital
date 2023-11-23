@@ -4,7 +4,7 @@ import { removeResidenciaStorage } from '../../../Controller/Despensa/storage';
 
 const Mais = () => {
     const deslogar = ()=>{
-        removeResidenciaStorage()
+        // removeResidenciaStorage()
         signOut()
     }
 

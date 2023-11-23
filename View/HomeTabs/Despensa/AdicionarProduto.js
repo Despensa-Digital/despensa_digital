@@ -5,14 +5,15 @@ import { Button, IconButton, Modal, PaperProvider, Portal, Switch, Text, TextInp
 import { useIsFocused } from '@react-navigation/native';
 import { useAppState } from '@react-native-community/hooks'
 import { useCameraPermission, useCameraDevice, Camera, useCodeScanner } from 'react-native-vision-camera';
-import { DatePickerInput } from 'react-native-paper-dates';
+import { DatePickerInput, pt, registerTranslation } from 'react-native-paper-dates';
 import { postProdutos } from '../../../Controller/Produtos/produtosController';
-
 
 // import CameraProduto from './CameraProduto';
 import scheduleNotificationControl from '../../../Controller/Despensa/scheduleNotificationControl';
-
+registerTranslation('pt', pt)
 const AdicionarProduto = ({ navigation, route} ) => {
+
+    
     //id mockado
     const lastProductId = route.params;
 
@@ -282,7 +283,7 @@ const AdicionarProduto = ({ navigation, route} ) => {
 
                 <DatePickerInput
                     style={{ marginTop: 10, marginHorizontal: 20, width: 100 }}
-                    locale='pt-Br'
+                    locale='pt'
                     label="Data de validade"
                     value={dataValidade}
                     onChange={dataValidade => setDataValidade(dataValidade)}

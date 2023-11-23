@@ -1,6 +1,7 @@
 import produto from '../../Model/Firestore/produto';
 
 import residencia from '../../Model/Firestore/residencia';
+import { getResidenciaStorage } from '../Despensa/storage';
 
 const getProdutos = async (callback)=>{
     try{
@@ -13,7 +14,8 @@ const getProdutos = async (callback)=>{
 
 const postProdutos = async (produtos) =>{
     try {
-        const residenciaId = await residencia.buscarIdResidenciaAtual()
+        const residenciaId = await getResidenciaStorage()
+        console.log("Alo",residenciaId)
         return produto.adicionarProduto(residenciaId, produtos)
     } catch (error) {
         console.log("ERROR: ", error)

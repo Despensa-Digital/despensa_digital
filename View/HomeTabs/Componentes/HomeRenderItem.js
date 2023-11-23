@@ -12,13 +12,13 @@ const HomeRenderItem = ({item}) => {
             <View style={{ marginStart: 10 }}>
                 <List.Item
                     key={item.key}
-                    title={item.name}
+                    title={`${item.nome} ${item.marca}` }
                     description={`Data de validade: ${item.expire}`}
                     left={() =>
                         <FastImage
                             style={{ width: 60 }}
                             source={{
-                                uri: item.image.toString(),
+                                uri: `https://cdn-cosmos.bluesoft.com.br/products/${item.codigoDeBarras}`.toString(),
                                 priority: FastImage.priority.normal,
                             }}
                             defaultSource={require('../../../Assets/Categories/Hamper.png')}

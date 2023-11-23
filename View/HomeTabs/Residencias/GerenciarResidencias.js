@@ -1,22 +1,29 @@
-import { PaperProvider, Button, List, IconButton  } from 'react-native-paper';
+import { PaperProvider, Button, List, IconButton, Snackbar, RadioButton, ActivityIndicator, MD2Colors } from 'react-native-paper';
 
 import React, { useEffect, useState } from 'react';
-import { View, ScrollView ,StyleSheet } from 'react-native';
+import { View, ScrollView, StyleSheet } from 'react-native';
 
 import NovaResidencia from './NovaResidencia';
-import { useNavigation, useFocusEffect  } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { getResidencias } from '../../../Controller/Residencia/residenciaController';
-import { setResidenciaStorage } from '../../../Controller/Despensa/storage';
+import { getResidenciaStorage, setResidenciaStorage } from '../../../Controller/Despensa/storage';
 
 
 const GerenciarResidencias = () => {
   const navigation = useNavigation();
   const [modal, setModal] = useState(false);
   const [residencias, setResidencias] = useState([]);
+  const [visible, setVisible] = useState(false)
+  const [loading, setLoading]= useState(true);
+  const [checked, setChecked] = useState()
 
+  const onToggleSnackBar = () => setVisible(!visible);
+
+  const onDismissSnackBar = () => setVisible(false);
 
   useEffect(() => {
     carregarResidencia()
+    carregarResidenciaAtual()
   }, [])
 
   useFocusEffect(
@@ -25,16 +32,20 @@ const GerenciarResidencias = () => {
       return () => console.log("lista atualizada");
     }, [])
   );
-
-
+  
   const carregarResidencia = () => {
     getResidencias()
       .then(dados => {
         setResidencias(dados)
+        setLoading(false)
       })
-
   }
 
+  const carregarResidenciaAtual = async () =>{
+    const id = await getResidenciaStorage()
+    setChecked(id)
+  }
+    
 
   const setModalComUpdate = (valor) => {
     setModal(valor);
@@ -42,10 +53,24 @@ const GerenciarResidencias = () => {
   }
 
 
-  const switchCurrentResidencia = (data) =>{
-    setResidenciaStorage(data)
+  const switchCurrentResidencia = async (data) => {
+    await setResidenciaStorage(data)
+    onToggleSnackBar()
+    setChecked(data)
+    setTimeout(()=>{
+      navigation.goBack()
+    }, 1000)
   }
 
+  
+
+  if(loading){
+    return (
+      <View style={{flex: 1, justifyContent: 'center'}}>
+        <ActivityIndicator animating={true} color="#00ff00" />
+      </View>
+    )
+  }
   return (
     <PaperProvider style={styles.raiz}>
       <View style={styles.container}>
@@ -55,10 +80,18 @@ const GerenciarResidencias = () => {
             <List.Item
               key={index}
               title={residencia.data.nome}
-             
+
               style={styles.listItem}
-              left={props => <IconButton {...props} icon="greenhouse" onPress={()=> switchCurrentResidencia(residencia.id) }/>}
-              right={props => <IconButton {...props} icon="dots-vertical"  onPress={() => navigation.navigate('EditarResidencia', { residenciaId: residencia.id })}/>}
+              // left={props => <IconButton {...props} icon="greenhouse" onPress={()=> switchCurrentResidencia(residencia.id) }/>}
+              left={props =>
+                <RadioButton {...props}
+                  color='#5DB075'
+                  
+                  status={checked === residencia.id ? 'checked' : 'unchecked'}
+                  onPress={() => switchCurrentResidencia(residencia.id)} />}
+              right={props =>
+                <IconButton {...props} icon="dots-vertical"
+                  onPress={() => navigation.navigate('EditarResidencia', { residenciaId: residencia.id })} />}
             />
           ))}
         </ScrollView>
@@ -73,6 +106,20 @@ const GerenciarResidencias = () => {
           Adicionar nova residência
         </Button>
 
+        <View>
+          <Snackbar
+            style={{ left: 0, right: 0 }}
+            visible={visible}
+            onDismiss={onDismissSnackBar}
+            duration={Snackbar.DURATION_SHORT}
+            
+            action={{
+              icon: 'check-decagram'
+            }}
+          >
+            Residência atualizada com sucesso!
+          </Snackbar>
+        </View>
 
       </View>
     </PaperProvider>

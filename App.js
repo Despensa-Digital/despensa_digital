@@ -80,7 +80,6 @@ export default function App() {
                 console.log('email verificado: ' + user.emailVerified);
                 setIsEmailVerified(true);
                 //Adicionar a verificação de adição do Consumidor
-                setResidenciaAtivaStorage()
             } else {
                 console.log('email verificado: ' + user.emailVerified);
             }

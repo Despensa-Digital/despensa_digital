@@ -1,21 +1,24 @@
 import React, { useState, useEffect} from 'react';
-import { FlatList, Image, TouchableOpacity } from 'react-native'
-import { PaperProvider, IconButton } from 'react-native-paper';
+import { FlatList, TouchableOpacity, View, Text } from 'react-native'
+import { PaperProvider, IconButton, ActivityIndicator, MD2Colors } from 'react-native-paper';
 
 import HomeListHeader from '../Componentes/HomeListHeader';
 import HomeRenderItem from '../Componentes/HomeRenderItem';
 import HomeEmptyList from '../Componentes/HomeEmptyList';
 import { getResidenciaAtual } from '../../../Controller/Residencia/residenciaController';
+import { getProdutos } from '../../../Controller/Produtos/produtosController';
+
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
-import { removeResidenciaStorage } from '../../../Controller/Despensa/storage';
+
 
 
 const HomeScreen = () => {
     const navigation = useNavigation();
-
     const [textoQuadro, setTextoQuadro] = useState('Escreva aqui suas anotações...');
     //const [membros, setMembros] = useState([]);
     const [residencia, setResidencia] = useState({ membros: [] });
+    const [produtos, setProdutos] = useState([])
+    const [loading, setLoading]= useState(true);
     //Pegar o id do usuario
 
     //Listar suas residencias
@@ -36,11 +39,15 @@ const HomeScreen = () => {
     useEffect(() => {
         // removeResidenciaStorage()
         carregarResidenciaAtual()
+        carregarProdutos()
+
+        return ()=> carregarProdutos()
     }, [])
 
     useFocusEffect(
         React.useCallback(() => {
             carregarResidenciaAtual()
+            carregarProdutos()
             return () => console.log("lista atualizada");
         }, [])
     );
@@ -52,12 +59,22 @@ const HomeScreen = () => {
         getResidenciaAtual()
             .then(doc => {
                 setResidencia(doc)
+                // setLoading(false)
             })
             
     }
 
+
+    const carregarProdutos = ()=>{
+        getProdutos((produto)=>{
+            setProdutos(produto)
+            setLoading(false)
+        })
+    }
     
-    if (residencia == null) {
+
+    
+    if (residencia === null) {
         return (
             <PaperProvider>
                 <View style={{ 
@@ -79,12 +96,19 @@ const HomeScreen = () => {
             <PaperProvider>          
                 <FlatList
                     style={{ backgroundColor: '#fff' }}
-                    data={products}
+                    data={produtos}
                     keyExtractor={item => item.key}
-                    ListHeaderComponent={HomeListHeader}
+                    ListHeaderComponent={<HomeListHeader membros={residencia.membros}/>}
                     renderItem={({ item }) => <HomeRenderItem item={item} />}
-                    ListEmptyComponent={HomeEmptyList}
-                    onRefresh={() => console.log("refreshing")}
+                    ListEmptyComponent={
+                        loading ?
+                        <View style={{flex: 1, justifyContent: 'center'}}>
+                            <ActivityIndicator animating={true} color="#00ff00" />
+                        </View>
+                        :<HomeEmptyList/>
+                    }
+                    onRefresh={() => {
+                        console.log("refreshing")}}
                     //if set to true, the UI will show a loading indicator
                     refreshing={false}
                 />
@@ -93,5 +117,6 @@ const HomeScreen = () => {
     };
 
 }
+
 
 export default HomeScreen;
