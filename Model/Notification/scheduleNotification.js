@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import notifee, { AndroidImportance, TriggerType } from '@notifee/react-native';
 
 
@@ -6,49 +6,29 @@ import notifee, { AndroidImportance, TriggerType } from '@notifee/react-native';
 //Se o id da notificacao ja estiver sendo usado, atualizara a notificacao
 //adicionar id como parametro
 async function scheduleNotification(dataAgendada, nomeProduto, codigoDeBarras) {
-    const [imgUrl, setImgUrl] = useState();
+    console.log("SCHEDULE: ", dataAgendada);
+
     const url = 'https://cdn-cosmos.bluesoft.com.br/products/' + codigoDeBarras;
 
-    //cria uma data
-        // var date = new Date(Date.now());
-        // date.setSeconds(date.getSeconds() + 20);
-
-    //TESTES DE TIMESTAMP
-        // var dateMinus = new Date(Date.now());
-        // dateMinus.setHours(dateMinus.getHours() - 5);
-
-        // var datePlus = new Date('2023-11-13 08:00:00');
-
-        // console.log("Data normal: ", date);
-        // console.log('data getTime: ', date.getTime());
-
-        // console.log("DataMinus normal: ", dateMinus);
-        // console.log('dataMinus getTime: ', dateMinus.getTime());
-
-        // console.log("DataPlus normal: ", datePlus);
-        // console.log('dataPlus getTime: ', datePlus.getTime());
-    //FIM DOS TESTES
-
     //verifica se url retorna imagem, caso contrario, utiliza imagem default
-    fetch(url)
+    const imgSource = await fetch(url)
         .then((res) => {
             if (res.status == 404) {
-                setImgUrl(require('../../Assets/Notification/DefaultImg.png'));
+                return (require('../../Assets/Notification/DefaultImg.png'));
             } else {
-                setImgUrl('https://cdn-cosmos.bluesoft.com.br/products/' + codigoDeBarras);
+                return ('https://cdn-cosmos.bluesoft.com.br/products/' + codigoDeBarras);
             }
         })
         .catch((err) => {
             console.log(err);
-            setImgUrl(require('../../Assets/Notification/DefaultImg.png'));
+            return (require('../../Assets/Notification/DefaultImg.png'));
         });
-    
+
 
     // Create a time-based trigger
     const triggger = {
         type: TriggerType.TIMESTAMP,
         timestamp: dataAgendada //ja esta recebendo data em timestamp
-        // timestamp: date.getTime(), //converte a data para timestamp
     };
 
     //cria um canal para envio de notificacoes
@@ -62,7 +42,7 @@ async function scheduleNotification(dataAgendada, nomeProduto, codigoDeBarras) {
 
     // Create a trigger notification
     // passar id do itemProduto
-    await notifee.createTriggerNotification(
+    return await notifee.createTriggerNotification(
         {
             title: 'Produto próximo do vencimento',
             body: 'O produto ' + nomeProduto + ' está para vencer',
@@ -70,14 +50,15 @@ async function scheduleNotification(dataAgendada, nomeProduto, codigoDeBarras) {
                 channelId,
                 smallIcon: 'ic_small_icon',
                 color: '#5DB075',
-                largeIcon: imgUrl,
+                largeIcon: imgSource,
                 pressAction: {
                     id: 'default'
                 },
             },
         },
         triggger,
-    );
+    ).then(() => notifee.getTriggerNotificationIds()).then((ids) => ids.at(-1));
+
 }
 
 export default scheduleNotification;

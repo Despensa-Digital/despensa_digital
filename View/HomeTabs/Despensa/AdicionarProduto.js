@@ -4,7 +4,7 @@ import { Button, IconButton, Modal, PaperProvider, Portal, Switch, Text, TextInp
 
 import scheduleNotificationControl from '../../../Controller/Despensa/scheduleNotificationControl';
 
-const AdicionarProduto = ({ navigation, route} ) => {
+const AdicionarProduto = ({ navigation, route }) => {
     //id mockado
     const lastProductId = route.params;
 
@@ -24,8 +24,10 @@ const AdicionarProduto = ({ navigation, route} ) => {
     const [quantidade, setQuantidade] = useState('0');
     const [disableButton, setDisableButton] = useState(false);
 
+
+
     //dado mockado - envia o objeto novoProduto para products em Despensa.js
-    const salvarProduto = () => {
+    const salvarProduto = async () => {
         const novoProduto = {
             produtoEditado: false,
             key: lastProductId,
@@ -43,7 +45,9 @@ const AdicionarProduto = ({ navigation, route} ) => {
         //Cria notificacao
         //Adicionar id como parametro
         if (notificarVencimento) {
-            scheduleNotificationControl(dataValidade, dataNotificacao, nomeProduto, codigoDeBarras);
+            
+            const notificationId = await scheduleNotificationControl(dataValidade, dataNotificacao, nomeProduto, codigoDeBarras).then(id =>  id);
+            console.log("IF: ", notificationId);
         }
 
         navigation.navigate({
