@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native'
 import { Button, IconButton, Modal, PaperProvider, Portal, Switch, Text, TextInput } from 'react-native-paper';
+import { currency, mask, unmask } from 'remask'
 
 const AdicionarExistente = ({ navigation }, lastProductId) => {
 
@@ -81,8 +82,9 @@ const AdicionarExistente = ({ navigation }, lastProductId) => {
                     style={{ marginTop: 10, marginHorizontal: 20 }}
                     label="Data de validade"
                     mode="outlined"
+                    keyboardType='numeric'
                     error={false}
-                    value={dataValidade}
+                    value={mask(dataValidade, ['99/99/9999'])}
                     onChangeText={dataValidade => setDataValidade(dataValidade)}
                 />
 
@@ -117,8 +119,8 @@ const AdicionarExistente = ({ navigation }, lastProductId) => {
                     label="Preço"
                     mode="outlined"
                     error={false}
-                    value={preco}
-                    onChangeText={preco => setPreco(preco)}
+                    value={currency.mask({ locale: 'pt-BR', currency: 'BRL', value: preco })}
+                    onChangeText={preco => setPreco(currency.unmask({ locale: 'pt-BR', currency: 'BRL', value: preco }))}
                 />
 
                 <TextInput

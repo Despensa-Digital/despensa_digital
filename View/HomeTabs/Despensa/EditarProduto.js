@@ -68,6 +68,7 @@ const EditarProduto = ({route, navigation}) => {
                 <TextInput
                     style={{ marginTop: 20, marginHorizontal: 20 }}
                     label="Código de barras"
+                    keyboardType='numeric'
                     mode="outlined"
                     error={false}
                     value={codigoDeBarras}
@@ -93,7 +94,6 @@ const EditarProduto = ({route, navigation}) => {
 
                 <TextInput
                     style={{ marginTop: 10, marginHorizontal: 20 }}
-                    keyboardType='numeric'
                     label="Categoria"
                     mode="outlined"
                     error={false}

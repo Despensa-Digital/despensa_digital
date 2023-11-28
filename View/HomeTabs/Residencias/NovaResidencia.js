@@ -19,7 +19,7 @@ const NovaResidencia = ({ setModal, modal }) => {
     <Modal
       visible={modal}
       transparent={true}
-      onRequestClose={() => setModal(falseZ)}
+      onRequestClose={() => setModal(false)}
     >
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
