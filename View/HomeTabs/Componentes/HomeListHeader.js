@@ -5,19 +5,9 @@ import ProfileAvatar from '../Componentes/ProfileAvatar';
 
 //Componente para o ListHeader do FlatList [partes da tela que não são itens da lista]
 const HomeListHeader = ({membros}) => {
-
+    // Ainda vai funcionar
     const [textoQuadro, setTextoQuadro] = useState('Escreva aqui suas anotações...');
 
-    //dados mockados -- remover no futuro
-    // const perfis = [
-    //     { name: 'Lucas', photo: require('../../../Assets/ProfileThumbnail/boy1.png') },
-    //     { name: 'Gabriel', photo: require('../../../Assets/ProfileThumbnail/boy2.png') },
-    //     { name: 'Carlos', photo: require('../../../Assets/ProfileThumbnail/boy3.png') },
-    //     { name: 'Julio', photo: require('../../../Assets/ProfileThumbnail/boy4.png') },
-    //     { name: 'Maria', photo: require('../../../Assets/ProfileThumbnail/girl1.png') },
-    //     { name: 'Clara', photo: require('../../../Assets/ProfileThumbnail/girl2.png') },
-    //     { name: 'Saitama', photo: require('../../../Assets/ProfileThumbnail/saitama.png') }
-    // ];
 
     return (
         <>

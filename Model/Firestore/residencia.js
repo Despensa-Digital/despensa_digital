@@ -1,7 +1,7 @@
 import firestore from '@react-native-firebase/firestore';
 import consumidor from "./consumidor";
 import { getResidencia } from '../../Controller/Residencia/residenciaController';
-import { getResidenciaStorage } from '../../Controller/Despensa/storage';
+import { getResidenciaStorage, removeResidenciaStorage } from '../../Controller/Despensa/storage';
 
 
 
@@ -9,7 +9,14 @@ import { getResidenciaStorage } from '../../Controller/Despensa/storage';
 
 
 const DB_RESIDENCIA = firestore().collection("Residencia");
-
+const categorias = [
+            {nome: 'Todas as categorias', foto: 'Hamper.png'},
+            { nome: 'Lavanderia', foto: 'WashingMachine.png'},
+            { nome: 'Geladeira', foto: 'Fridge.png'},
+            { nome: 'Hortifruit', foto: 'Fruits.png'},
+            { nome: 'Armário da sala', foto: 'Pantry.png'},
+            { nome: 'Banheiro', foto: 'Bathtub.png'},
+            { nome: 'Cozinha', foto: 'Hamper.png'},];
 
 //Buscar todas as residencias do usuario logado
 const buscarResidencias = async () =>{
@@ -62,24 +69,6 @@ const buscarResidenciaAtual = async ()=>{
     
     const residenciaId = await getResidenciaStorage()
     const residenciaRef =  await DB_RESIDENCIA.doc(residenciaId).get();
-    // return residenciaRef.get()
-    //     .then(snap =>{
-    //         let dados = {};
-    //         snap.forEach((doc) =>{
-    //             if(Array.isArray(doc.data().membros)){
-    //                 const membroLogado = doc.data().membros.find(membro => membro.id === current_id)
-    //                 if(membroLogado && doc.exists && doc.data().current_residencia){
-    //                     dados = doc.data()
-    //                 }else{
-    //                     dados = null
-    //                 }
-    //             }
-    //         })
-
-            
-    //         return dados
-    //     }
-    // )
     if(!residenciaRef.exists)
         return null
 
@@ -116,38 +105,102 @@ const buscarIdResidenciaAtual = async ()=>{
 
 
 
-const adicionarResidencia = async (nome)=>{
-    const id = await consumidor.buscarConsumidorLogado();
-    const  userAtual = await consumidor.buscarConsumidor(id)
+// const adicionarResidencia = async (nome)=>{
+//     const id = await consumidor.buscarConsumidorLogado();
+//     const  userAtual = await consumidor.buscarConsumidor(id)
   
-    DB_RESIDENCIA.add({
-        nome:nome,
-        current_residencia: false,
-        membros: [
-            {
-                id: id,
-                nome: userAtual.nome,
-                foto: userAtual.fotoUrl,
-                admin: true
+//    const residenciaRef = DB_RESIDENCIA.add({
+//         nome:nome,
+//         current_residencia: false,
+//         membros: [
+//             {
+//                 id: id,
+//                 nome: userAtual.nome,
+//                 foto: userAtual.fotoUrl,
+//                 admin: true
+//             }
+//         ]
+//     })
+   
+//     const residenciaId = await residenciaRef.id
+
+//     const categorias = [
+//         { nome: 'Lavanderia', foto: 'WashingMachine.png'},
+//         { nome: 'Geladeira', foto: 'Fridge.png'},
+//         { nome: 'Hortifruit', foto: 'Fruits.png'},
+//         { nome: 'Armário da sala', foto: 'Pantry.png'},
+//         { nome: 'Banheiro', foto: 'Bathtub.png'},
+//         { nome: 'Cozinha', foto: 'Hamper.png'},
+//     ];
+
+//     const categoriasRef = DB_RESIDENCIA.doc(residenciaId).collection('Categorias');
+//     const batch = firestore().batch()
+
+//     categorias.forEach(categoria =>{
+//         const novaCategoria = categoriasRef.doc()
+//         batch.set(novaCategoria, categoria)
+//     })
+    
+
+//     try {
+//         // Commit (executar) a transação em lote
+//         await batch.commit();
+//         console.log('Categorias adicionadas com sucesso!');
+//     } catch (error) {
+//         console.error('Erro ao adicionar categorias:', error);
+//     }
+
+    
+// }
+
+const adicionarResidencia = async(nome)=>{
+    try {
+        const id = await consumidor.buscarConsumidorLogado();
+        const  userAtual = await consumidor.buscarConsumidor(id)
+
+        const residenciaRef = await DB_RESIDENCIA.add({
+            nome: nome,
+            current_residencia: false,
+            membros: [
+                {
+                    id: id,
+                    nome: userAtual.nome,
+                    foto: userAtual.fotoUrl,
+                    admin: true
+                }
+            ]
+        });
+    
+        const residenciaId = await residenciaRef.id;
+    
+        if (residenciaId) {
+            const categoriasRef = DB_RESIDENCIA.doc(residenciaId).collection('Categorias');
+            const categoriasSnapshot = await categoriasRef.get();
+    
+            if (categoriasSnapshot.size === 0) {
+                // Adicionar categorias apenas se a subcoleção estiver vazia
+                const batch = firestore().batch();
+    
+                categorias.forEach(categoria => {
+                    const novaCategoria = categoriasRef.doc();
+                    batch.set(novaCategoria, categoria);
+                });
+    
+                await batch.commit();
+                console.log('Categorias adicionadas com sucesso!');
+            } else {
+                console.log('A subcoleção de categorias já contém documentos. Não serão adicionadas categorias.');
             }
-        ]
-    })
-    .then((residenciaRef)=>{
-        //Obtenho o Id da Residencia criada
-        const residenciaId = residenciaRef.id;
-        //Adiciona no Local Storage do Aparelho
-        console.log(`Residencia com id: ${residenciaId}, adicionada ao Storage`)
-    })
+        } else {
+            console.error('Erro ao adicionar a residência. As categorias não serão adicionadas.');
+        }
+    } catch (error) {
+        console.error('Erro ao adicionar residência ou categorias:', error);
+    }
+    
 }
 
 
-removerResidencia = async (residenciaId) =>{
-    DB_RESIDENCIA.doc(residenciaId)
-                .delete()
-    .then(() => {
-        console.log('Residencia deleted!');
-  });
-}
 
 
 atualizarNomeResidencia = async (residenciaId, nomeResidencia)=>{
@@ -162,6 +215,17 @@ atualizarNomeResidencia = async (residenciaId, nomeResidencia)=>{
           });
     
 }
+
+removerResidencia = async (residenciaId) =>{
+    DB_RESIDENCIA.doc(residenciaId)
+                .delete()
+    .then(() => {
+        if(residenciaId === getResidenciaStorage())
+            removeResidenciaStorage()
+        console.log('Residencia deleted!');
+  });
+}
+
 
 
 atualizarMembro = async (residenciaId, membroAtualizado)=>{

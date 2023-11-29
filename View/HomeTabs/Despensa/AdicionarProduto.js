@@ -11,11 +11,7 @@ import { postProdutos } from '../../../Controller/Produtos/produtosController';
 // import CameraProduto from './CameraProduto';
 import scheduleNotificationControl from '../../../Controller/Despensa/scheduleNotificationControl';
 registerTranslation('pt', pt)
-const AdicionarProduto = ({ navigation, route} ) => {
-
-    
-    //id mockado
-    const lastProductId = route.params;
+const AdicionarProduto = ({ navigation, route }) => {
 
     const [codigoDeBarras, setCodigoDeBarras] = useState('');
     const [nomeProduto, setNomeProduto] = useState('');
@@ -33,7 +29,7 @@ const AdicionarProduto = ({ navigation, route} ) => {
     const [quantidade, setQuantidade] = useState('0');
     const [subButton, setSubButton] = useState(false);
     const inputRef = useRef(null);
-   
+
 
     const [disableButton, setDisableButton] = useState(false);
 
@@ -85,7 +81,7 @@ const AdicionarProduto = ({ navigation, route} ) => {
             setDisableButton(false);
         }
 
-        
+
     }, [quantidade])
 
     //Modal
@@ -106,7 +102,7 @@ const AdicionarProduto = ({ navigation, route} ) => {
         }
 
 
-       
+
 
     }, [notificarVencimento])
 
@@ -126,24 +122,20 @@ const AdicionarProduto = ({ navigation, route} ) => {
     useEffect(() => {
         if (!hasPermission)
             requestPermission()
-
-        
-    },[])
+    }, [])
 
     const getAhCode = useCallback((code) => {
         const value = code[0]?.value
         if (value == null || !oneTime)
             return
-        
-        // if (oneTime) {
-            setCodigoDeBarras(code[0].value)
-            setModal(false)
-            setIsActive(false)
-            setOnTime(false)
-            
-        // }
-        
-         
+
+        setCodigoDeBarras(code[0].value)
+        setModal(false)
+        setIsActive(false)
+        setOnTime(false)
+
+
+
     }, [oneTime])
 
 
@@ -152,16 +144,20 @@ const AdicionarProduto = ({ navigation, route} ) => {
         onCodeScanned: getAhCode,
     });
 
-    const handleIconPress = () =>{
+    const handleIconPress = () => {
         setModal(!modal)
         setOnTime(true)
 
-        if(inputRef.current)
-        inputRef.current.blur();
+        if (inputRef.current)
+            inputRef.current.blur();
     }
 
+    const dismissableModalCode = () => {
+        setOnTime(true)
+        setModal(false)
+    }
 
-    const limparCampos = () =>{
+    const limparCampos = () => {
         setCodigoDeBarras('')
         setNomeProduto('')
         setMarca('')
@@ -196,13 +192,13 @@ const AdicionarProduto = ({ navigation, route} ) => {
             peso: parseFloat(peso),
             quantidade: quantidade,
         }
-        
+
         console.log("Meu produto \n", produto)
-        postProdutos(produto).then(()=>{
+        postProdutos(produto).then(() => {
             limparCampos()
             navigation.goBack()
         })
-        
+
     }
 
     return (
@@ -258,7 +254,7 @@ const AdicionarProduto = ({ navigation, route} ) => {
                     mode="outlined"
                     error={false}
                     value={codigoDeBarras}
-                    right={<TextInput.Icon icon='barcode-scan' onPress={handleIconPress}/>}
+                    right={<TextInput.Icon icon='barcode-scan' onPress={handleIconPress} />}
                     onChangeText={codigoDeBarras => setCodigoDeBarras(codigoDeBarras)}
 
                 />
@@ -446,7 +442,11 @@ const AdicionarProduto = ({ navigation, route} ) => {
             </Portal>
             <Portal>
                 {/* {modal && (<CameraProduto setModal={setModal} modal={modal}/>)} */}
-                <Modal visible={modal} dismissable={false} dismissableBackButton={false} contentContainerStyle={styles.containerStyle}>
+                <Modal visible={modal}
+                    onDismiss={dismissableModalCode}
+                    dismissable={true}
+                    dismissableBackButton={true}
+                    contentContainerStyle={styles.containerStyle}>
                     <View style={{
 
                         alignSelf: 'center',
@@ -456,11 +456,12 @@ const AdicionarProduto = ({ navigation, route} ) => {
                         width: "100%",
                         height: 400
                     }}>
-                        <Text variant='titleMedium' style={{ 
+                        <Text variant='titleMedium' style={{
                             textAlign: 'center',
                             color: "white",
                             position: 'absolute',
-                            zIndex:1}}>
+                            zIndex: 1
+                        }}>
                             Aponte a camera para o codigo de barras do produto
                         </Text>
                         <Camera

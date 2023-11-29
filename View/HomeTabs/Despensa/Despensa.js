@@ -1,43 +1,72 @@
-import { useEffect, useState } from 'react';
-import { View, FlatList, ScrollView, StyleSheet } from 'react-native'
-import { ActivityIndicator, MD2Colors, Appbar, Avatar, Button, Divider, FAB, PaperProvider, Searchbar, Text, TextInput } from 'react-native-paper';
+import React, { useEffect, useState } from 'react';
+import { View, FlatList, StyleSheet } from 'react-native'
+import { ActivityIndicator,FAB, PaperProvider} from 'react-native-paper';
 
 import { getProdutos } from '../../../Controller/Produtos/produtosController';
+import {  useFocusEffect } from '@react-navigation/native';
+import { getCategorias } from '../../../Controller/Categoria/categoriaController';
 
-import FastImage from 'react-native-fast-image';
-import CategoryAvatar from '../Componentes/CategoryAvatar';
-import ListComponent from '../Componentes/ListComponent';
 import DespensaListHeader from '../Componentes/DespensaListHeader';
 import DespensaRenderItem from '../Componentes/DespensaRenderItem';
 import DespensaEmptyList from '../Componentes/DespensaEmptyList';
 
 
 
+
 const Despensa = ({ route, navigation }) => {
     const [searchQuery, setSearchQuery] = useState('');
     const [produtos, setProdutos] = useState([])
+    const [categorias, setCategorias] = useState([])
     const [loading, setLoading] = useState(true);
 
     const onChangeSearch = query => setSearchQuery(query);
-    //--MOCK--
-    const [products, setProducts] = useState([
-        { key: 1, codigoDeBarras: '1234567891234', name: 'Cerveja', marca: 'Brahma', image: 'https://cdn-cosmos.bluesoft.com.br/products/7891149102488', expire: '30/09/2023', quantidade: '6', categoria: 'Geladeira', peso: '350', unidadeMedida: 'mL' },
-        { key: 2, codigoDeBarras: '1234567891234', name: 'Café', marca: 'Pilão', image: 'https://cdn-cosmos.bluesoft.com.br/products/7896089012453', expire: '30/09/2023', quantidade: '1', categoria: 'Armário da Cozinha', peso: '500', unidadeMedida: 'g' },
-        { key: 3, codigoDeBarras: '1234567891234', name: 'Coca-Cola', marca: 'Coca-Cola', image: 'https://cdn-cosmos.bluesoft.com.br/products/7894900019155', expire: '30/09/2023', quantidade: '1', categoria: 'Geladeira', peso: '200', unidadeMedida: 'mL' },
-        { key: 4, codigoDeBarras: '1234567891234', name: 'Suco de Laranja', marca: 'Xandô', image: 'https://cdn-cosmos.bluesoft.com.br/products/7896623100028', expire: '30/09/2023', quantidade: '1', categoria: 'Geladeira', peso: '1', unidadeMedida: 'L' },
-        { key: 5, codigoDeBarras: '1234567891234', name: 'Leite', marca: 'Parmalat', image: 'https://cdn-cosmos.bluesoft.com.br/products/3789603461001', expire: '30/09/2023', quantidade: '1', categoria: 'Geladeira', peso: '1', unidadeMedida: 'L' },
-        { key: 6, codigoDeBarras: '1234567891234', name: 'Arroz', marca: 'Camil', image: 'https://cdn-cosmos.bluesoft.com.br/products/7896006711117', expire: '30/09/2023', quantidade: '1', categoria: 'Armário da Cozinha', peso: '1', unidadeMedida: 'kg' },
-    ])
 
-
-    useEffect(() => {
-        getProdutos((produto) => {
+    const carregarProdutos = ()=>{
+        getProdutos((produto)=>{
             setProdutos(produto)
             setLoading(false)
         })
+        
+    }
+
+    const carregarCategorias = ()=>{
+        const categoriaEva = { key:1, nome: 'Todas as categorias', foto: 'Hamper.png' }
+        getCategorias().then(
+            (categoria)=>{
+                let aux = categoria
+                if(aux && aux.length > 0){
+                    aux.unshift(categoriaEva)
+                    setCategorias(aux)
+                }else{
+                    setCategorias([categoriaEva])
+                }
+                
+                
+                setLoading(false)
+            }
+        )
+    }
+
+
+
+
+
+    useEffect(() => {
+        carregarCategorias()
+        carregarProdutos()
+        return ()=> carregarProdutos()
     }, [])
 
-    // const [products, setProducts] = useState([])
+    useFocusEffect(
+        React.useCallback(() => {
+            carregarCategorias()
+            carregarProdutos()
+            return () => console.log("lista atualizada");
+        }, [])
+    );
+
+    
+    
 
     const [lastProductId, setLastProductId] = useState(7);
 
@@ -69,15 +98,17 @@ const Despensa = ({ route, navigation }) => {
             setLastProductId(lastProductId + 1)
         }
     }, [route.params]);
+
+
+
+
     if (loading) {
         return (
             <View style={{ flex: 1, justifyContent: 'center' }}>
                 <ActivityIndicator animating={true} color="#00ff00" />
             </View>
         )
-    }
-
-    //--FIM DO MOCK--    
+    }  
     return (
         <PaperProvider>
             {/* <ScrollView style={{ backgroundColor: '#fff' }}>
@@ -87,9 +118,9 @@ const Despensa = ({ route, navigation }) => {
 
             <FlatList
                 style={{ backgroundColor: '#fff' }}
-                data={products}
+                data={produtos}
                 keyExtractor={item => item.key}
-                ListHeaderComponent={DespensaListHeader}
+                ListHeaderComponent={<DespensaListHeader categorias={categorias}/>}
                 renderItem={({ item }) => <DespensaRenderItem item={item} />}
                 ListEmptyComponent={DespensaEmptyList}
                 onRefresh={() => console.log("refreshing")}
@@ -100,7 +131,7 @@ const Despensa = ({ route, navigation }) => {
             <FAB
                 icon="plus"
                 style={styles.fab}
-                onPress={() => navigation.navigate('AdicionarProduto', lastProductId)}
+                onPress={() => navigation.navigate('AdicionarProduto')}
             />
         </PaperProvider>
 

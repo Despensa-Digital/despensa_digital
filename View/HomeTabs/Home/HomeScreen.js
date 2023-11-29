@@ -1,5 +1,5 @@
 import React, { useState, useEffect} from 'react';
-import { FlatList, TouchableOpacity, View, Text } from 'react-native'
+import { FlatList, TouchableOpacity, View, Text, Image } from 'react-native'
 import { PaperProvider, IconButton, ActivityIndicator, MD2Colors } from 'react-native-paper';
 
 import HomeListHeader from '../Componentes/HomeListHeader';
@@ -40,7 +40,6 @@ const HomeScreen = () => {
         // removeResidenciaStorage()
         carregarResidenciaAtual()
         carregarProdutos()
-
         return ()=> carregarProdutos()
     }, [])
 
@@ -48,6 +47,7 @@ const HomeScreen = () => {
         React.useCallback(() => {
             carregarResidenciaAtual()
             carregarProdutos()
+            
             return () => console.log("lista atualizada");
         }, [])
     );
@@ -69,7 +69,9 @@ const HomeScreen = () => {
         getProdutos((produto)=>{
             setProdutos(produto)
             setLoading(false)
+            // console.log("Produtos", produtos)
         })
+        
     }
     
 
@@ -82,7 +84,7 @@ const HomeScreen = () => {
                     marginTop: 230,
                 }}>
                     <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.navigate('GerenciarResidencias')} hitSlop={{top: 20, bottom: 20, left: 50, right: 50}}>
-                        {/* <Image source={require('../../../Assets/Home/empty.jpg')} style={{ alignSelf: "center", width: 170, height: 170 }} />  */}
+                        <Image source={require('../../../Assets/Home/empty.jpg')} style={{ alignSelf: "center", width: 170, height: 170 }} /> 
                         <Text  style={{color:'black', textAlign: "center", fontSize: 18, paddingHorizontal: 20}}>
                         Parece que ainda não há residências vinculadas à sua conta. {"\n"}{"\n"}Clique aqui para criar uma nova residência.
                         </Text>
@@ -96,7 +98,9 @@ const HomeScreen = () => {
             <PaperProvider>          
                 <FlatList
                     style={{ backgroundColor: '#fff' }}
-                    data={produtos}
+                    data={produtos ? produtos.sort((a,b)=>{
+                        return a.itensProdutos.validade - b.itensProdutos.validade
+                    }): produtos}
                     keyExtractor={item => item.key}
                     ListHeaderComponent={<HomeListHeader membros={residencia.membros}/>}
                     renderItem={({ item }) => <HomeRenderItem item={item} />}

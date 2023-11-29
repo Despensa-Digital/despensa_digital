@@ -58,7 +58,7 @@ const EditarMembro = ({residenciaId, editarMembro, setModal, modal}) => {
                 >
                  {modalConfirmarExclusaoMembro && 
                   (<ModalExcluir 
-                    resetModal={setModalConfirmarExclusaoMembro} 
+                    setModal={setModalConfirmarExclusaoMembro} 
                     modal={modalConfirmarExclusaoMembro} 
                     onExcluir={excluirMembro}
                   />)

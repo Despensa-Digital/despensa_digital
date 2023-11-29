@@ -3,7 +3,7 @@ import auth from '@react-native-firebase/auth';
 
 const DB_CONSUMIDORES = firestore().collection("Consumidor");
 
-const default_photo = 'https://cdn.dribbble.com/users/219762/screenshots/2351573/saitama_1x.png'
+
 
 const buscarConsumidores = async () =>{
     const querySnapshot = await DB_CONSUMIDORES.get();
@@ -52,7 +52,7 @@ const adicionarConsumidor = async (consumer) => {
                 DB_CONSUMIDORES.doc(consumer.uid).set({
                     email: consumer.email,
                     nome: consumer.nome,
-                    fotoUrl: consumer.foto ? consumer.foto : default_photo
+                    fotoUrl: consumer.foto
                 })
                     .then((doc) => {
                         console.log("Usuário criado com sucesso. ", doc.id)

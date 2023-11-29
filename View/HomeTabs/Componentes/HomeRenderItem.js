@@ -6,14 +6,18 @@ import FastImage from 'react-native-fast-image';
 //Renderiza item da FlatList da Home
 const HomeRenderItem = ({item}) => {
     const navigation = useNavigation();
-    
-    return (
+
+    const convertData = (data) =>{
+        const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+        return data.toDate().toLocaleString('pt-BR',options)
+    }
+    return ( 
         <View key={item.key}>
             <View style={{ marginStart: 10 }}>
                 <List.Item
                     key={item.key}
                     title={`${item.nome} ${item.marca}` }
-                    description={`Data de validade: ${item.expire}`}
+                    description={`Data de validade: ${convertData(item.itensProdutos.validade)}`}
                     left={() =>
                         <FastImage
                             style={{ width: 60 }}

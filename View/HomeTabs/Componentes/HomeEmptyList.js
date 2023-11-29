@@ -5,7 +5,7 @@ import { Text } from 'react-native-paper'
 //Componente para o ListEmptyComponent do FlatList. View exibida quando não há itens na lista próximos do vencimento
 const HomeEmptyList = () => {
     return (
-        <View style={{ alignItems: 'center' }}>
+        <View style={{ alignItems: 'center'}}>
             <Image
                 source={require('../../../Assets/Categories/Hamper.png')}
                 style={{ marginTop: 30, opacity: 0.8 }}
@@ -13,7 +13,7 @@ const HomeEmptyList = () => {
             <Text
                 variant="headlineMedium"
                 style={{
-
+                    fontSize:18 ,
                     color: '#898585'
                 }}>
                 Não há produtos próximo do vencimento!

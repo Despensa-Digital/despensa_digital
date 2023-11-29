@@ -1,4 +1,4 @@
-import { PaperProvider, Button, List, IconButton, Snackbar, RadioButton, ActivityIndicator, MD2Colors } from 'react-native-paper';
+import { PaperProvider, Button, List, IconButton, Snackbar, RadioButton, ActivityIndicator } from 'react-native-paper';
 
 import React, { useEffect, useState } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';

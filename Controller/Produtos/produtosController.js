@@ -1,22 +1,43 @@
 import produto from '../../Model/Firestore/produto';
 
-import residencia from '../../Model/Firestore/residencia';
 import { getResidenciaStorage } from '../Despensa/storage';
 
 const getProdutos = async (callback)=>{
     try{
-        const residenciaId = await residencia.buscarIdResidenciaAtual()
-        return produto.buscarProdutos(residenciaId, callback);
+        const residenciaId = await getResidenciaStorage()
+        return produto.buscarProdutosItensValidades(residenciaId, callback);
     }catch(error){
         console.log("ERROR: ", error)
     }
 }
 
+const getProduto = async (idProduto, callback)=>{
+    try{
+        console.log("ID produto", idProduto);
+        const residenciaId = await getResidenciaStorage()
+        return produto.buscarProdutoItensProdutos(residenciaId, idProduto, callback)
+    }catch(error){
+        console.log("ERROR: ", error)
+    }
+}
+
+
 const postProdutos = async (produtos) =>{
     try {
         const residenciaId = await getResidenciaStorage()
-        console.log("Alo",residenciaId)
         return produto.adicionarProduto(residenciaId, produtos)
+    } catch (error) {
+        console.log("ERROR: ", error)
+    }
+}
+
+
+
+
+const postItemProduto = async (itemProduto) =>{
+    try {
+        const residenciaId = await getResidenciaStorage()
+        return produto.adicionarItemProduto(residenciaId, itemProduto)
     } catch (error) {
         console.log("ERROR: ", error)
     }
@@ -24,5 +45,7 @@ const postProdutos = async (produtos) =>{
 
 export{
     getProdutos,
-    postProdutos
+    getProduto,
+    postProdutos,
+    postItemProduto
 }

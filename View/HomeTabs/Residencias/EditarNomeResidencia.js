@@ -9,7 +9,7 @@ import  { updateNomeResidencia } from '../../../Controller/Residencia/residencia
 
 const EditarNomeResidencia = ({residenciaId,editarNomeResidencia,setModal, modal}) => {
     const bottomSheetRef = useRef();
-    const snapPoints = useMemo(() => ['25%', '45%'], []);
+    const snapPoints = useMemo(() => ['45%', '60%'], []);
     const handleSheetChanges = useCallback((index) => {
         console.log('handleSheetChanges', index);
         if (index === -1) {
