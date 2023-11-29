@@ -69,9 +69,9 @@ const HomeScreen = () => {
         getProdutos((produto)=>{
             setProdutos(produto)
             setLoading(false)
-            // console.log("Produtos", produtos)
+            console.log("Produtos", produtos)
         })
-        
+        console.log("Carreguei novamente")
     }
     
 

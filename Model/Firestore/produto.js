@@ -22,9 +22,10 @@ const buscarProdutosItensValidades = async (residenciaId, callback) => {
 
 
                     const itemProdutosRes = documentSnapshot.ref.collection('ItensProdutos')
-                    .where('validade', '>=', timestampAtual)
+                    // .where('validade', '>=', timestampAtual)
                     .orderBy('validade', 'asc')
 
+                    
                     promises.push(
                         itemProdutosRes.get().then((sub) => {
                             if (!sub.empty) {
@@ -40,13 +41,16 @@ const buscarProdutosItensValidades = async (residenciaId, callback) => {
 
 
                                 });
+                            
                                 produto.itensProdutos = itensProdutos[0];
+
                             }
                         })
                     );
                     produtos.push(produto);
+                    
                 });
-
+                
                 await Promise.all(promises);
                 
                 callback(produtos)
@@ -56,6 +60,10 @@ const buscarProdutosItensValidades = async (residenciaId, callback) => {
             }
         })
 }
+
+
+
+
 
 
 const buscarProdutoItensProdutos = (residenciaId,idProduto, callback) =>{
@@ -116,19 +124,40 @@ const adicionarProduto = async (residenciaId, produto) => {
                 }
             })
 
-        await produtoRef.collection('ItensProdutos')
-            .add({
-                categoria: produto.categoria,
-                preco: produto.preco,
-                validade: produto.dataValidade
-            })
+        // await produtoRef.collection('ItensProdutos')
+        //     .add({
+        //         categoria: produto.categoria,
+        //         preco: produto.preco,
+        //         validade: produto.dataValidade,
+        //         localCompra: produto.localCompra
+        //     })
+
+        await produtoRef.collection('ItensProdutos').get().then((snapshot) => {
+            const quantidade = produto.quantidade; // Se quantidade não estiver definida, assume 1
+        
+            for (let i = 0; i < quantidade; i++) {
+                produtoRef.collection('ItensProdutos').add({
+                    categoria: produto.categoria,
+                    preco: produto.preco,
+                    validade: produto.dataValidade,
+                    localCompra: produto.localCompra
+                });
+            }
+        });
     } else {
         const produtoExiste = isExist.docs[0];
-        await produtoExiste.ref.collection('ItensProdutos').add({
-            categoria: produto.categoria,
-            preco: produto.preco,
-            validade: produto.dataValidade
-        })
+        const itensProdutosRef = produtoExiste.ref.collection('ItensProdutos')
+
+            const quantidade = produto.quantidade; // Se quantidade não estiver definida, assume 1
+            for (let i = 0; i < quantidade; i++) {
+                await itensProdutosRef.add({
+                    categoria: produto.categoria,
+                    preco: produto.preco,
+                    validade: produto.dataValidade,
+                    localCompra: produto.localCompra
+                });
+            }
+        
     }
 
 }

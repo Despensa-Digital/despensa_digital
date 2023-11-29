@@ -7,12 +7,12 @@ import { useAppState } from '@react-native-community/hooks'
 import { useCameraPermission, useCameraDevice, Camera, useCodeScanner } from 'react-native-vision-camera';
 import { DatePickerInput, pt, registerTranslation } from 'react-native-paper-dates';
 import { postProdutos } from '../../../Controller/Produtos/produtosController';
+import { useNavigation } from '@react-navigation/native';
 
-// import CameraProduto from './CameraProduto';
 import scheduleNotificationControl from '../../../Controller/Despensa/scheduleNotificationControl';
 registerTranslation('pt', pt)
-const AdicionarProduto = ({ navigation, route }) => {
-
+const AdicionarProduto = ({ route }) => {
+    const navigation = useNavigation();
     const [codigoDeBarras, setCodigoDeBarras] = useState('');
     const [nomeProduto, setNomeProduto] = useState('');
     const [marca, setMarca] = useState('');
@@ -177,7 +177,7 @@ const AdicionarProduto = ({ navigation, route }) => {
     }
 
     //Adicionar Produto na Despensa
-    const salvarProduto = () => {
+    const salvarProduto = async () => {
         const produto = {
             codigoDeBarras: codigoDeBarras,
             nomeProduto: nomeProduto,
@@ -190,16 +190,28 @@ const AdicionarProduto = ({ navigation, route }) => {
             categoria: categoria,
             unidadeMedida: unidadeMedida.toUpperCase(),
             peso: parseFloat(peso),
-            quantidade: quantidade,
+            quantidade: parseInt(quantidade),
+        }
+        console.log("Data de Validade", dataValidade)
+        console.log(dataValidade instanceof Date)
+        console.log("Meu produto", produto)
+        //Cria notificacao
+        //Adicionar id como parametro
+        if (notificarVencimento) {
+            
+            const notificationId = await scheduleNotificationControl(dataValidade, dataNotificacao, nomeProduto, codigoDeBarras).then(id =>  id);
+            console.log("IF: ", notificationId);
         }
 
+
         console.log("Meu produto \n", produto)
-        postProdutos(produto).then(() => {
-            limparCampos()
-            navigation.goBack()
-        })
+        await postProdutos(produto)
+        limparCampos()
+        navigation.goBack()
 
     }
+
+    
 
     return (
         <PaperProvider>

@@ -12,7 +12,7 @@ const HomeRenderItem = ({item}) => {
         return data.toDate().toLocaleString('pt-BR',options)
     }
     return ( 
-        <View key={item.key}>
+        <View >
             <View style={{ marginStart: 10 }}>
                 <List.Item
                     key={item.key}

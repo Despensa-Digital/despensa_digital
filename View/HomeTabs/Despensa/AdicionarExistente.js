@@ -2,12 +2,13 @@ import { useState, useEffect } from 'react';
 import { View, ScrollView, StyleSheet, Image } from 'react-native'
 import { Button, IconButton, Modal, PaperProvider, Portal, Switch, Text, TextInput } from 'react-native-paper';
 import { DatePickerInput, pt, registerTranslation } from 'react-native-paper-dates';
-
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
 import scheduleNotificationControl from '../../../Controller/Despensa/scheduleNotificationControl';
 import { postItemProduto } from '../../../Controller/Produtos/produtosController';
 registerTranslation('pt', pt)
-const AdicionarExistente = ({ route, navigation }) => {
+const AdicionarExistente = ({ route }) => {
+    const navigation = useNavigation();
     const [codigoDeBarras, setCodigoDeBarras] = useState('');
     const [nomeProduto, setNomeProduto] = useState('');
     const [dataValidade, setDataValidade] = useState('');
@@ -20,7 +21,7 @@ const AdicionarExistente = ({ route, navigation }) => {
     const [categoria, setCategoria] = useState('');
     const  {produto} = route.params
 
-    const salvarItemProduto = () => {
+    const salvarItemProduto = async () => {
         const novoItemProduto = {
             key: produto.key,
             codigoDeBarras: produto.codigoDeBarras,
@@ -29,9 +30,13 @@ const AdicionarExistente = ({ route, navigation }) => {
             localCompra:localCompra,
             categoria:categoria
         }
-
+        if (notificarVencimento) {
+            
+            const notificationId = await scheduleNotificationControl(dataValidade, dataNotificacao, nomeProduto, codigoDeBarras).then(id =>  id);
+            console.log("IF: ", notificationId);
+        }
         postItemProduto(novoItemProduto)
-        // navigation.goBack()
+        navigation.goBack()
     }
 
     //Modal
@@ -52,6 +57,9 @@ const AdicionarExistente = ({ route, navigation }) => {
         }
 
     }, [notificarVencimento])
+
+
+    
     return (
         <PaperProvider>
             <ScrollView style={{ backgroundColor: '#fff' }}>

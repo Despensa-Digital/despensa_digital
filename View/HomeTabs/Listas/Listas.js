@@ -225,6 +225,7 @@ const Listas = () => {
                         buttonColor='#5DB075'
                         style={{ marginTop: 40, marginHorizontal: 20 }}
                         mode="contained"
+                        //Enviar os itens da lista selecionada para o Whatsapp
                         onPress={() => Linking.openURL('whatsapp://send?text=LISTA DE COMPRA:\n Arroz, Cerveja, Leite&')}
                     >
                         Compartilhar com o  Whatsapp
@@ -236,6 +237,7 @@ const Listas = () => {
                         buttonColor='#FFFFFF'
                         style={{ marginTop: 20, marginBottom: 20, marginHorizontal: 20, borderColor: '#5DB075' }}
                         mode="outlined"
+                        //Enviar os itens da lista selecionada para o Email
                         onPress={() => Linking.openURL('mailto:giulianna.lancellotti@gmail.com?subject=Lista do mercado&body= LISTA DE COMPRAS:\n Arroz, Cerveja, Leite')}
                     >
                         Compartilhar com o e-mail

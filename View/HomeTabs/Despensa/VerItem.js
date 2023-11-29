@@ -1,21 +1,17 @@
-import { useState, useEffect } from 'react';
-import { View, FlatList, ScrollView, StyleSheet, Image } from 'react-native'
+import React,{ useState, useEffect } from 'react';
+import { View, ScrollView, StyleSheet, Image } from 'react-native'
 import { FAB, PaperProvider, Text, List} from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
-import CategoryAvatar from '../Componentes/CategoryAvatar';
 import ListProduct from '../Componentes/ListProduct';
 import { getProduto } from '../../../Controller/Produtos/produtosController';
+import {  useFocusEffect } from '@react-navigation/native';
 
 const VerItem = ({ route, navigation }) => {
     const [produto, setProduto] = useState({itensProdutos:[]})
     
    
 
-    useEffect(()=>{
-        carregarProduto()
-        console.log('Meu produto', produto);
-        return ()=> carregarProduto()
-    }, [])
+    
 
     const carregarProduto = () =>{
         const idProduto = route.params
@@ -25,6 +21,20 @@ const VerItem = ({ route, navigation }) => {
             
         })
     }
+
+    useEffect(()=>{
+        carregarProduto()
+        console.log('Meu produto', produto);
+        return ()=> carregarProduto()
+    }, [])
+
+
+    useFocusEffect(
+        React.useCallback(() => {
+            carregarProduto()
+            return () => console.log("lista atualizada");
+        }, [])
+    );
     return (
         <PaperProvider>
             <ScrollView style={{ backgroundColor: '#fff' }}>

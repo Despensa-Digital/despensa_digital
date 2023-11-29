@@ -5,6 +5,9 @@ import { getResidenciaStorage } from '../Despensa/storage';
 const getProdutos = async (callback)=>{
     try{
         const residenciaId = await getResidenciaStorage()
+        produto.buscarProdutosItensValidades(residenciaId, (data)=>{
+            console.log("Dados",data)
+        })
         return produto.buscarProdutosItensValidades(residenciaId, callback);
     }catch(error){
         console.log("ERROR: ", error)
