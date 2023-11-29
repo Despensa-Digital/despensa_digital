@@ -59,6 +59,15 @@ const deleteConsumidor= () =>{
     return null
 }
 
+const updateConsumidor = (consumer) => {
+    try{
+        return consumidor.atualizarConsumidor(consumer);
+    }
+    catch(error){
+        console.log("Erro ao atualizar o usuário" + error);
+    }
+}
+
 export {
     getConsumidores, 
     getConsumidor,
@@ -66,5 +75,6 @@ export {
     getConsumidoresTempoReal,
     postConsumidor, 
     putConsumidor, 
-    deleteConsumidor
+    deleteConsumidor,
+    updateConsumidor
 }

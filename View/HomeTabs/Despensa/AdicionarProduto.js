@@ -33,8 +33,10 @@ const AdicionarProduto = ({ route }) => {
 
     const [disableButton, setDisableButton] = useState(false);
 
+
+
     //dado mockado - envia o objeto novoProduto para products em Despensa.js
-    const salvarProdutoMockado = () => {
+    const salvarProdutoMockado = async () => {
         const novoProduto = {
             produtoEditado: false,
             key: lastProductId,
@@ -52,7 +54,9 @@ const AdicionarProduto = ({ route }) => {
         //Cria notificacao
         //Adicionar id como parametro
         if (notificarVencimento) {
-            scheduleNotificationControl(dataValidade, dataNotificacao, nomeProduto, codigoDeBarras);
+            
+            const notificationId = await scheduleNotificationControl(dataValidade, dataNotificacao, nomeProduto, codigoDeBarras).then(id =>  id);
+            console.log("IF: ", notificationId);
         }
 
         navigation.navigate({

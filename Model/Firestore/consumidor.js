@@ -3,7 +3,7 @@ import auth from '@react-native-firebase/auth';
 
 const DB_CONSUMIDORES = firestore().collection("Consumidor");
 
-
+const default_photo = 'https://cdn.dribbble.com/users/219762/screenshots/2351573/saitama_1x.png'
 
 const buscarConsumidores = async () =>{
     const querySnapshot = await DB_CONSUMIDORES.get();
@@ -52,7 +52,7 @@ const adicionarConsumidor = async (consumer) => {
                 DB_CONSUMIDORES.doc(consumer.uid).set({
                     email: consumer.email,
                     nome: consumer.nome,
-                    fotoUrl: consumer.foto
+                    fotoUrl: consumer.foto ? consumer.foto : default_photo
                 })
                     .then((doc) => {
                         console.log("Usuário criado com sucesso. ", doc.id)
@@ -66,14 +66,29 @@ const adicionarConsumidor = async (consumer) => {
         })
 }
 
-
+const atualizarConsumidor = async (consumer) => {
+    DB_CONSUMIDORES.doc(consumer.uid).get()
+        .then(() => {          
+            DB_CONSUMIDORES.doc(consumer.uid).update({            
+                fotoUrl: consumer.photoURL
+            })
+                .then((doc) => {
+                    console.log("Usuário atualizado com sucesso. ", doc.id)
+                })
+                .catch(error => {
+                    return error
+                })
+            
+        })
+}
 
 export default{
     buscarConsumidores, 
     buscarConsumidor,
     buscarConsumidorLogado,
     buscarConsumidoresEmTempoReal, 
-    adicionarConsumidor
+    adicionarConsumidor,
+    atualizarConsumidor
 }
     
 
