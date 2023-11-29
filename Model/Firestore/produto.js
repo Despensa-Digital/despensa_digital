@@ -162,6 +162,29 @@ const adicionarProduto = async (residenciaId, produto) => {
 
 }
 
+const atualizarProduto = async (residenciaId, produtoAtualizado) =>{
+    const produtoRef = DB_DESPENSA.doc(residenciaId).collection("Produtos").doc(produtoAtualizado.key)
+    console.log("Produto Atualizado", produtoAtualizado)
+   
+    try{
+        await produtoRef.update({
+            categorias: produtoAtualizado.categoria,
+            marca: produtoAtualizado.marca,
+            nome:produtoAtualizado.nomeProduto,
+            unidade:{
+                unidadeMedida: produtoAtualizado.unidadeMedida,
+                valorUnitario: produtoAtualizado.peso
+            }
+        })
+
+        console.log("Produto Atualizado");
+
+    }catch(erro){
+        console.error('Erro ao adicionar item:', erro);
+    }
+    
+}
+
 
 const adicionarItemProduto = async (residenciaId, itemProduto) =>{
     const produtoId = itemProduto.key
@@ -182,9 +205,33 @@ const adicionarItemProduto = async (residenciaId, itemProduto) =>{
      
 }
 
+
+
+
+const atualizarItemProduto = async(residenciaId, produtoId, itemAtualizado) =>{
+
+    const produtoRef = DB_DESPENSA.doc(residenciaId).collection("Produtos").doc(produtoId);
+    const itemRef = produtoRef.collection('ItensProdutos').doc(itemAtualizado.key);
+    console.log("Meu item", itemAtualizado)
+    try {
+        await itemRef.update({
+            // categoriaId: itemAtualizado.categoria,
+            preco: itemAtualizado.preco,
+            // validade: firestore.Timestamp.fromDate(itemAtualizado.dataValidade),
+            localCompra: itemAtualizado.localCompra
+        });
+
+        console.log('Item atualizado com sucesso.');
+    } catch (erro) {
+        console.error('Erro ao atualizar item:', erro);
+    }
+}
+
 export default {
     buscarProdutosItensValidades,
     buscarProdutoItensProdutos,
     adicionarProduto,
-    adicionarItemProduto
+    atualizarProduto,
+    adicionarItemProduto,
+    atualizarItemProduto
 }

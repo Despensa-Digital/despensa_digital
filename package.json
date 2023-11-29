@@ -21,18 +21,22 @@
     "@react-navigation/material-bottom-tabs": "^6.2.16",
     "@react-navigation/native": "^6.1.7",
     "@react-navigation/native-stack": "^6.9.13",
+    "date-fns": "^2.30.0",
     "lodash": "^4.17.21",
     "react": "18.2.0",
     "react-native": "0.72.4",
     "react-native-fast-image": "^8.6.3",
     "react-native-gesture-handler": "^2.13.1",
+    "react-native-image-picker": "^7.0.3",
+    "react-native-mmkv": "^2.11.0",
     "react-native-paper": "^5.10.3",
     "react-native-paper-dates": "^0.20.4",
     "react-native-reanimated": "^3.5.4",
     "react-native-safe-area-context": "^4.7.2",
     "react-native-screens": "^3.25.0",
     "react-native-vector-icons": "^10.0.0",
-    "react-native-vision-camera": "^3.5.1"
+    "react-native-vision-camera": "^3.5.1",
+    "remask": "^1.2.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

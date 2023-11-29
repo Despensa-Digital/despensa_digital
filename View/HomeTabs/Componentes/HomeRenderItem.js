@@ -6,7 +6,7 @@ import FastImage from 'react-native-fast-image';
 //Renderiza item da FlatList da Home
 const HomeRenderItem = ({item}) => {
     const navigation = useNavigation();
-
+    const numeroAleatorio = Math.floor(Math.random() * 1000) + 1;
     const convertData = (data) =>{
         const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
         return data.toDate().toLocaleString('pt-BR',options)
@@ -15,7 +15,7 @@ const HomeRenderItem = ({item}) => {
         <View >
             <View style={{ marginStart: 10 }}>
                 <List.Item
-                    key={item.key}
+                    key={`${item.key}-${numeroAleatorio}`}
                     title={`${item.nome} ${item.marca}` }
                     description={`Data de validade: ${convertData(item.itensProdutos.validade)}`}
                     left={() =>
@@ -30,7 +30,7 @@ const HomeRenderItem = ({item}) => {
 
                         />
                     }
-                    onPress={() => navigation.navigate('DespensaTab', {screen: 'EditarProduto', params: item} )}
+                    // onPress={() => navigation.navigate('DespensaTab', {screen: 'EditarProduto', params: item} )}
                 />
             </View>
             <Divider style={{ height: 1 }} />

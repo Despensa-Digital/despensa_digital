@@ -1,5 +1,5 @@
 import React,{ useState, useEffect } from 'react';
-import { View, ScrollView, StyleSheet, Image } from 'react-native'
+import { View, ScrollView, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import { FAB, PaperProvider, Text, List} from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
 import ListProduct from '../Componentes/ListProduct';
@@ -8,13 +8,14 @@ import {  useFocusEffect } from '@react-navigation/native';
 
 const VerItem = ({ route, navigation }) => {
     const [produto, setProduto] = useState({itensProdutos:[]})
-    
+    const [id, setId] = useState('')
    
 
     
 
     const carregarProduto = () =>{
         const idProduto = route.params
+        setId(idProduto)
         console.log("Route params",idProduto );
         getProduto(idProduto, (data)=>{
             setProduto(data)
@@ -24,7 +25,7 @@ const VerItem = ({ route, navigation }) => {
 
     useEffect(()=>{
         carregarProduto()
-        console.log('Meu produto', produto);
+        console.log('Meu produto', produto)
         return ()=> carregarProduto()
     }, [])
 
@@ -65,9 +66,14 @@ const VerItem = ({ route, navigation }) => {
                     Unidades 
                 </Text>
                 <View>
-                    <ListProduct itens={produto.itensProdutos} />
+                    <ListProduct produtoId={id} itens={produto.itensProdutos} />
                 </View>
-
+                <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.navigate('EditarProduto',{produto})} hitSlop={{top: 20, bottom: 20, left: 50, right: 50}}>
+                <List.Item
+                    description={'Editar Produto'}
+                    /*right={props => <Text>Produto: {product.name}{'\n'}Código de barra:{product.codigoDeBarra}</Text>}*/
+                />
+                </TouchableOpacity>
 
             </ScrollView>
             <FAB

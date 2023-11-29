@@ -6,7 +6,7 @@ import FastImage from 'react-native-fast-image';
 //Renderiza item da FlatList da Despensa
 const DespensaRenderItem = ({item}) => {
     const navigation = useNavigation();
-
+    const numeroAleatorio = Math.floor(Math.random() * 1000) + 1;
      const convertData = (data) =>{
         const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
         return data.toDate().toLocaleString('pt-BR',options)
@@ -16,7 +16,7 @@ const DespensaRenderItem = ({item}) => {
         <View key={item.key}>
             <View style={{ marginStart: 10 }}>
                 <List.Item
-                    key={item.key}
+                    key={`${item.key}-${numeroAleatorio}`}
                     title={`${item.nome} ${item.marca}`}
                     description={`Data de validade: ${convertData(item.itensProdutos.validade)}`}
                     left={() =>

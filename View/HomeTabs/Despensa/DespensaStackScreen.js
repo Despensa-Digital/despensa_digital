@@ -5,7 +5,7 @@ import AdicionarProduto from './AdicionarProduto';
 import EditarProduto from './EditarProduto';
 import AdicionarExistente from './AdicionarExistente';
 import VerItem from './VerItem'
-
+import EditarUnidade from './EditarUnidade'
 const DespensaStack = createNativeStackNavigator();
 
 function DespensaStackScreen() {
@@ -28,6 +28,10 @@ function DespensaStackScreen() {
         name='VerItem'
         component={VerItem}
         options={{ title: 'Ver Item' }} />
+         <DespensaStack.Screen
+        name='EditarUnidade'
+        component={EditarUnidade}
+        options={{ title: 'Editar unidade' }} />
     </DespensaStack.Navigator>
   );
 }

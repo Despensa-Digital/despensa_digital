@@ -8,6 +8,7 @@ import { useCameraPermission, useCameraDevice, Camera, useCodeScanner } from 're
 import { DatePickerInput, pt, registerTranslation } from 'react-native-paper-dates';
 import { postProdutos } from '../../../Controller/Produtos/produtosController';
 import { useNavigation } from '@react-navigation/native';
+import { currency } from 'remask';
 
 import scheduleNotificationControl from '../../../Controller/Despensa/scheduleNotificationControl';
 registerTranslation('pt', pt)
@@ -334,8 +335,8 @@ const AdicionarProduto = ({ route }) => {
                     label="Preço"
                     mode="outlined"
                     error={false}
-                    value={preco}
-                    onChangeText={preco => setPreco(preco)}
+                    value={currency.mask({ locale: 'pt-BR', currency: 'BRL', value: preco })}
+                  onChangeText={preco => setPreco(currency.unmask({ locale: 'pt-BR', currency: 'BRL', value: preco }))}
                 />
 
                 <TextInput

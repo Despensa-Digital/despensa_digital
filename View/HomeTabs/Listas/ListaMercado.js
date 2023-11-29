@@ -3,6 +3,9 @@ import { View, StyleSheet, Image, Text} from 'react-native';
 import { PaperProvider, List, IconButton, Portal, Modal, Button, FAB, TextInput, ActivityIndicator } from 'react-native-paper';
 import { getListaDeComprasComItens, postItensNaListaDeCompras, putQuantidade, deleteItem, deleteTodosOsItens } from '../../../Controller/ListaDeCompras/listaController';
 import {  useFocusEffect } from '@react-navigation/native';
+
+import { currency } from 'remask';
+
 const ListaMercado = ({route, navigation}) => {
   const {listaId} = route.params
   const [loading, setLoading] = useState(true)
@@ -182,8 +185,8 @@ const ListaMercado = ({route, navigation}) => {
                   mode="outlined"
                   error={false}
                   keyboardType={'numeric'}
-                  value={valor}
-                  onChangeText={valor => setValor(valor)}
+                  value={currency.mask({ locale: 'pt-BR', currency: 'BRL', value: valor })}
+                  onChangeText={valor => setValor(currency.unmask({ locale: 'pt-BR', currency: 'BRL', value: valor }))}
               />
 
               <Button

@@ -35,6 +35,15 @@ const postProdutos = async (produtos) =>{
 }
 
 
+const putProduto = async (produtoAtualizado)=>{
+    try {
+        const residenciaId = await getResidenciaStorage()
+        return produto.atualizarProduto(residenciaId, produtoAtualizado)
+    } catch (error) {
+        console.log("ERROR: ", error)
+    }
+}
+
 
 
 const postItemProduto = async (itemProduto) =>{
@@ -46,9 +55,21 @@ const postItemProduto = async (itemProduto) =>{
     }
 }
 
+
+const putItemProduto = async (produtoId, itemAtualizado)=>{
+    try {
+        const residenciaId = await getResidenciaStorage()
+        return produto.atualizarItemProduto(residenciaId, produtoId, itemAtualizado)
+    } catch (error) {
+        console.log("ERROR: ", error)
+    }
+}
+
 export{
     getProdutos,
     getProduto,
     postProdutos,
-    postItemProduto
+    putProduto,
+    postItemProduto,
+    putItemProduto
 }
