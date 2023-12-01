@@ -51,8 +51,8 @@ const adicionarConsumidor = async (consumer) => {
             if (!doc.exists) {
                 DB_CONSUMIDORES.doc(consumer.uid).set({
                     email: consumer.email,
-                    nome: consumer.nome,
-                    fotoUrl: consumer.foto ? consumer.foto : default_photo
+                    nome: consumer.displayName,
+                    fotoUrl: consumer.photoURL ? consumer.photoURL : default_photo
                 })
                     .then((doc) => {
                         console.log("Usuário criado com sucesso. ", doc.id)

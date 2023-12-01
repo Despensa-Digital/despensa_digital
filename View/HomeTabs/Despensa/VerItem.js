@@ -41,7 +41,7 @@ const VerItem = ({ route, navigation }) => {
             <ScrollView style={{ backgroundColor: '#fff' }}>
 
             <List.Item
-                    description={`Produto: ${produto.nome}\n Código de barra: ${produto.codigoDeBarras}`}
+                    description={`Produto: ${produto.nome}\nCódigo de barra: ${produto.codigoDeBarras}`}
                     left={props =>
                         <FastImage
 

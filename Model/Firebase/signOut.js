@@ -18,7 +18,7 @@ disconectAccount = async () => {
     try {
       await GoogleSignin.signOut();
     } catch (error) {
-      console.error(error);
+      console.error("Erro do firebase auth: ",error);
     }
   };
 

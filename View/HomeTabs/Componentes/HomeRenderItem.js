@@ -30,7 +30,7 @@ const HomeRenderItem = ({item}) => {
 
                         />
                     }
-                    // onPress={() => navigation.navigate('DespensaTab', {screen: 'EditarProduto', params: item} )}
+                    //onPress={() => navigation.navigate('DespensaTab', {screen: 'VerItem', params: item} )}
                 />
             </View>
             <Divider style={{ height: 1 }} />

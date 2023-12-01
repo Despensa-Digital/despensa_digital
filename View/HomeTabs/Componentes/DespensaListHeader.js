@@ -27,7 +27,7 @@ const DespensaListHeader = ({ categorias }) => {
     //pega o selectedId, busca em categorias qual item possui esse id e seta o nome em setCategoryName
     const carregarCategoriaSelecionada = async () => {
         // try {
-        console.log("Categorias Despensa", categorias)
+        console.log("Categorias Despensa", JSON.stringify(categorias, null, 2))
         if (categorias && categorias.length > 0) {
             let findCategoria = await categorias.findIndex((categoria) => selectedId === categoria.key)
             console.log("Find", findCategoria);

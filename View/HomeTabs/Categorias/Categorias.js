@@ -5,6 +5,7 @@ import { deleteCategoria, getCategorias, postCategoria, updateCategoria } from '
 import { baseDeImagemCategorias } from '../../../Controller/Despensa/baseImageCategoryControl';
 import {  useFocusEffect } from '@react-navigation/native';
 import _isEqual from 'lodash/isEqual';
+import categoria from '../../../Model/Firestore/categoria';
 // Componente funcional para exibir uma categoria com imagem e texto
 const CategoryAvatar = ({ categoryKey, name, photo,  onPress }) => {
     return (
@@ -20,12 +21,12 @@ const CategoryAvatar = ({ categoryKey, name, photo,  onPress }) => {
 };
 
 // Componente funcional para exibir uma categoria dentro de um modal
-const CategoryModal = ({ categoryKey, name, photo, checked, onPress }) => {
+const CategoryModal = ({ categoryKey, name, photo, checked, onPress, selectedId }) => {
     return (
         // {backgroundColor: categoria.key === selectedId ? '#6e3b6e' : '#C0E8F4'}
-        <TouchableOpacity onPress={()=>onPress(categoryKey)}>
-            <View style={styles.avatarContainer}>
-                <View style={{...styles.imageContainer,backgroundColor: categoryKey === checked ? '#6e3b6e' : '#C0E8F4'}}>
+        <TouchableOpacity key={categoryKey} onPress={()=>onPress(categoryKey)}>
+            <View key={categoryKey} style={styles.avatarContainer}>
+                <View style={{...styles.imageContainer,backgroundColor: categoryKey === selectedId ? '#6e3b6e' : '#C0E8F4'}}>
                     <Image size={70} source={photo} />
                 </View>
                 <Text style={styles.categoryText}>{name}</Text>
@@ -54,20 +55,6 @@ const categorias = [
 ];
 
 
-//Exibição no Front-End
-const categories = [
-    { name: 'Lavanderia', photo: require('../../../Assets/Categories/WashingMachine.png') },
-    { name: 'Geladeira', photo: require('../../../Assets/Categories/Fridge.png') },
-    { name: 'Hortifruit', photo: require('../../../Assets/Categories/Fruits.png') },
-    { name: 'Armário da sala', photo: require('../../../Assets/Categories/Pantry.png') },
-    { name: 'Banheiro', photo: require('../../../Assets/Categories/Fridge.png') },
-    { name: 'Cozinha', photo: require('../../../Assets/Categories/Hamper.png') },
-];
-
-// Organiza as categorias em linhas com três elementos cada
-const rows = categories.reduce((rows, key, index) => (index % 3 === 0 ? rows.push([key])
-    : rows[rows.length - 1].push(key)) && rows, []);
-
 // Componente principal que gerencia o estado e a renderização das categorias
 const Categorias = ({ navigation }) => {
     const [minhasCategorias, setMinhasCategorias] = useState([])
@@ -78,6 +65,7 @@ const Categorias = ({ navigation }) => {
     const [loading, setLoading] = useState(true);
     const [nomeCategoria, setNomeCategoria] = useState('')
     const [fotoCategoria, setFotoCategoria] = useState('')
+    const [selectedId, setSelectedId] = useState()
     // Abre o modal para adicionar uma categoria
     const openModal = (category) => {
         setSelectedCategory(category);
@@ -87,6 +75,7 @@ const Categorias = ({ navigation }) => {
     // Abre o modal ao clicar em uma categoria
     const openModalEditar = (category) => {
         setSelectedCategory(category);
+        setSelectedId(category.foto)
         setModalVisibleEditar(true);
     };
 
@@ -100,11 +89,13 @@ const Categorias = ({ navigation }) => {
     // Fecha o modal
     const closeModal = () => {
         setModalVisible(false);
+        setSelectedId(null)
         resetarCampos()
     };
 
     const closeModalEditar = () => {
         setModalVisibleEditar(false)
+        setSelectedId(null)
         resetarCampos()
     }
     // Remove a categoria selecionada (ainda precisa ser implementado)
@@ -130,6 +121,8 @@ const Categorias = ({ navigation }) => {
 
     const handleCategoriaClique = (nomeCategoria) => {
         // Faça algo com o nome da categoria clicada
+        setSelectedId(nomeCategoria)
+        console.log("nome categoria", nomeCategoria)
         if (categorias.some(categoria => categoria.value === nomeCategoria)) {
             console.log('Categoria clicada:', nomeCategoria);
             setFotoCategoria(nomeCategoria);
@@ -337,8 +330,8 @@ const Categorias = ({ navigation }) => {
                         <View style={{ flexDirection: 'row' }}>
                             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                                 {categorias.map(categoria =>
-                                    <View key={categoria.name} style={{ display: 'flex', flexDirection: 'row', margin: 5, alignSelf: 'stretch', marginTop: 15 }}>
-                                        <CategoryModal categoryKey={categoria.value} photo={categoria.photo} onPress={handleCategoriaClique}/>
+                                    <View key={categoria.value} style={{ display: 'flex', flexDirection: 'row', margin: 5, alignSelf: 'stretch', marginTop: 15 }}>
+                                        <CategoryModal categoryKey={categoria.value} photo={categoria.photo} onPress={handleCategoriaClique} selectedId={selectedId}/>
                                     </View>
                                 )}
                             </ScrollView>
@@ -403,7 +396,7 @@ const Categorias = ({ navigation }) => {
                             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                                 {categorias.map(categoria =>
                                     <View key={categoria.name} style={{ display: 'flex', flexDirection: 'row', margin: 5, alignSelf: 'stretch', marginTop: 15 }}>
-                                        <CategoryModal categoryKey={categoria.value} photo={categoria.photo} checked={selectedCategory.foto} onPress={handleCategoriaClique}/>
+                                        <CategoryModal categoryKey={categoria.value} photo={categoria.photo} checked={selectedCategory.foto} onPress={handleCategoriaClique} selectedId={selectedId}/>
                                     </View>
                                 )}
                             </ScrollView>
@@ -455,6 +448,8 @@ const styles = StyleSheet.create({
     },
     avatarContainer: {
         alignItems: 'center',
+        marginBottom: 20,
+        width: 90
     },
     imageContainer: {
         backgroundColor: '#c0e8f4',
@@ -463,13 +458,10 @@ const styles = StyleSheet.create({
     },
     imageContainerAvatar: {
         // backgroundColor: '#c0e8f4',
-        padding: 10,
         borderRadius: 50,
-        marginBottom: 10,
     },
     categoryText: {
         textAlign: 'center',
-        marginTop: 10,
         fontSize: 16,
     },
     fab: {

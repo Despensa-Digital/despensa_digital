@@ -196,7 +196,8 @@ const adicionarItemProduto = async (residenciaId, itemProduto) =>{
     produtoRef.collection('ItensProdutos').add({
         categoria: itemProduto.categoria,
         preco: itemProduto.preco,
-        validade: itemProduto.dataValidade
+        validade: itemProduto.dataValidade,
+        localCompra: itemProduto.localCompra
     }).then((doc)=>{
         console.log('Item adicionado com sucesso. ID do item:', doc.id);
     }).catch((erro)=>{

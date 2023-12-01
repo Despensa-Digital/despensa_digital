@@ -38,9 +38,10 @@ const HomeScreen = () => {
 
     useEffect(() => {
         // removeResidenciaStorage()
+        console.log("PASSEI NA HOME")
         carregarResidenciaAtual()
         carregarProdutos()
-        return ()=> carregarProdutos()
+        return ()=> console.log("finalizei produtos")
     }, [])
 
     useFocusEffect(
@@ -53,13 +54,12 @@ const HomeScreen = () => {
     );
 
 
-   
+
 
     const carregarResidenciaAtual = () => {
         getResidenciaAtual()
             .then(doc => {
                 setResidencia(doc)
-                // setLoading(false)
             })
             
     }

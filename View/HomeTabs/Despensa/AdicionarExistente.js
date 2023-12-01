@@ -9,9 +9,10 @@ import scheduleNotificationControl from '../../../Controller/Despensa/scheduleNo
 import { postItemProduto } from '../../../Controller/Produtos/produtosController';
 registerTranslation('pt', pt)
 const AdicionarExistente = ({ route }) => {
+    const  {produto} = route.params
     const navigation = useNavigation();
-    const [codigoDeBarras, setCodigoDeBarras] = useState('');
-    const [nomeProduto, setNomeProduto] = useState('');
+    const [codigoDeBarras, setCodigoDeBarras] = useState(produto.codigoDeBarras);
+    const [nomeProduto, setNomeProduto] = useState(produto.nome);
     const [dataValidade, setDataValidade] = useState('');
     const [notificarVencimento, setNotificarVencimento] = useState(false);
     const [dataNotificacao, setDataNotificacao] = useState('');
@@ -20,7 +21,6 @@ const AdicionarExistente = ({ route }) => {
     const [preco, setPreco] = useState('');
     const [localCompra, setLocalCompra] = useState('');
     const [categoria, setCategoria] = useState('');
-    const  {produto} = route.params
 
     const salvarItemProduto = async () => {
         const novoItemProduto = {

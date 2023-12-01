@@ -54,7 +54,7 @@ const Despensa = ({ route, navigation }) => {
     useEffect(() => {
         carregarCategorias()
         carregarProdutos()
-        return ()=> carregarProdutos()
+        return ()=> console.log("finalizei produtos")
     }, [])
 
     useFocusEffect(
@@ -66,42 +66,6 @@ const Despensa = ({ route, navigation }) => {
     );
 
     
-    
-
-    const [lastProductId, setLastProductId] = useState(7);
-
-    useEffect(() => {
-        console.log('Estou no useEffect')
-        if (route.params?.produtoEditado == true) {
-            console.log('Estou no if: ' + route.params.produtoEditado)
-            const updatedProducts = products.map(product => {
-                if (product.key === route.params.key) {
-                    return {
-                        ...product,
-                        codigoDeBarras: route.params.codigoDeBarras,
-                        name: route.params.nomeProduto,
-                        marca: route.params.marca,
-                        expire: route.params.dataValidade,
-                        quantidade: route.params.quantidade,
-                        categoria: route.params.categoria,
-                        peso: route.params.peso,
-                        unidadeMedida: route.params.unidadeMedida
-                    }
-                }
-                return product;
-            })
-            setProducts(updatedProducts);
-        }
-        if (route.params?.produtoEditado == false && route.params.key > products.length) {
-            const newProduct = [...products, route.params]
-            setProducts(newProduct)
-            setLastProductId(lastProductId + 1)
-        }
-    }, [route.params]);
-
-
-
-
     if (loading) {
         return (
             <View style={{ flex: 1, justifyContent: 'center' }}>

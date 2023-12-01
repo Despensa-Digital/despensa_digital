@@ -16,7 +16,7 @@ const CategoryAvatar = ({ categorias, setSelectedId, selectedId }) => {
 
     const listaCategorias = categorias.map(categoria =>
 
-        <TouchableOpacity onPress={() => setSelectedId(categoria.key)} style={{ margin: 5, backgroundColor: 'transparent' }} key={categoria.key}>
+        <TouchableOpacity onPress={() => setSelectedId(categoria.key)} style={{ margin: 5, backgroundColor: 'transparent', alignItems: 'center' }} key={categoria.key}>
             {/* Caso as fotos não venham com background, alterar o background color */}
             {/* <Avatar.Image source={photo} style={{backgroundColor: '#C0E8F4'}} size={70}/>
             <View style={{ height: 40, width: 70 }}>

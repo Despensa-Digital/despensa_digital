@@ -9,8 +9,7 @@ import { getResidenciaStorage, removeResidenciaStorage } from '../../Controller/
 
 
 const DB_RESIDENCIA = firestore().collection("Residencia");
-const categorias = [
-            {nome: 'Todas as categorias', foto: 'Hamper.png'},
+const categorias = [         
             { nome: 'Lavanderia', foto: 'WashingMachine.png'},
             { nome: 'Geladeira', foto: 'Fridge.png'},
             { nome: 'Hortifruit', foto: 'Fruits.png'},
@@ -171,7 +170,7 @@ const adicionarResidencia = async(nome)=>{
             ]
         });
     
-        const residenciaId = await residenciaRef.id;
+        const residenciaId = residenciaRef.id;
     
         if (residenciaId) {
             const categoriasRef = DB_RESIDENCIA.doc(residenciaId).collection('Categorias');

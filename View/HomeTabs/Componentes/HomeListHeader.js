@@ -1,13 +1,30 @@
 import { useState } from 'react';
-import { View, ScrollView } from 'react-native'
-import {  Text } from 'react-native-paper';
+import { View, ScrollView, TouchableOpacity } from 'react-native'
+import { Button, Modal, Portal, Text, TextInput } from 'react-native-paper';
 import ProfileAvatar from '../Componentes/ProfileAvatar';
 
 //Componente para o ListHeader do FlatList [partes da tela que não são itens da lista]
-const HomeListHeader = ({membros}) => {
+const HomeListHeader = ({ membros }) => {
     // Ainda vai funcionar
     const [textoQuadro, setTextoQuadro] = useState('Escreva aqui suas anotações...');
+    const [textoInput, setTextoInput] = useState('');
+    const [modalVisible, setModalVisible] = useState(false)
 
+    //Enviar textoQuadro para o firestore
+
+    const saveText = () => {
+        setTextoQuadro(textoInput);
+        hideModal();
+    }
+
+    const openInputText = () => {
+        setTextoInput(textoQuadro);
+        setModalVisible(true)
+    }
+
+    const hideModal = () => {
+        setModalVisible(false)
+    }
 
     return (
         <>
@@ -37,24 +54,55 @@ const HomeListHeader = ({membros}) => {
                 }}>
                 Quadro de avisos
             </Text>
-            <View style={{ marginTop: 10, marginHorizontal: 22, height: 140, borderWidth: 2, borderColor: '#d9d9d9', borderRadius: 10 }}>
-                <Text
-                    variant="titleSmall"
-                    style={{
-                        marginTop: 5,
-                        marginHorizontal: 10,
-                        color: '#49454F'
-                    }}>
-                    {textoQuadro}
-                </Text>
-            </View>
+            <TouchableOpacity onPress={() => openInputText()}>
+                <View style={{ marginTop: 10, marginHorizontal: 22, height: 140, borderWidth: 2, borderColor: '#d9d9d9', borderRadius: 10 }}>
+                    <Text
+                        variant="titleSmall"
+                        style={{
+                            marginTop: 5,
+                            marginHorizontal: 10,
+                            color: '#49454F'
+                        }}>
+                        {textoQuadro}
+                    </Text>
+                </View>
+            </TouchableOpacity>
 
-            {/* <TextInput 
-                maxLength={150} 
-                multiline 
-                style={{marginTop:10, marginHorizontal: 22}}
-                onChangeText={textoQuadro => setTextoQuadro(textoQuadro)}
-            /> */}
+            <Portal>
+                <Modal visible={modalVisible} onDismiss={hideModal} contentContainerStyle={{ height: '90%', width: '90%', backgroundColor: 'white', alignSelf: 'center', borderRadius: 8 }}>
+
+                    <Text variant={'titleMedium'} style={{ textAlign: 'center', margin: 10 }}>Adicione seu texto no quadro de mensagens</Text>
+                    <TextInput
+                        maxLength={150}
+                        multiline={true}
+                        numberOfLines={8}
+                        style={{ marginTop: 10, marginHorizontal: 22 }}
+                        value={textoInput}
+                        onChangeText={textoInput => setTextoInput(textoInput)}
+                    />
+                    <View style={{ display: 'flex', flexDirection: 'row', gap: 20, marginTop: 20, justifyContent: 'center' }}>
+                        <Button
+                            textColor='#fff'
+                            buttonColor='#5DB075'
+                            style={{ borderColor: '#5DB075' }}
+                            mode="outlined"
+                            onPress={() => saveText()}>
+                            Salvar
+                        </Button>
+                        <Button
+                            textColor='#5DB075'
+                            buttonColor='#FFFFFF'
+                            style={{ borderColor: '#5DB075' }}
+                            mode="outlined"
+                            onPress={() => hideModal()}>
+                            Cancelar
+                        </Button>
+                    </View>
+                </Modal>
+
+            </Portal>
+
+
 
             <Text
                 variant="titleMedium"

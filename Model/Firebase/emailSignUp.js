@@ -12,9 +12,9 @@ const emailSignUp = (name, email, password) => {
             userCredential.user.sendEmailVerification();
             const data = {
                 uid: userCredential.user.uid,
-                nome: name,
+                displayName: name,
                 email: email,
-                foto: ""
+                photoURL: ""
             }
             postConsumidor(data)
         })
