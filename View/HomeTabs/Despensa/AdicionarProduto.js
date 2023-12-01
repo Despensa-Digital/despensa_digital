@@ -28,44 +28,11 @@ const AdicionarProduto = ({ route }) => {
     const [unidadeMedida, setUnidadeMedida] = useState('');
     const [peso, setPeso] = useState('');
     const [quantidade, setQuantidade] = useState('0');
-    const [subButton, setSubButton] = useState(false);
     const inputRef = useRef(null);
 
 
     const [disableButton, setDisableButton] = useState(false);
 
-
-
-    //dado mockado - envia o objeto novoProduto para products em Despensa.js
-    const salvarProdutoMockado = async () => {
-        const novoProduto = {
-            produtoEditado: false,
-            key: lastProductId,
-            codigoDeBarras: codigoDeBarras,
-            name: nomeProduto,
-            marca: marca,
-            image: require('../../../Assets/Products/Rice.png'),
-            expire: dataValidade,
-            categoria: categoria,
-            unidadeMedida: unidadeMedida,
-            peso: peso,
-            quantidade: quantidade
-        }
-
-        //Cria notificacao
-        //Adicionar id como parametro
-        if (notificarVencimento) {
-            
-            const notificationId = await scheduleNotificationControl(dataValidade, dataNotificacao, nomeProduto, codigoDeBarras).then(id =>  id);
-            console.log("IF: ", notificationId);
-        }
-
-        navigation.navigate({
-            name: 'Despensa',
-            params: novoProduto,
-            merge: true
-        })
-    }
 
     const maisQuantidade = () => {
         const sum = parseInt(quantidade) + 1;
@@ -177,7 +144,6 @@ const AdicionarProduto = ({ route }) => {
         setUnidadeMedida('')
         setPeso('')
         setQuantidade('0')
-        setSubButton('')
         setIsActive(false)
     }
 
@@ -216,7 +182,14 @@ const AdicionarProduto = ({ route }) => {
 
     }
 
-    
+    //Executa ao tirar o foco (clicar fora) do TextInput Codigo de barras
+    const onEndingCodebar = () => {
+        if(codigoDeBarras.length == 8 || codigoDeBarras.length == 13){
+            console.log("TERMINEI DE DIGITAR O CÓDIGO DE BARRAS");
+        }else{
+            console.log('NÃO TERMINEI DE DIGITAR...')
+        }
+    }
 
     return (
         <PaperProvider>
@@ -273,7 +246,9 @@ const AdicionarProduto = ({ route }) => {
                     value={codigoDeBarras}
                     right={<TextInput.Icon icon='barcode-scan' onPress={handleIconPress} />}
                     onChangeText={codigoDeBarras => setCodigoDeBarras(codigoDeBarras)}
-
+                    keyboardType='numeric'
+                    maxLength={13}
+                    onEndEditing={onEndingCodebar}
                 />
                 <TextInput
                     style={{ marginTop: 10, marginHorizontal: 20 }}
@@ -336,7 +311,7 @@ const AdicionarProduto = ({ route }) => {
                     mode="outlined"
                     error={false}
                     value={currency.mask({ locale: 'pt-BR', currency: 'BRL', value: preco })}
-                  onChangeText={preco => setPreco(currency.unmask({ locale: 'pt-BR', currency: 'BRL', value: preco }))}
+                    onChangeText={preco => setPreco(currency.unmask({ locale: 'pt-BR', currency: 'BRL', value: preco }))}
                 />
 
                 <TextInput
