@@ -95,7 +95,7 @@ const Despensa = ({ route, navigation }) => {
             <FAB
                 icon="plus"
                 style={styles.fab}
-                onPress={() => navigation.navigate('AdicionarProduto')}
+                onPress={() => navigation.navigate('AdicionarProduto', categorias)}
             />
         </PaperProvider>
 
