@@ -12,6 +12,7 @@ import { currency } from 'remask';
 import { Dropdown } from 'react-native-element-dropdown';
 
 import scheduleNotificationControl from '../../../Controller/Despensa/scheduleNotificationControl';
+import FastImage from 'react-native-fast-image';
 registerTranslation('pt', pt)
 const AdicionarProduto = ({ route }) => {
     const navigation = useNavigation();
@@ -28,7 +29,7 @@ const AdicionarProduto = ({ route }) => {
     const [categoria, setCategoria] = useState('');
     const [unidadeMedida, setUnidadeMedida] = useState('');
     const [peso, setPeso] = useState('');
-    const [quantidade, setQuantidade] = useState('0');
+    const [quantidade, setQuantidade] = useState('1');
     const inputRef = useRef(null);
 
 
@@ -45,7 +46,8 @@ const AdicionarProduto = ({ route }) => {
 
     const menosQuantidade = () => {
         const sub = parseInt(quantidade) - 1;
-        setQuantidade(sub.toString());
+
+        if(sub >= 1) setQuantidade(sub.toString());
     }
 
 
@@ -190,6 +192,8 @@ const AdicionarProduto = ({ route }) => {
     const onEndingCodebar = () => {
         if(codigoDeBarras.length == 8 || codigoDeBarras.length == 13){
             console.log("TERMINEI DE DIGITAR O CÓDIGO DE BARRAS");
+            console.log("Meu código de barras", codigoDeBarras)
+            setIsActive(false)
         }else{
             console.log('NÃO TERMINEI DE DIGITAR...')
         }
@@ -257,15 +261,19 @@ const AdicionarProduto = ({ route }) => {
 
                         </View> :
                         <View>
-                            <Image
-                                source={{ uri: `https://cdn-cosmos.bluesoft.com.br/products/${codigoDeBarras}` }}
+                            <FastImage
                                 style={{
                                     alignSelf: 'center',
                                     width: 500,
                                     height: 300,
                                     borderRadius: 15
                                 }}
-                                resizeMode='contain'
+                                source={{
+                                    uri: `https://cdn-cosmos.bluesoft.com.br/products/${codigoDeBarras}`.toString(),
+                                    priority: FastImage.priority.normal,
+                                }}
+                                defaultSource={require('../../../Assets/Categories/Hamper.png')}
+                                resizeMode={FastImage.resizeMode.contain}                       
                             />
                         </View>
 

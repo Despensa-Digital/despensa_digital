@@ -6,9 +6,10 @@ import HomeListHeader from '../Componentes/HomeListHeader';
 import HomeRenderItem from '../Componentes/HomeRenderItem';
 import HomeEmptyList from '../Componentes/HomeEmptyList';
 import { getResidenciaAtual } from '../../../Controller/Residencia/residenciaController';
-import { getProdutos } from '../../../Controller/Produtos/produtosController';
+import { getProdutosProximosDaValidade } from '../../../Controller/Produtos/produtosController';
 
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import { set } from 'date-fns';
 
 
 
@@ -25,33 +26,9 @@ const HomeScreen = () => {
     //Exibir a primeira residencia
     //Residencia obtida: mostrar a lista de usuários
     //Itens próximos do vencimento?
+
+
     
-    const [products, setProducts] = useState([
-        { key: 1, codigoDeBarras: '1234567891234', name: 'Cerveja', marca: 'Brahma', image: 'https://cdn-cosmos.bluesoft.com.br/products/7891149102488', expire: '30/09/2023', quantidade: '6', categoria: 'Geladeira', peso: '350', unidadeMedida: 'mL' },
-        { key: 2, codigoDeBarras: '1234567891234', name: 'Café', marca: 'Pilão', image: 'https://cdn-cosmos.bluesoft.com.br/products/7896089012453', expire: '30/09/2023', quantidade: '1', categoria: 'Armário da Cozinha', peso: '500', unidadeMedida: 'g' },
-        { key: 3, codigoDeBarras: '1234567891234', name: 'Coca-Cola', marca: 'Coca-Cola', image: 'https://cdn-cosmos.bluesoft.com.br/products/7894900019155', expire: '30/09/2023', quantidade: '1', categoria: 'Geladeira', peso: '200', unidadeMedida: 'mL' },
-        { key: 4, codigoDeBarras: '1234567891234', name: 'Suco de Laranja', marca: 'Xandô', image: 'https://cdn-cosmos.bluesoft.com.br/products/7896623100028', expire: '30/09/2023', quantidade: '1', categoria: 'Geladeira', peso: '1', unidadeMedida: 'L' },
-        { key: 5, codigoDeBarras: '1234567891234', name: 'Leite', marca: 'Parmalat', image: 'https://cdn-cosmos.bluesoft.com.br/products/3789603461001', expire: '30/09/2023', quantidade: '1', categoria: 'Geladeira', peso: '1', unidadeMedida: 'L' },
-        { key: 6, codigoDeBarras: '1234567891234', name: 'Arroz', marca: 'Camil', image: 'https://cdn-cosmos.bluesoft.com.br/products/7896006711117', expire: '30/09/2023', quantidade: '1', categoria: 'Armário da Cozinha', peso: '1', unidadeMedida: 'kg' },
-    ])
-
-
-    useEffect(() => {
-        // removeResidenciaStorage()
-        console.log("PASSEI NA HOME")
-        carregarResidenciaAtual()
-        carregarProdutos()
-        return ()=> console.log("finalizei produtos")
-    }, [])
-
-    useFocusEffect(
-        React.useCallback(() => {
-            carregarResidenciaAtual()
-            carregarProdutos()
-            
-            return () => console.log("lista atualizada");
-        }, [])
-    );
 
 
 
@@ -65,17 +42,35 @@ const HomeScreen = () => {
     }
 
 
-    const carregarProdutos = ()=>{
-        getProdutos((produto)=>{
-            setProdutos(produto)
-            setLoading(false)
-            console.log("Produtos", produtos)
-        })
-        console.log("Carreguei novamente")
+    const carregarProdutos =async ()=>{
+        const data = await getProdutosProximosDaValidade()
+        setProdutos(data)
+        setLoading(false)
     }
     
+    useEffect(() => {
+        carregarResidenciaAtual()
+        carregarProdutos()
+        return ()=> console.log("finalizei produtos")
+    }, [])
 
+    useFocusEffect(
+        React.useCallback(() => {
+            carregarResidenciaAtual()
+            // carregarProdutos()
+            
+            return () => console.log("lista atualizada");
+        }, [])
+    );
     
+
+    if (loading) {
+        return (
+            <View style={{ flex: 1, justifyContent: 'center' }}>
+                <ActivityIndicator animating={true} color="#00ff00" />
+            </View>
+        )
+    } 
     if (residencia === null) {
         return (
             <PaperProvider>
@@ -86,7 +81,7 @@ const HomeScreen = () => {
                     <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.navigate('GerenciarResidencias')} hitSlop={{top: 20, bottom: 20, left: 50, right: 50}}>
                         <Image source={require('../../../Assets/Home/empty.jpg')} style={{ alignSelf: "center", width: 170, height: 170 }} /> 
                         <Text  style={{color:'black', textAlign: "center", fontSize: 18, paddingHorizontal: 20}}>
-                        Parece que ainda não há residências vinculadas à sua conta. {"\n"}{"\n"}Clique aqui para criar uma nova residência.
+                            Parece que ainda não há residências vinculadas à sua conta. {"\n"}{"\n"}Clique aqui para criar uma nova residência.
                         </Text>
                     </TouchableOpacity>
     
@@ -98,18 +93,18 @@ const HomeScreen = () => {
             <PaperProvider>          
                 <FlatList
                     style={{ backgroundColor: '#fff' }}
-                    data={produtos ? produtos.sort((a,b)=>{
-                        return a.itensProdutos.validade - b.itensProdutos.validade
-                    }): produtos}
-                    keyExtractor={item => item.key}
+                    data={produtos}
+                    keyExtractor={(item, index)  => item.key + index}
                     ListHeaderComponent={<HomeListHeader membros={residencia.membros}/>}
                     renderItem={({ item }) => <HomeRenderItem item={item} />}
                     ListEmptyComponent={
-                        loading ?
-                        <View style={{flex: 1, justifyContent: 'center'}}>
-                            <ActivityIndicator animating={true} color="#00ff00" />
-                        </View>
-                        :<HomeEmptyList/>
+                        loading 
+                        ?
+                            <View style={{flex: 1, justifyContent: 'center'}}>
+                                <ActivityIndicator animating={true} color="#00ff00" />
+                            </View>
+                        :
+                            <HomeEmptyList/>
                     }
                     onRefresh={() => {
                         console.log("refreshing")}}

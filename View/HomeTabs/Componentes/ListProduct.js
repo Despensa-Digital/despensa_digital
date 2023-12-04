@@ -5,9 +5,12 @@ import { currency } from 'remask';
 
 const ListProduct = ({produtoId, itens}) => {
     const navigation = useNavigation();
-    const convertData = (data) =>{
+
+    const convertData = (timestamp) =>{
+        const dataItem = new Date(timestamp.seconds * 1000);
+        dataItem.setMilliseconds(timestamp.nanoseconds / 1000000);
         const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
-        return data.toDate().toLocaleString('pt-BR',options)
+        return dataItem.toLocaleDateString('pt-BR', options);
     }
 
     const lista = itens.map(product =>

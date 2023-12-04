@@ -3,6 +3,63 @@ import firestore from '@react-native-firebase/firestore';
 const DB_DESPENSA = firestore().collection("Residencia");
 
 
+
+const buscarProdutosProximosDaValidade = async (residenciaId) =>{
+    const dataAtual = new Date(); // Obtém a data atual
+    const dataDaquiUmMes = new Date()
+    dataDaquiUmMes.setMonth(dataDaquiUmMes.getMonth() + 1);
+     
+    const despensaRef = DB_DESPENSA.doc(residenciaId).collection('Produtos')
+    const produtos = [];
+
+    const querySnapshot = await despensaRef
+        .get()
+        if (querySnapshot.size > 0) {
+            for (const documentSnapshot of querySnapshot.docs) {
+                const produto = {
+                    ...documentSnapshot.data(),
+                    key: documentSnapshot.id,
+                };
+
+                const itemProdutoRes = documentSnapshot.ref
+                    .collection('ItensProdutos')
+                    .where('validade', '>=', dataAtual)
+                    .where('validade', '<=', dataDaquiUmMes)
+                    .orderBy('validade', 'asc')
+                    .limit(1);
+
+                const subSnapshot = await itemProdutoRes.get();
+                
+                if (!subSnapshot.empty) {
+                    subSnapshot.forEach((itemSnapshot) => {
+                        const itemProdutoData = itemSnapshot.data()
+                        if(itemProdutoData && itemProdutoData.validade){
+                            const itemProduto = {
+                                ...itemSnapshot.data(),
+                                itemId: itemSnapshot.id,
+                            };
+                            produto.itemProduto = itemProduto;
+                            console.log("INSERIDO:");
+                            console.log(JSON.stringify(itemProduto, null, 2)); // Adicionando o primeiro itemProduto encontrado
+                        }
+                    });
+                    produtos.push(produto);
+                }
+
+                
+            }
+
+            return produtos;
+        } else {
+            return null;
+        }
+}
+
+
+
+
+
+
 const buscarProdutosItensValidades = async (residenciaId, callback) => {
     const dataAtual = new Date(); // Obtém a data atual
     const timestampAtual = firestore.Timestamp.fromDate(dataAtual);
@@ -20,12 +77,10 @@ const buscarProdutosItensValidades = async (residenciaId, callback) => {
                         key: documentSnapshot.id,
                     }
 
-
                     const itemProdutosRes = documentSnapshot.ref.collection('ItensProdutos')
-                    // .where('validade', '>=', timestampAtual)
+                    .where('validade', '>=', timestampAtual)
                     .orderBy('validade', 'asc')
 
-                    
                     promises.push(
                         itemProdutosRes.get().then((sub) => {
                             if (!sub.empty) {
@@ -43,11 +98,13 @@ const buscarProdutosItensValidades = async (residenciaId, callback) => {
                                 });
                             
                                 produto.itensProdutos = itensProdutos[0];
-
+                                console.log("Primeiro");
                             }
+                            produtos.push(produto);
                         })
+                        
                     );
-                    produtos.push(produto);
+                    
                     
                 });
                 
@@ -60,6 +117,7 @@ const buscarProdutosItensValidades = async (residenciaId, callback) => {
             }
         })
 }
+
 
 
 
@@ -230,6 +288,7 @@ const atualizarItemProduto = async(residenciaId, produtoId, itemAtualizado) =>{
 
 export default {
     buscarProdutosItensValidades,
+    buscarProdutosProximosDaValidade,
     buscarProdutoItensProdutos,
     adicionarProduto,
     atualizarProduto,

@@ -10,22 +10,20 @@ import DespensaListHeader from '../Componentes/DespensaListHeader';
 import DespensaRenderItem from '../Componentes/DespensaRenderItem';
 import DespensaEmptyList from '../Componentes/DespensaEmptyList';
 
-
-
-
 const Despensa = ({ route, navigation }) => {
     const [searchQuery, setSearchQuery] = useState('');
-    const [produtos, setProdutos] = useState([])
-    const [categorias, setCategorias] = useState([])
+    const [produtos, setProdutos] = useState([]);
+    const [categorias, setCategorias] = useState([]);
     const [loading, setLoading] = useState(true);
 
     const onChangeSearch = query => setSearchQuery(query);
 
-    const carregarProdutos = ()=>{
-        getProdutos((produto)=>{
-            setProdutos(produto)
-            setLoading(false)
-        })
+    const carregarProdutos = async ()=>{
+       await getProdutos((doc)=>{
+        setProdutos(doc)
+       })
+            
+        setLoading(false)
         
     }
 
@@ -40,30 +38,29 @@ const Despensa = ({ route, navigation }) => {
                 }else{
                     setCategorias([categoriaEva])
                 }
-                
-                
-                setLoading(false)
             }
         )
     }
 
-
-
-
-
     useEffect(() => {
         carregarCategorias()
         carregarProdutos()
+       
+
         return ()=> console.log("finalizei produtos")
     }, [])
 
     useFocusEffect(
         React.useCallback(() => {
             carregarCategorias()
-            carregarProdutos()
+            // carregarProdutos()
             return () => console.log("lista atualizada");
         }, [])
     );
+
+    useEffect(() => {
+        if (categorias && (produtos === null || produtos)) setLoading(false);
+    }, [categorias, produtos])
 
     
     if (loading) {
@@ -75,19 +72,22 @@ const Despensa = ({ route, navigation }) => {
     }  
     return (
         <PaperProvider>
-            {/* <ScrollView style={{ backgroundColor: '#fff' }}>
-                <DespensaListHeader />
-                <ListComponent itens={products} />
-            </ScrollView> */}
 
             <FlatList
                 style={{ backgroundColor: '#fff' }}
                 data={produtos}
-                keyExtractor={item => item.key}
+                keyExtractor={(item, index)  => item.key + index}
                 ListHeaderComponent={<DespensaListHeader categorias={categorias}/>}
                 renderItem={({ item }) => <DespensaRenderItem item={item} />}
-                ListEmptyComponent={DespensaEmptyList}
-                onRefresh={() => console.log("refreshing")}
+                ListEmptyComponent={
+                    loading 
+                        ?
+                        <View style={{flex: 1, justifyContent: 'center'}}>
+                            <ActivityIndicator animating={true} color="#00ff00" />
+                        </View>
+                        :
+                        DespensaEmptyList}
+                onRefresh={() => carregarProdutos()}
                 //if set to true, the UI will show a loading indicator
                 refreshing={false}
             />
