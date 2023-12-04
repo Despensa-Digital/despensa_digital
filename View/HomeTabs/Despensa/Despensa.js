@@ -18,6 +18,7 @@ const Despensa = ({ route, navigation }) => {
     const [produtos, setProdutos] = useState([])
     const [categorias, setCategorias] = useState([])
     const [loading, setLoading] = useState(true);
+    const [refreshing, setRefreshing] = useState(false);
 
     const onChangeSearch = query => setSearchQuery(query);
 
@@ -26,7 +27,7 @@ const Despensa = ({ route, navigation }) => {
             setProdutos(produto)
             setLoading(false)
         })
-        
+
     }
 
     const carregarCategorias = ()=>{
@@ -40,8 +41,8 @@ const Despensa = ({ route, navigation }) => {
                 }else{
                     setCategorias([categoriaEva])
                 }
-                
-                
+
+
                 setLoading(false)
             }
         )
@@ -65,14 +66,23 @@ const Despensa = ({ route, navigation }) => {
         }, [])
     );
 
-    
+    useEffect(() => {
+        if (refreshing) {
+            // do your heavy or asynchronous data fetching & update your state
+            carregarProdutos()
+            // set the refreshing back to false
+            setRefreshing(false);
+            console.log("Dei refresh na lista")
+        }
+    }, [refreshing]);
+
     if (loading) {
         return (
             <View style={{ flex: 1, justifyContent: 'center' }}>
                 <ActivityIndicator animating={true} color="#00ff00" />
             </View>
         )
-    }  
+    }
     return (
         <PaperProvider>
             {/* <ScrollView style={{ backgroundColor: '#fff' }}>
@@ -82,14 +92,20 @@ const Despensa = ({ route, navigation }) => {
 
             <FlatList
                 style={{ backgroundColor: '#fff' }}
-                data={produtos}
-                keyExtractor={item => item.key}
-                ListHeaderComponent={<DespensaListHeader categorias={categorias}/>}
+                data={produtos ? produtos.sort((a, b) => {
+                    let x = a?.nome?.toLowerCase();
+                    let y = b?.nome?.toLowerCase();
+                    if (x < y) { return -1; }
+                    if (x > y) { return 1; }
+                    return 0;
+                }) : produtos}
+                keyExtractor={(item, index) => item.key + index}
+                ListHeaderComponent={<DespensaListHeader categorias={categorias} />}
                 renderItem={({ item }) => <DespensaRenderItem item={item} />}
                 ListEmptyComponent={DespensaEmptyList}
-                onRefresh={() => console.log("refreshing")}
+                onRefresh={() => setRefreshing(true)}
                 //if set to true, the UI will show a loading indicator
-                refreshing={false}
+                refreshing={refreshing}
             />
 
             <FAB

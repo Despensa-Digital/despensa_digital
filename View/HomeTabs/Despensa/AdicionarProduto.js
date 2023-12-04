@@ -180,7 +180,7 @@ const AdicionarProduto = ({ route }) => {
 
 
         console.log("Meu produto \n", produto)
-        await postProdutos(produto)
+        postProdutos(produto)
         limparCampos()
         navigation.goBack()
 

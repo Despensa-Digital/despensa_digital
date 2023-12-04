@@ -7,10 +7,8 @@ import FastImage from 'react-native-fast-image';
 const DespensaRenderItem = ({item}) => {
     const navigation = useNavigation();
     const numeroAleatorio = Math.floor(Math.random() * 1000) + 1;
-     const convertData = (data) =>{
-        const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
-        return data.toDate().toLocaleString('pt-BR',options)
-    }
+    const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+    const convertData = item?.itensProdutos?.validade.toDate().toLocaleString('pt-BR', options);
 
     return (
         <View key={item.key}>
@@ -18,7 +16,7 @@ const DespensaRenderItem = ({item}) => {
                 <List.Item
                     key={`${item.key}-${numeroAleatorio}`}
                     title={`${item.nome} ${item.marca}`}
-                    description={`Data de validade: ${convertData(item.itensProdutos.validade)}`}
+                    description={`Data de validade: ${convertData}`}
                     left={() =>
                         <FastImage
                             style={{ width: 60 }}
