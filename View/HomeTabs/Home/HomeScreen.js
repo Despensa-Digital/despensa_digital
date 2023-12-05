@@ -57,7 +57,7 @@ const HomeScreen = () => {
     useFocusEffect(
         React.useCallback(() => {
             carregarResidenciaAtual()
-            // carregarProdutos()
+            carregarProdutos()
             
             return () => console.log("lista atualizada");
         }, [])
@@ -107,7 +107,7 @@ const HomeScreen = () => {
                             <HomeEmptyList/>
                     }
                     onRefresh={() => {
-                        console.log("refreshing")}}
+                       carregarProdutos()}}
                     //if set to true, the UI will show a loading indicator
                     refreshing={false}
                 />

@@ -63,7 +63,9 @@ const buscarProdutosProximosDaValidade = async (residenciaId) =>{
 const buscarProdutosItensValidades = async (residenciaId, callback) => {
     const dataAtual = new Date(); // Obtém a data atual
     const timestampAtual = firestore.Timestamp.fromDate(dataAtual);
-    const despensaRef = DB_DESPENSA.doc(residenciaId).collection('Produtos')
+    const despensaRef = DB_DESPENSA.doc(residenciaId)
+        .collection('Produtos')
+        .orderBy("nome", 'asc')
     const produtos = [];
     despensaRef
         .onSnapshot(async querySnapshot => {
@@ -98,7 +100,6 @@ const buscarProdutosItensValidades = async (residenciaId, callback) => {
                                 });
                             
                                 produto.itensProdutos = itensProdutos[0];
-                                console.log("Primeiro");
                             }
                             produtos.push(produto);
                         })
@@ -167,10 +168,14 @@ const buscarProdutoItensProdutos = (residenciaId,idProduto, callback) =>{
 
 const adicionarProduto = async (residenciaId, produto) => {
     //Futuramente pegar o id usando o async storage
-    const isExist = await DB_DESPENSA.doc(residenciaId).collection('Produtos').where('codigoDeBarras', '==', produto.codigoDeBarras).get()
+    const isExist = await DB_DESPENSA.doc(residenciaId)
+            .collection('Produtos')
+            .where('codigoDeBarras', '==', produto.codigoDeBarras)
+            .get()
 
     if (isExist.size === 0) {
-        const produtoRef = await DB_DESPENSA.doc(residenciaId).collection('Produtos')
+        const produtoRef = await DB_DESPENSA.doc(residenciaId)
+        .collection('Produtos')
             .add({
                 categorias: produto.categoria,
                 codigoDeBarras: produto.codigoDeBarras,
@@ -182,16 +187,8 @@ const adicionarProduto = async (residenciaId, produto) => {
                 }
             })
 
-        // await produtoRef.collection('ItensProdutos')
-        //     .add({
-        //         categoria: produto.categoria,
-        //         preco: produto.preco,
-        //         validade: produto.dataValidade,
-        //         localCompra: produto.localCompra
-        //     })
-
         await produtoRef.collection('ItensProdutos').get().then((snapshot) => {
-            const quantidade = produto.quantidade; // Se quantidade não estiver definida, assume 1
+            const quantidade = produto.quantidade || 1; // Se quantidade não estiver definida, assume 1
         
             for (let i = 0; i < quantidade; i++) {
                 produtoRef.collection('ItensProdutos').add({
@@ -206,7 +203,7 @@ const adicionarProduto = async (residenciaId, produto) => {
         const produtoExiste = isExist.docs[0];
         const itensProdutosRef = produtoExiste.ref.collection('ItensProdutos')
 
-            const quantidade = produto.quantidade; // Se quantidade não estiver definida, assume 1
+            const quantidade = produto.quantidade || 1; // Se quantidade não estiver definida, assume 1
             for (let i = 0; i < quantidade; i++) {
                 await itensProdutosRef.add({
                     categoria: produto.categoria,

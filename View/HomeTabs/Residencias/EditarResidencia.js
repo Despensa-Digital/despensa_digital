@@ -9,6 +9,7 @@ import EditarMembro from './EditarMembro';
 import ModalExcluir from './ModalExcluir';
 
 import { getResidencia, deleteResidencia } from '../../../Controller/Residencia/residenciaController';
+import MessageSnackBar from '../Componentes/MessageSnackBar';
 
 
 const EditarResidencia = ({ route, navigation }) => {
@@ -24,7 +25,7 @@ const EditarResidencia = ({ route, navigation }) => {
 
   //Snackbar
   const [visible, setVisible] = useState(false)
-
+  const [message, setMessage] = useState('')
 
   useEffect(() => {
     editarResidencia(residenciaId, setResidencia);
@@ -43,6 +44,7 @@ const EditarResidencia = ({ route, navigation }) => {
 
   const excluirResidencia = () => {
     deleteResidencia(residenciaId)
+    setMessage("Residência excluida com sucesso!")
     onToggleSnackBar()
     setTimeout(() => {
       navigation.goBack()
@@ -123,22 +125,16 @@ const EditarResidencia = ({ route, navigation }) => {
           Voltar
         </Button>
         
-        {modalMembro && (<NovoMembro residenciaId={residenciaId} setModal={abrirFecharModalMembro} modal={modalMembro} />)}
+        {modalMembro && (<NovoMembro setModal={abrirFecharModalMembro} modal={modalMembro} setVisible={onToggleSnackBar} setMessage={setMessage} />)}
         {modalResidencia && (<EditarNomeResidencia residenciaId={residenciaId} editarNomeResidencia={residencia.nome} setModal={abrirFecharModalResidencia} modal={modalResidencia} />)}
         {modalEditarMembro && (<EditarMembro residenciaId={residenciaId} editarMembro={editarMembro} setModal={abrirFecharModalEditarMembro} modal={modalEditarMembro} />)}
         {modalConfirmarExclusaoResidencia && (<ModalExcluir setModal={setModalConfirmarExclusaoResidencia} modal={modalConfirmarExclusaoResidencia} onExcluir={excluirResidencia} />)}
-        <Snackbar
-            style={{ position: 'absolute', left: 0, right: 0, bottom: 10, marginLeft:10 }}
-            visible={visible}
-            onDismiss={onDismissSnackBar}
-            // duration={Snackbar.DURATION_SHORT}
-
-            action={{
-              icon: 'check-decagram'
-            }}
-          >
-            Residência excluida com sucesso!
-          </Snackbar>
+          <MessageSnackBar 
+            visible={visible} 
+            setVisible={onDismissSnackBar} 
+            message={message}
+            icon={"check-decagram"}
+          />
       </GestureHandlerRootView>
       
           

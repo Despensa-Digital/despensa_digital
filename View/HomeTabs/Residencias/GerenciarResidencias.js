@@ -1,4 +1,4 @@
-import { PaperProvider, Button, List, IconButton, Snackbar, RadioButton, ActivityIndicator } from 'react-native-paper';
+import { PaperProvider, Button, List, IconButton, RadioButton, ActivityIndicator } from 'react-native-paper';
 
 import React, { useEffect, useState } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
@@ -7,7 +7,7 @@ import NovaResidencia from './NovaResidencia';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { getResidencias } from '../../../Controller/Residencia/residenciaController';
 import { getResidenciaStorage, setResidenciaStorage } from '../../../Controller/Despensa/storage';
-
+import MessageSnackBar from '../Componentes/MessageSnackBar';
 
 const GerenciarResidencias = () => {
   const navigation = useNavigation();
@@ -107,7 +107,7 @@ const GerenciarResidencias = () => {
         </Button>
 
         <View>
-          <Snackbar
+          {/* <Snackbar
             style={{ left: 0, right: 0 }}
             visible={visible}
             onDismiss={onDismissSnackBar}
@@ -118,7 +118,13 @@ const GerenciarResidencias = () => {
             }}
           >
             Residência atualizada com sucesso!
-          </Snackbar>
+          </Snackbar> */}
+          <MessageSnackBar 
+            visible={visible} 
+            setVisible={onDismissSnackBar} 
+            message={"Residência atualizada com sucesso!"}
+            icon={"check-decagram"}
+          />
         </View>
 
       </View>

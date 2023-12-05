@@ -21,10 +21,12 @@ const Despensa = ({ route, navigation }) => {
     const carregarProdutos = async ()=>{
        await getProdutos((doc)=>{
         setProdutos(doc)
+        setLoading(false)
        })
             
-        setLoading(false)
         
+        
+        return ()=> getProdutos
     }
 
     const carregarCategorias = ()=>{

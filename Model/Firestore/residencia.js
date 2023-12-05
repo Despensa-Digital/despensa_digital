@@ -1,6 +1,5 @@
 import firestore from '@react-native-firebase/firestore';
 import consumidor from "./consumidor";
-import { getResidencia } from '../../Controller/Residencia/residenciaController';
 import { getResidenciaStorage, removeResidenciaStorage } from '../../Controller/Despensa/storage';
 
 
@@ -8,7 +7,9 @@ import { getResidenciaStorage, removeResidenciaStorage } from '../../Controller/
 
 
 
+
 const DB_RESIDENCIA = firestore().collection("Residencia");
+const DB_CONSUMIDOR = firestore().collection("Consumidor")
 const categorias = [         
             { nome: 'Lavanderia', foto: 'WashingMachine.png'},
             { nome: 'Geladeira', foto: 'Fridge.png'},
@@ -102,56 +103,6 @@ const buscarIdResidenciaAtual = async ()=>{
 }
 
 
-
-
-// const adicionarResidencia = async (nome)=>{
-//     const id = await consumidor.buscarConsumidorLogado();
-//     const  userAtual = await consumidor.buscarConsumidor(id)
-  
-//    const residenciaRef = DB_RESIDENCIA.add({
-//         nome:nome,
-//         current_residencia: false,
-//         membros: [
-//             {
-//                 id: id,
-//                 nome: userAtual.nome,
-//                 foto: userAtual.fotoUrl,
-//                 admin: true
-//             }
-//         ]
-//     })
-   
-//     const residenciaId = await residenciaRef.id
-
-//     const categorias = [
-//         { nome: 'Lavanderia', foto: 'WashingMachine.png'},
-//         { nome: 'Geladeira', foto: 'Fridge.png'},
-//         { nome: 'Hortifruit', foto: 'Fruits.png'},
-//         { nome: 'Armário da sala', foto: 'Pantry.png'},
-//         { nome: 'Banheiro', foto: 'Bathtub.png'},
-//         { nome: 'Cozinha', foto: 'Hamper.png'},
-//     ];
-
-//     const categoriasRef = DB_RESIDENCIA.doc(residenciaId).collection('Categorias');
-//     const batch = firestore().batch()
-
-//     categorias.forEach(categoria =>{
-//         const novaCategoria = categoriasRef.doc()
-//         batch.set(novaCategoria, categoria)
-//     })
-    
-
-//     try {
-//         // Commit (executar) a transação em lote
-//         await batch.commit();
-//         console.log('Categorias adicionadas com sucesso!');
-//     } catch (error) {
-//         console.error('Erro ao adicionar categorias:', error);
-//     }
-
-    
-// }
-
 const adicionarResidencia = async(nome)=>{
     try {
         const id = await consumidor.buscarConsumidorLogado();
@@ -225,7 +176,41 @@ removerResidencia = async (residenciaId) =>{
   });
 }
 
+//MEMBROS
 
+adicionarNovoMembro = async (novoMembro) =>{
+    const residenciaId = await getResidenciaStorage()
+    
+    
+        // Verificar se o usuário existe na base de dados
+        const usuarioDoc = await DB_CONSUMIDOR.where("email", "==", novoMembro.email).get();
+
+        if (usuarioDoc.empty) {
+            console.log('Usuário não encontrado na base de dados.');
+            return 'Usuario não encontrado na base de dados.' //Exibir essa mensagem para o usuario
+        }
+        const residenciaDoc = await DB_RESIDENCIA.doc(residenciaId).get()
+        const dadosAtuais = residenciaDoc.data()
+        const usuarioEncontrado = {
+            id: usuarioDoc.docs[0].id,
+            nome: novoMembro.nome,
+            foto: usuarioDoc.docs[0].data().fotoUrl ? usuarioDoc.docs[0].data().fotoUrl: "",
+            admin: false
+        }
+
+        const arrayMembrosExistente = dadosAtuais.membros
+
+       const novoArrayMembrosAtualizado = [...arrayMembrosExistente,usuarioEncontrado]
+        // Adicionar o usuário à residência
+        console.log("Array Membros Atualizados", novoArrayMembrosAtualizado)
+        
+        await DB_RESIDENCIA.doc(residenciaId).update({
+            membros: novoArrayMembrosAtualizado
+        })
+
+        return 'Usuário adicionado à residência com sucesso.';
+    
+}
 
 atualizarMembro = async (residenciaId, membroAtualizado)=>{
     const residenciaRef = DB_RESIDENCIA.doc(residenciaId)
@@ -285,6 +270,7 @@ export default{
     buscarIdResidenciaAtual,
     adicionarResidencia,
     removerResidencia,
+    adicionarNovoMembro,
     atualizarNomeResidencia,
     atualizarMembro,
     removerMembro

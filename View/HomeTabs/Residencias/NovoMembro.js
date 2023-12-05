@@ -1,12 +1,13 @@
-import { PaperProvider, Text, Button } from 'react-native-paper';
+import {Text, Button } from 'react-native-paper';
 
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { Dimensions, View, StyleSheet, SafeAreaView } from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
 
 import { TextInput } from 'react-native-paper';
+import { postNovoMembro } from '../../../Controller/Residencia/residenciaController';
 
-const NovoMembro = ({ setModal, modal }) => {
+const NovoMembro = ({ setModal, modal, setVisible, setMessage }) => {
   const bottomSheetRef = useRef();
   const snapPoints = useMemo(() => ['25%', '65%'], []);
   const handleSheetChanges = useCallback((index) => {
@@ -15,6 +16,21 @@ const NovoMembro = ({ setModal, modal }) => {
       setModal(false);
     }
   }, []);
+
+  const salvarNovoMembro = async ()=>{
+    const novoMembro = {
+      nome: nomeMembro,
+      email: emailMembro
+    }
+
+    console.log("Novo membro adicionado com sucesso", novoMembro)
+    const menssagem = await postNovoMembro(novoMembro)
+    setMessage(menssagem)
+    setVisible()
+    setTimeout(()=>{
+      setModal(false)
+    }, 1000)
+  }
 
   // variables
   const [nomeMembro, setNomeMembro] = React.useState("");
@@ -43,6 +59,8 @@ const NovoMembro = ({ setModal, modal }) => {
         <TextInput
           style={styles.textInput}
           mode='outlined'
+          keyboardType='email-address'
+          autoCapitalize='none'
           outlineColor='black'
           label="E-mail"
           value={emailMembro}
@@ -54,7 +72,7 @@ const NovoMembro = ({ setModal, modal }) => {
           textColor='white'
           style={styles.buttonSave}
           mode="contained"
-          onPress={() => setModal(false)}>
+          onPress={() => salvarNovoMembro()}>
           Enviar convite
         </Button>
 

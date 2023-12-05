@@ -10,7 +10,7 @@ import { postProdutos } from '../../../Controller/Produtos/produtosController';
 import { useNavigation } from '@react-navigation/native';
 import { currency } from 'remask';
 import { Dropdown } from 'react-native-element-dropdown';
-
+import MessageSnackBar from '../Componentes/MessageSnackBar';
 import scheduleNotificationControl from '../../../Controller/Despensa/scheduleNotificationControl';
 import FastImage from 'react-native-fast-image';
 registerTranslation('pt', pt)
@@ -38,6 +38,14 @@ const AdicionarProduto = ({ route }) => {
     const [dropdownMedidaIsFocus, setDropdownMedidaIsFocus] = useState(false);
     const categorias = route.params.slice(1)
     
+    //Snackbar
+    const [snackBarVisible, setSnackBarVisible] = useState(false)
+
+    const onToggleSnackBar = () => setSnackBarVisible(!visible);
+
+    const onDismissSnackBar = () => setSnackBarVisible(false);
+
+
 
     const maisQuantidade = () => {
         const sum = parseInt(quantidade) + 1;
@@ -78,9 +86,6 @@ const AdicionarProduto = ({ route }) => {
             setNotificarVencimentoView('none');
             setNotificarVencimentoStyle(styles.notificarVencimentoEnabled);
         }
-
-
-
 
     }, [notificarVencimento])
 
@@ -182,9 +187,12 @@ const AdicionarProduto = ({ route }) => {
 
 
         console.log("Meu produto \n", produto)
-        await postProdutos(produto)
+        postProdutos(produto)
         limparCampos()
-        navigation.goBack()
+        onToggleSnackBar()
+        setTimeout(() => {
+            navigation.goBack()
+        }, 3000)
 
     }
 
@@ -489,7 +497,12 @@ const AdicionarProduto = ({ route }) => {
                     Cancelar
                 </Button>
             </ScrollView>
-
+            <MessageSnackBar 
+                visible={snackBarVisible}
+                setVisible={onDismissSnackBar} 
+                message={"Produto adicionado com sucesso!"}
+                icon={"check-decagram"}
+            />                   
             <Portal>
                 <Modal visible={visible} dismissable={false} dismissableBackButton={false} contentContainerStyle={styles.containerStyle}>
                     <Text variant='titleMedium' style={{ textAlign: 'center' }}>Você tem certeza que quer sair sem adicionar o produto?</Text>
@@ -548,7 +561,7 @@ const AdicionarProduto = ({ route }) => {
                 </Modal>
 
             </Portal>
-
+                        
         </PaperProvider>
 
     );

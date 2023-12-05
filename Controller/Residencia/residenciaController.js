@@ -52,11 +52,19 @@ const updateNomeResidencia = (residenciaId, nomeResidencia) =>{
     }
 }
 
+const postNovoMembro = async (novoMembro) =>{
+    try {
+        return residencia.adicionarNovoMembro(novoMembro)
+    } catch (error) {
+        console.log("Erro ao criar um membro: " + error);
+    }
+}
+
 const updateNomeMembro = (residenciaId, membro) =>{
     try{
         return residencia.atualizarMembro(residenciaId, membro)
     }catch(error){
-        console.log("Erro ao criar uma Residencia: " + error);
+        console.log("Erro ao atualizar um membro: " + error);
     }
 }
 
@@ -74,6 +82,7 @@ export {
     getResidenciaAtual,
     postResidencia,
     deleteResidencia,
+    postNovoMembro,
     updateNomeResidencia,
     updateNomeMembro,
     deleteMembro
