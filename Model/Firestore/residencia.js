@@ -2,7 +2,7 @@ import firestore from '@react-native-firebase/firestore';
 import consumidor from "./consumidor";
 import { getResidenciaStorage, removeResidenciaStorage } from '../../Controller/Despensa/storage';
 
-
+import auth from '@react-native-firebase/auth';
 
 
 
@@ -104,6 +104,7 @@ const buscarIdResidenciaAtual = async ()=>{
 
 
 const adicionarResidencia = async(nome)=>{
+    console.log("Nome da Residencia", nome)
     try {
         const id = await consumidor.buscarConsumidorLogado();
         const  userAtual = await consumidor.buscarConsumidor(id)
@@ -116,6 +117,7 @@ const adicionarResidencia = async(nome)=>{
                     id: id,
                     nome: userAtual.nome,
                     foto: userAtual.fotoUrl,
+                    // email: userAtual.email,
                     admin: true
                 }
             ]
@@ -180,7 +182,6 @@ removerResidencia = async (residenciaId) =>{
 
 adicionarNovoMembro = async (novoMembro) =>{
     const residenciaId = await getResidenciaStorage()
-    
     
         // Verificar se o usuário existe na base de dados
         const usuarioDoc = await DB_CONSUMIDOR.where("email", "==", novoMembro.email).get();
