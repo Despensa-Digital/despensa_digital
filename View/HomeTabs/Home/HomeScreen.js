@@ -20,6 +20,8 @@ const HomeScreen = () => {
     const [residencia, setResidencia] = useState({ membros: [] });
     const [produtos, setProdutos] = useState([])
     const [loading, setLoading]= useState(true);
+    //timestamp da data daqui 30 dias
+    const dataAtualMais30 = Date.now()/1000 + 2592000;
     //Pegar o id do usuario
 
     //Listar suas residencias
@@ -93,8 +95,10 @@ const HomeScreen = () => {
             <PaperProvider>          
                 <FlatList
                     style={{ backgroundColor: '#fff' }}
-                    data={produtos}
-                    keyExtractor={(item, index)  => item.key + index}
+                    data={produtos ? produtos.filter((produto) => produto?.itensProdutos?.validade?.seconds < dataAtualMais30).sort((a,b)=>{
+                        return a?.itensProdutos?.validade - b?.itensProdutos?.validade
+                    }): produtos}
+                    keyExtractor={(item, index) => item.key + index}
                     ListHeaderComponent={<HomeListHeader membros={residencia.membros}/>}
                     renderItem={({ item }) => <HomeRenderItem item={item} />}
                     ListEmptyComponent={

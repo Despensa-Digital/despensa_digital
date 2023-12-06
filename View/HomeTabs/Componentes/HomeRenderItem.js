@@ -10,26 +10,16 @@ const HomeRenderItem = ({item}) => {
   
     const navigation = useNavigation();
     const numeroAleatorio = Math.floor(Math.random() * 1000) + 1;
-    
-    
-    const convertData = (timestamp) =>{
-        console.log("Primeiro a carregar HEHE");
-        const dataItem = new Date(timestamp.seconds * 1000);
-        dataItem.setMilliseconds(timestamp.nanoseconds / 1000000);
-        const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
-        return dataItem.toLocaleString('pt-BR', options);
-        
-    }
+    const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+    const convertData = item?.itensProdutos?.validade.toDate().toLocaleString('pt-BR', options);
 
-    const dataValidadeConvertida = convertData(item.itemProduto.validade);
-    
-    return ( 
+    return (
         <View >
             <View style={{ marginStart: 10 }}>
                 <List.Item
                     key={`${item.key}-${numeroAleatorio}`}
                     title={`${item.nome} ${item.marca}` }
-                    description={`Data de validade: ${dataValidadeConvertida}`}
+                    description={`Data de validade: ${convertData}`}
                     left={() =>
                         <FastImage
                             style={{ width: 60 }}
@@ -42,7 +32,7 @@ const HomeRenderItem = ({item}) => {
 
                         />
                     }
-                    //onPress={() => navigation.navigate('DespensaTab', {screen: 'VerItem', params: item} )}
+                //onPress={() => navigation.navigate('DespensaTab', {screen: 'VerItem', params: item} )}
                 />
             </View>
             <Divider style={{ height: 1 }} />
