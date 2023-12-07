@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, FlatList, StyleSheet } from 'react-native'
 import { ActivityIndicator,FAB, PaperProvider} from 'react-native-paper';
 
-import { getProdutos } from '../../../Controller/Produtos/produtosController';
+import { getProdutos, getProdutosFiltrados } from '../../../Controller/Produtos/produtosController';
 import {  useFocusEffect } from '@react-navigation/native';
 import { getCategorias } from '../../../Controller/Categoria/categoriaController';
 
@@ -16,15 +16,13 @@ const Despensa = ({ route, navigation }) => {
     const [categorias, setCategorias] = useState([]);
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
-
+    const [searchCategoria, setSearchCategoria] = useState('')
+    const [whatCategoryIs, setWhatCategoryIs] = useState(0)
     const onChangeSearch = query => setSearchQuery(query);
 
-    const carregarProdutos = ()=>{
-        getProdutos((produto)=>{
-            setProdutos(produto)
-            setLoading(false)
-        })
-
+    const carregarProdutos =  (callback)=>{
+        getProdutos(callback)
+        
     }
 
     const carregarCategorias = ()=>{
@@ -45,39 +43,62 @@ const Despensa = ({ route, navigation }) => {
         )
     }
 
-    useEffect(() => {
-        carregarCategorias()
-        carregarProdutos()
-       
+    const filtrarProdutos = (filtro, callback) =>{
+        console.log("Estou no filtro")
+        getProdutosFiltrados(filtro,callback)
+        setLoading(false)
+    }
 
-        return ()=> console.log("finalizei produtos")
+    useEffect(() => {
+        console.log("USE EFFECT PRODUTOS E CATEGORIAS")
+        
+        carregarCategorias()
+        carregarProdutos(setProdutos)
+       
+        return () => console.log("lista atualizada");
     }, [])
 
     useFocusEffect(
+
         React.useCallback(() => {
             carregarCategorias()
-            // carregarProdutos()
+            carregarProdutos(setProdutos)
             return () => console.log("lista atualizada");
         }, [])
     );
 
     useEffect(() => {
+        console.log("USE EFFECT LOADING")
         if (categorias && (produtos === null || produtos)) setLoading(false);
-    }, [categorias, produtos])
+    }, [categorias && produtos])
+
 
     useEffect(() => {
-        if (categorias && (produtos === null || produtos)) setLoading(false);
-    }, [categorias, produtos])
-
-    useEffect(() => {
+        console.log("USE EFFECT REFRESHING")
         if (refreshing) {
             // do your heavy or asynchronous data fetching & update your state
-            carregarProdutos()
+            carregarProdutos(setProdutos)
             // set the refreshing back to false
             setRefreshing(false);
             console.log("Dei refresh na lista")
         }
     }, [refreshing]);
+
+    useEffect(()=>{
+        console.log("\n\n\n\n\n\n");
+        console.log("Total:", produtos.length);
+    }, [produtos])
+
+    useEffect(()=>{
+        setLoading(true)
+        if(whatCategoryIs !== 0){
+            filtrarProdutos(searchCategoria, setProdutos)
+            console.log("Filtrando...")
+        }else{
+            carregarProdutos(setProdutos)
+        }
+
+    },[searchCategoria && whatCategoryIs])
 
     if (loading) {
         return (
@@ -101,7 +122,7 @@ const Despensa = ({ route, navigation }) => {
                 // }) : produtos
                 }
                 keyExtractor={(item, index) => item.key + index}
-                ListHeaderComponent={<DespensaListHeader categorias={categorias} />}
+                ListHeaderComponent={<DespensaListHeader categorias={categorias} setSearchCategoria={setSearchCategoria} setWhatCategoryIs={setWhatCategoryIs}/>}
                 renderItem={({ item }) => <DespensaRenderItem item={item} />}
                 ListEmptyComponent={DespensaEmptyList}
                 onRefresh={() => setRefreshing(true)}

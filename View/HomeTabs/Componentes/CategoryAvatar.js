@@ -14,6 +14,7 @@ const CategoryAvatar = ({ categorias, setSelectedId, selectedId }) => {
     }
 
 
+
     const listaCategorias = categorias.map(categoria =>
 
         <TouchableOpacity onPress={() => setSelectedId(categoria.key)} style={{ margin: 5, backgroundColor: 'transparent', alignItems: 'center' }} key={categoria.key}>

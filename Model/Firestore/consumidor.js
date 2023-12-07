@@ -3,7 +3,7 @@ import auth from '@react-native-firebase/auth';
 
 const DB_CONSUMIDORES = firestore().collection("Consumidor");
 
-const default_photo = 'https://cdn.dribbble.com/users/219762/screenshots/2351573/saitama_1x.png'
+const default_photo = 'https://firebasestorage.googleapis.com/v0/b/despensadigital-10674.appspot.com/o/palmirinha.png?alt=media&token=7ea0d83f-1d4b-4851-911b-6f13b22401d3https://firebasestorage.googleapis.com/v0/b/despensadigital-10674.appspot.com/o/palmirinha.png?alt=media&token=7ea0d83f-1d4b-4851-911b-6f13b22401d3'
 
 const buscarConsumidores = async () =>{
     const querySnapshot = await DB_CONSUMIDORES.get();

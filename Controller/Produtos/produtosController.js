@@ -30,6 +30,14 @@ const getProduto = async (idProduto, callback)=>{
     }
 }
 
+const getProdutosFiltrados = async (searchCategoria,callback) =>{
+    try{
+        const residenciaId = await getResidenciaStorage()
+        return produto.buscarProdutosFiltrados(residenciaId, searchCategoria,callback);
+    }catch(error){
+        console.log("ERROR: ", error)
+    }
+}
 
 const postProdutos = async (produtos) =>{
     try {
@@ -74,6 +82,7 @@ const putItemProduto = async (produtoId, itemAtualizado)=>{
 export{
     getProdutos,
     getProdutosProximosDaValidade,
+    getProdutosFiltrados,
     getProduto,
     postProdutos,
     putProduto,

@@ -95,7 +95,10 @@ const HomeScreen = () => {
             <PaperProvider>          
                 <FlatList
                     style={{ backgroundColor: '#fff' }}
-                    data={produtos ? produtos.filter((produto) => produto?.itensProdutos?.validade?.seconds < dataAtualMais30).sort((a,b)=>{
+                    data={produtos
+                        ? produtos
+                        // .filter((produto) => produto?.itensProdutos?.validade?.seconds < dataAtualMais30)
+                        .sort((a,b)=>{
                         return a?.itensProdutos?.validade - b?.itensProdutos?.validade
                     }): produtos}
                     keyExtractor={(item, index) => item.key + index}

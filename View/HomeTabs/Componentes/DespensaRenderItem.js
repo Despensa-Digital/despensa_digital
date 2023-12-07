@@ -8,7 +8,9 @@ const DespensaRenderItem = ({item}) => {
     const navigation = useNavigation();
     const numeroAleatorio = Math.floor(Math.random() * 1000) + 1;
     const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
-    const convertData = item?.itensProdutos?.validade.toDate().toLocaleString('pt-BR', options);
+    const convertData = 
+        item.itensProdutos?.vencido ? "Produto vencido":
+        item?.itensProdutos?.validade.toDate().toLocaleString('pt-BR', options);
 
     return (
         <View key={item.key}>
@@ -17,6 +19,9 @@ const DespensaRenderItem = ({item}) => {
                     key={`${item.key}-${numeroAleatorio}`}
                     title={`${item.nome} ${item.marca}`}
                     description={`Data de validade: ${convertData}`}
+                    descriptionStyle={
+                        item?.itensProdutos?.vencido ? {color:'red'}:null
+                    }
                     left={() =>
                         <FastImage
                             style={{ width: 60 }}
