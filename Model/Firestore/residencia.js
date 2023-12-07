@@ -76,6 +76,11 @@ const buscarResidenciaAtual = async ()=>{
 
 }
 
+const buscarIdResidencia = async () => {
+    const residenciaId = await getResidenciaStorage();
+    return residenciaId;
+}
+
 
 const buscarIdResidenciaAtual = async ()=>{
     const current_id = await consumidor.buscarConsumidorLogado();
@@ -107,7 +112,7 @@ const buscarIdResidenciaAtual = async ()=>{
 // const adicionarResidencia = async (nome)=>{
 //     const id = await consumidor.buscarConsumidorLogado();
 //     const  userAtual = await consumidor.buscarConsumidor(id)
-  
+
 //    const residenciaRef = DB_RESIDENCIA.add({
 //         nome:nome,
 //         current_residencia: false,
@@ -120,7 +125,7 @@ const buscarIdResidenciaAtual = async ()=>{
 //             }
 //         ]
 //     })
-   
+
 //     const residenciaId = await residenciaRef.id
 
 //     const categorias = [
@@ -282,6 +287,7 @@ export default{
     buscarResidencias,
     buscarResidencia,
     buscarResidenciaAtual,
+    buscarIdResidencia,
     buscarIdResidenciaAtual,
     adicionarResidencia,
     removerResidencia,

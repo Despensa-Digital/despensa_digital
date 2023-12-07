@@ -26,6 +26,14 @@ const getResidenciaAtual =(callback)=>{
     }
 }
 
+const getIdResidencia =(callback)=>{
+    try{
+        return residencia.buscarIdResidencia(callback);
+    }catch(error){
+        console.log("ERROR: ", error);
+    }
+}
+
 const postResidencia = (nome) =>{
     try{
         return residencia.adicionarResidencia(nome);
@@ -72,6 +80,7 @@ export {
     getResidencias,
     getResidencia,
     getResidenciaAtual,
+    getIdResidencia,
     postResidencia,
     deleteResidencia,
     updateNomeResidencia,

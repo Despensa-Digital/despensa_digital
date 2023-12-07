@@ -3,8 +3,15 @@ import React from 'react'
 import updatePhoto from '../../Model/Firebase/updatePhoto'
 
 const atualizarFoto = async (uri) => {
-    const result = await updatePhoto(uri);
+    const result = await updatePhoto.updatePhotoStorage(uri);
     return result;
 }
 
-export default atualizarFoto
+const atualizarFotoResidencia = async (residencia, residenciaId) => {
+    await updatePhoto.updatePhotoResidencia(residencia, residenciaId);   
+}
+
+export {
+    atualizarFoto,
+    atualizarFotoResidencia
+}

@@ -5,10 +5,11 @@ import { Avatar, Button, HelperText, PaperProvider, Snackbar, Text, TextInput } 
 import { launchImageLibrary } from 'react-native-image-picker';
 import auth from '@react-native-firebase/auth';
 
-import atualizarFoto from '../../../Controller/Cadastro/atualizarFoto';
+import {atualizarFoto, atualizarFotoResidencia} from '../../../Controller/Cadastro/atualizarFoto';
 import atualizarSenha from '../../../Controller/Cadastro/atualizarSenha';
 
 import { updateConsumidor } from '../../../Controller/Consumidor/consumidorController';
+import { getResidenciaAtual, getIdResidencia } from '../../../Controller/Residencia/residenciaController';
 
 const EditarPerfil = ({ navigation }) => {
     const [currentPassword, setCurrentPassword] = useState('');
@@ -37,8 +38,23 @@ const EditarPerfil = ({ navigation }) => {
     const [passwordSnackbar, setPasswordSnackbar] = useState(false);
     const [messageSnackbar, setMessageSnackbar] = useState('');
 
+    const [residencia, setResidencia] = useState();
+    const [residenciaId, setResidenciaId] = useState();
+
     const providerId = auth().currentUser.providerData[0].providerId;
     const viewChangePassword = providerId == 'password' ? true : false;
+
+    useEffect(()=>{
+        getResidenciaAtual()
+        .then(res => {
+            setResidencia(res)         
+        })
+
+        getIdResidencia()
+        .then(res => {
+            setResidenciaId(res);
+        })
+    },[])
 
     //Visibilidade de Senha
     const changeCurrentPassSecureTextEntry = () => {
@@ -97,12 +113,16 @@ const EditarPerfil = ({ navigation }) => {
     //Envia foto para firebase storage
     //Substitui foto do usuario em firebase auth
     //Envia foto para firebase cloud storage
+    //Envia foto para firebase cloud storage Residencia
     //Exibe snackbar de sucesso
     const uploadPhoto = async () => {
         await atualizarFoto(photo)
         setUpdtatingPhoto(false);
         setPhotoSnackbar(true);
         await updateConsumidor(auth().currentUser)
+        if(residencia){
+            await atualizarFotoResidencia(residencia, residenciaId)
+        }
     }
 
     //ativado caso foto seja trocada
