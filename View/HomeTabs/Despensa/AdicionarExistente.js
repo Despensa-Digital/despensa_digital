@@ -141,7 +141,6 @@ const AdicionarExistente = ({ route }) => {
 
                 <TextInput
                     style={{ marginTop: 10, marginHorizontal: 20 }}
-                    keyboardType='numeric'
                     label="Local da compra"
                     mode="outlined"
                     error={false}

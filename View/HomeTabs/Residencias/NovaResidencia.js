@@ -3,15 +3,20 @@ import { View, StyleSheet, Modal } from 'react-native';
 import { Text, Button, TextInput } from 'react-native-paper';
 
 import { postResidencia } from '../../../Controller/Residencia/residenciaController';
+import { set } from 'date-fns';
 
-const NovaResidencia = ({ setModal, modal }) => {
+const NovaResidencia = ({ setModal, modal, setCreated, setMessage, setVisible, setResidenciaId }) => {
   // variables
   const [nomeResidencia, setNomeResidencia] = useState("");
-  const adicionarResidencia = () =>{
-    postResidencia(nomeResidencia)
-    .then(
+  const adicionarResidencia = async () =>{
+    const residenciaId = await postResidencia(nomeResidencia)
+      console.log("Residencia criada: ", residenciaId)
+      setMessage('Residencia criada Com sucesso!')
       setModal(false)
-    )
+      setCreated(true)
+      setResidenciaId(residenciaId)
+      setVisible()
+      setNomeResidencia('')
   }
   
 

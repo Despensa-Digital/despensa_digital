@@ -2,7 +2,6 @@ import firestore from '@react-native-firebase/firestore';
 import consumidor from "./consumidor";
 import { getResidenciaStorage, removeResidenciaStorage } from '../../Controller/Despensa/storage';
 
-import auth from '@react-native-firebase/auth';
 
 
 
@@ -140,6 +139,7 @@ const adicionarResidencia = async(nome)=>{
     
                 await batch.commit();
                 console.log('Categorias adicionadas com sucesso!');
+                return residenciaId
             } else {
                 console.log('A subcoleção de categorias já contém documentos. Não serão adicionadas categorias.');
             }

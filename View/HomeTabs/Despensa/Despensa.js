@@ -43,14 +43,13 @@ const Despensa = ({ route, navigation }) => {
         )
     }
 
-    const filtrarProdutos = (filtro, callback) =>{
+    const filtrarProdutos = async (filtro, callback) =>{
         console.log("Estou no filtro")
-        getProdutosFiltrados(filtro,callback)
-        setLoading(false)
+        await getProdutosFiltrados(filtro,callback)
+        
     }
 
     useEffect(() => {
-        console.log("USE EFFECT PRODUTOS E CATEGORIAS")
         
         carregarCategorias()
         carregarProdutos(setProdutos)
@@ -68,13 +67,12 @@ const Despensa = ({ route, navigation }) => {
     );
 
     useEffect(() => {
-        console.log("USE EFFECT LOADING")
         if (categorias && (produtos === null || produtos)) setLoading(false);
     }, [categorias && produtos])
 
 
     useEffect(() => {
-        console.log("USE EFFECT REFRESHING")
+        
         if (refreshing) {
             // do your heavy or asynchronous data fetching & update your state
             carregarProdutos(setProdutos)
@@ -85,19 +83,18 @@ const Despensa = ({ route, navigation }) => {
     }, [refreshing]);
 
     useEffect(()=>{
-        console.log("\n\n\n\n\n\n");
-        console.log("Total:", produtos.length);
-    }, [produtos])
+        let canceled = false
+        
+        if(!canceled){
+            if(whatCategoryIs !== 0){
+                filtrarProdutos(searchCategoria, setProdutos)
+                console.log("Filtrando...")
+            }else{
+                carregarProdutos(setProdutos)
+            }
+        }       
 
-    useEffect(()=>{
-        setLoading(true)
-        if(whatCategoryIs !== 0){
-            filtrarProdutos(searchCategoria, setProdutos)
-            console.log("Filtrando...")
-        }else{
-            carregarProdutos(setProdutos)
-        }
-
+    return ()=>(canceled = true)
     },[searchCategoria && whatCategoryIs])
 
     if (loading) {

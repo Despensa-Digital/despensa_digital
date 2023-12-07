@@ -2,24 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, FlatList, View, Linking, Image } from 'react-native';
 import { ActivityIndicator, IconButton, Divider, List, FAB, Modal, Portal, Text, Button, PaperProvider, TextInput } from 'react-native-paper';
 import { useNavigation, useFocusEffect} from '@react-navigation/native';
-import { deleteListaDeCompras, getListaDeCompras, postListaDeCompras } from '../../../Controller/ListaDeCompras/listaController';
+import { deleteListaDeCompras, getListaDeCompras, postListaDeCompras, getListaDeComprasComItens } from '../../../Controller/ListaDeCompras/listaController';
+import { el } from 'react-native-paper-dates';
 
 
 const Listas = () => {
-    const [itens, setItens] = useState(
-        [
-            "Lista do mercado",
-            "Lista do churrasco",
-            "Lista do açougue", 
-            "Lista de guloseimas", 
-            "Lista da festa ",
-            "Lista do Supermercado",
-            "Lista de Produto/Limpeza", 
-            "Lista do Pet Shop",
-            "Lista do café da manha",
-            "Lista dos congelados"
-        ]
-    );
+    const [itens, setItens] = useState();
 
     const navigation = useNavigation();
 
@@ -77,6 +65,31 @@ const Listas = () => {
         setListasDeCompras(lista)
         setLoading(false)
     }
+
+    const compartilharLista = async (flag) =>{
+        console.log("Index da minha lista: ", indexEditando)
+        let listaFormatada = ""
+        let aux = []
+        const data = await getListaDeComprasComItens(indexEditando)
+        aux = data.itens
+        console.log("TOTAL", data.itens)
+        if(aux != null){
+            aux.forEach((element) =>{
+                console.log(element.nome, " - ", element.preco, ' - ', element.quantidade)
+                listaFormatada+=`${element.nome}, R$${element.preco.toString()}, ${element.quantidade}\n`
+            })
+        }else{
+            listaFormatada+="Lista de compras vazia!"
+        }
+        
+
+        if(flag)
+            Linking.openURL(`whatsapp://send?text=LISTA DE COMPRA:\n ${listaFormatada}&`)
+        else
+            Linking.openURL(`mailto:giulianna.lancellotti@gmail.com?subject=Lista do mercado&body= LISTA DE COMPRAS:\n ${listaFormatada}`)
+    }
+
+
 
 
     useEffect(()=>{
@@ -226,7 +239,7 @@ const Listas = () => {
                         style={{ marginTop: 40, marginHorizontal: 20 }}
                         mode="contained"
                         //Enviar os itens da lista selecionada para o Whatsapp
-                        onPress={() => Linking.openURL('whatsapp://send?text=LISTA DE COMPRA:\n Arroz, Cerveja, Leite&')}
+                        onPress={() => compartilharLista(true)}
                     >
                         Compartilhar com o  Whatsapp
                     </Button>
@@ -238,7 +251,7 @@ const Listas = () => {
                         style={{ marginTop: 20, marginBottom: 20, marginHorizontal: 20, borderColor: '#5DB075' }}
                         mode="outlined"
                         //Enviar os itens da lista selecionada para o Email
-                        onPress={() => Linking.openURL('mailto:giulianna.lancellotti@gmail.com?subject=Lista do mercado&body= LISTA DE COMPRAS:\n Arroz, Cerveja, Leite')}
+                        onPress={() => compartilharLista(false)}
                     >
                         Compartilhar com o e-mail
                     </Button>

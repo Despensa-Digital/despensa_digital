@@ -16,6 +16,11 @@ const GerenciarResidencias = () => {
   const [visible, setVisible] = useState(false)
   const [loading, setLoading]= useState(true);
   const [checked, setChecked] = useState()
+  const [created, setCreated] = useState(false)
+  const [residenciaId, setResidenciaId] = useState('')
+
+  const [message, setMessage] = useState('')
+
 
   const onToggleSnackBar = () => setVisible(!visible);
 
@@ -24,7 +29,20 @@ const GerenciarResidencias = () => {
   useEffect(() => {
     carregarResidencia()
     carregarResidenciaAtual()
-  }, [])
+    
+      
+    console.log("......")
+  }, [created])
+
+  useEffect(()=>{
+    if(residenciaId !== '' && created === true)
+    {
+      switchCurrentResidencia(residenciaId, true)
+      console.log("Entrei aqui", residenciaId);
+    }else{
+      console.log("Não entrei aqui");
+    }
+  },[residenciaId])
 
   useFocusEffect(
     React.useCallback(() => {
@@ -53,9 +71,14 @@ const GerenciarResidencias = () => {
   }
 
 
-  const switchCurrentResidencia = async (data) => {
+  const switchCurrentResidencia = async (data, isCreated) => {
+    if(!isCreated){
+      setMessage('Residência atualizada com sucesso!')
+      onToggleSnackBar()
+      
+    }
+    
     await setResidenciaStorage(data)
-    onToggleSnackBar()
     setChecked(data)
     setTimeout(()=>{
       navigation.goBack()
@@ -74,7 +97,7 @@ const GerenciarResidencias = () => {
   return (
     <PaperProvider style={styles.raiz}>
       <View style={styles.container}>
-        <NovaResidencia setModal={setModalComUpdate} modal={modal} />
+        <NovaResidencia setModal={setModalComUpdate} modal={modal} setCreated={setCreated} setMessage={setMessage} setVisible={onToggleSnackBar} setResidenciaId={setResidenciaId}/>
         <ScrollView showsVerticalScrollIndicator={false}>
           {residencias.map((residencia, index) => (
             <List.Item
@@ -88,7 +111,7 @@ const GerenciarResidencias = () => {
                   color='#5DB075'
                   
                   status={checked === residencia.id ? 'checked' : 'unchecked'}
-                  onPress={() => switchCurrentResidencia(residencia.id)} />}
+                  onPress={() => switchCurrentResidencia(residencia.id, false)} />}
               right={props =>
                 <IconButton {...props} icon="dots-vertical"
                   onPress={() => navigation.navigate('EditarResidencia', { residenciaId: residencia.id })} />}
@@ -122,7 +145,7 @@ const GerenciarResidencias = () => {
           <MessageSnackBar 
             visible={visible} 
             setVisible={onDismissSnackBar} 
-            message={"Residência atualizada com sucesso!"}
+            message={message}
             icon={"check-decagram"}
           />
         </View>
