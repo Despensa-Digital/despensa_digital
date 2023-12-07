@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, createContext } from 'react';
 import { Button, View, Text } from 'react-native';
 import { GoogleSigninButton } from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
@@ -31,7 +31,13 @@ import notifee, { EventType } from '@notifee/react-native';
 
 const Stack = createNativeStackNavigator();
 
+export const SnackbarContext = createContext(false);
+export const CategoriasContext = createContext([]);
+
 export default function App() {
+
+    const [deleteProductSnackbar, setDeleteProductSnackbar] = useState(false);
+    const [categorias, setCategorias] = useState([]);
 
     useEffect(() => {
         return notifee.onForegroundEvent(({ type, detail }) => {
@@ -114,6 +120,16 @@ export default function App() {
 
 
             {/*  */}
+            <SnackbarContext.Provider
+            value={{
+                deleteProductSnackbar,
+                setDeleteProductSnackbar
+            }}>
+            <CategoriasContext.Provider
+            value={{
+                categorias,
+                setCategorias
+            }}>
             <NavigationContainer
                 theme={theme}
             >
@@ -182,6 +198,8 @@ export default function App() {
 
                 </Stack.Navigator>
             </NavigationContainer>
+            </CategoriasContext.Provider>
+            </SnackbarContext.Provider>
         </>
     )
 }

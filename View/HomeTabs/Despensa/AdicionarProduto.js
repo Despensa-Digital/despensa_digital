@@ -416,7 +416,7 @@ const AdicionarProduto = ({ route }) => {
                             maxHeight={300}
                             labelField="name"
                             valueField="name"
-                            placeholder={!dropdownCategoryIsFocus ? 'Medida' : '...'}
+                            placeholder={!dropdownMedidaIsFocus ? 'Medida' : '...'}
                             searchPlaceholder="Pesquisar..."
                             value={unidadeMedida}
                             onFocus={() => setDropdownMedidaIsFocus(true)}

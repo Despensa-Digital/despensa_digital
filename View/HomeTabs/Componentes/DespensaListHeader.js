@@ -5,29 +5,18 @@ import CategoryAvatar from './CategoryAvatar';
 import { getCategorias } from '../../../Controller/Categoria/categoriaController';
 import categoria from '../../../Model/Firestore/categoria';
 //Componente para o ListHeader do FlatList [partes da tela que não são itens da lista]
-const DespensaListHeader = ({ categorias }) => {
-    const [searchQuery, setSearchQuery] = useState('');
+const DespensaListHeader = ({ categorias, searchQuery, setSearchQuery, setSelectedId, selectedId }) => {
     const onChangeSearch = query => setSearchQuery(query);
-    // const [categorias, setCategorias] = useState([])
-    //dados mockados -- remover no futuro e adicionar o que vier do Firebase
-    // const categorias = [
-    //     { id:1, name: 'Todas as categorias', photo: require('../../../Assets/Categories/Hamper.png') },
-    //     { id:2, name: 'Geladeira', photo: require('../../../Assets/Categories/Fridge.png') },
-    //     { id:3, name: 'Hortifruti', photo: require('../../../Assets/Categories/Fruits.png') },
-    //     { id:4, name: 'Armário da cozinha', photo: require('../../../Assets/Categories/Pantry.png') },
-    //     { id:5, name: 'Banheiro', photo: require('../../../Assets/Categories/Bathtub.png') },
-    //     { id:6, name: 'Lavanderia', photo: require('../../../Assets/Categories/WashingMachine.png') }
-    // ];
 
     //iniciar com o ID de "Todas as Categorias"
     /*esse useState é criado aqui e passado como parametro para CategoryAvatar
     para poder alterar o nome da categoria atual no <Text> junto com o useEffect*/
-    const [selectedId, setSelectedId] = useState(1);
+    //const [selectedId, setSelectedId] = useState(1);
     const [categoryName, setCategoryName] = useState('');
     //pega o selectedId, busca em categorias qual item possui esse id e seta o nome em setCategoryName
     const carregarCategoriaSelecionada = async () => {
         // try {
-        console.log("Categorias Despensa", JSON.stringify(categorias, null, 2))
+        //console.log("Categorias Despensa", JSON.stringify(categorias, null, 2))
         if (categorias && categorias.length > 0) {
             let findCategoria = await categorias.findIndex((categoria) => selectedId === categoria.key)
             console.log("Find", findCategoria);
@@ -37,24 +26,12 @@ const DespensaListHeader = ({ categorias }) => {
             console.log("Entrei aqui, categoria não existe")
             setCategoryName('Todas as categorias')
         }
-
-        // } catch (error) {
-        //     console.log("Erro", error);
-        // }
     }
 
-   
-
-
     useEffect(() => {
-        console.log("DESPENSALISTHEADER")
-        carregarCategoriaSelecionada()
+            console.log("DESPENSALISTHEADER")
+            carregarCategoriaSelecionada()       
     }, [selectedId])
-
-
-
-
-
 
     return (
         <>

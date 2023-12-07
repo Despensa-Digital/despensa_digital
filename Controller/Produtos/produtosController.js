@@ -62,11 +62,31 @@ const putItemProduto = async (produtoId, itemAtualizado)=>{
     }
 }
 
+const deleteItemProduto = async (produtoId, itemId)=>{
+    try {
+        const residenciaId = await getResidenciaStorage()
+        return produto.excluirItemProduto(residenciaId, produtoId, itemId)
+    } catch (error) {
+        console.log("ERROR: ", error)
+    }
+}
+
+const deleteProduto = async (produtoId)=>{
+    try {
+        const residenciaId = await getResidenciaStorage()
+        return produto.excluirProduto(residenciaId, produtoId)
+    } catch (error) {
+        console.log("ERROR: ", error)
+    }
+}
+
 export{
     getProdutos,
     getProduto,
     postProdutos,
     putProduto,
     postItemProduto,
-    putItemProduto
+    putItemProduto,
+    deleteItemProduto,
+    deleteProduto
 }

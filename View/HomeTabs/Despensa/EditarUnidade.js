@@ -1,11 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native'
 import { Button, IconButton, Modal, PaperProvider, Portal, Switch, Text, TextInput } from 'react-native-paper';
 import { getProduto, putItemProduto } from '../../../Controller/Produtos/produtosController';
 import { DatePickerInput, pt, registerTranslation } from 'react-native-paper-dates';
 import { currency, mask, unmask } from 'remask'
 import scheduleNotificationControl from '../../../Controller/Despensa/scheduleNotificationControl';
-
+import { Dropdown } from 'react-native-element-dropdown';
+import { CategoriasContext } from '../../../App';
 
 registerTranslation('pt', pt)
 const AdicionarExistente = ({ route, navigation }) => {
@@ -18,19 +19,38 @@ const AdicionarExistente = ({ route, navigation }) => {
     const [notificarVencimentoView, setNotificarVencimentoView] = useState('none');
     const [notificarVencimentoStyle, setNotificarVencimentoStyle] = useState(styles.notificarVencimentoEnabled);
     const [disableButton, setDisableButton]= useState(false);
-    const  {product, productId} = route.params
+    const [categoria, setCategoria] = useState('');
+    const [dropdownCategoryIsFocus, setDropdownCategoryIsFocus] = useState(false);
+    const {categorias, setCategorias} = useContext(CategoriasContext);
+    const categoriasFiltrado = categorias.slice(1);
+
+     //renderiza label do dropdown categoria
+     const renderLabelCategoria = () => {
+        if (categoria || dropdownCategoryIsFocus) {
+            return (
+                <Text style={[styles.label, dropdownCategoryIsFocus && { color: 'rgb(79,55,139)' }]}>
+                    Categoria
+                </Text>
+            );
+        }
+        return null;
+    };
+    
+
+    const  {product, productId, nome, codigoDeBarras} = route.params
+    console.log("Editar cod de barras: ", product, productId, nome, codigoDeBarras)
     const salvarProduto = async() => {
         const novoProduto = {
             key: product.key,
-            categoria:product.categoriaId,
+            categoria:categoria,
             preco: parseFloat(preco),
             validade: dataValidade,
             localCompra: localCompra ? localCompra: ""
         }
-
+        console.log("MINHA CATEGORIA: ", categoria, novoProduto.categoria)
         if (notificarVencimento) {
             
-            const notificationId = await scheduleNotificationControl(dataValidade, dataNotificacao, nomeProduto, codigoDeBarras).then(id =>  id);
+            const notificationId = await scheduleNotificationControl(dataValidade, dataNotificacao, nome, codigoDeBarras).then(id =>  id);
             console.log("IF: ", notificationId);
         }
         console.log("Produto ID", productId,"Item Atualizado", novoProduto)
@@ -55,6 +75,7 @@ const AdicionarExistente = ({ route, navigation }) => {
         })
         setPreco(product.preco)
         setLocalCompra(product.localCompra)
+        setCategoria(product.categoria)
     }
 
     const convertData = () =>{
@@ -88,11 +109,11 @@ const AdicionarExistente = ({ route, navigation }) => {
 
     }, [notificarVencimento])
 
-    useEffect(()=>{
-        carregarProduto()
-        convertData()
-        console.log("Minha unidade", product)
-        console.log("ProductID", productId)
+    useEffect(()=>{ 
+            carregarProduto()
+            convertData()
+            console.log("Minha unidade", product)
+            console.log("ProductID", productId)
     },[])
     return (
         <PaperProvider>
@@ -150,7 +171,7 @@ const AdicionarExistente = ({ route, navigation }) => {
                     label="Preço"
                     mode="outlined"
                     error={false}
-                   
+    
                     value={currency.mask({ locale: 'pt-BR', currency: 'BRL', value: preco})}
                     onChangeText={preco => setPreco(currency.unmask({ locale: 'pt-BR', currency: 'BRL', value: preco }))}
                 />
@@ -164,13 +185,39 @@ const AdicionarExistente = ({ route, navigation }) => {
                     onChangeText={localCompra => setLocalCompra(localCompra)}
                 />
 
+                <View>
+                    {renderLabelCategoria()}
+                    <Dropdown
+                        style={[styles.dropdown, dropdownCategoryIsFocus && { borderColor: 'rgba(79,55,139,0.87)', borderWidth: 2 }]}
+                        placeholderStyle={styles.placeholderStyle}
+                        selectedTextStyle={styles.selectedTextStyle}
+                        inputSearchStyle={styles.inputSearchStyle}
+                        itemTextStyle={styles.itemTextStyle}
+                        showsVerticalScrollIndicator={true}
+                        autoScroll={false}
+                        data={categoriasFiltrado}
+                        search
+                        maxHeight={300}
+                        labelField="nome"
+                        valueField="nome"
+                        placeholder={!dropdownCategoryIsFocus ? 'Categoria' : '...'}
+                        searchPlaceholder="Pesquisar..."
+                        value={categoria}
+                        onFocus={() => setDropdownCategoryIsFocus(true)}
+                        onBlur={() => setDropdownCategoryIsFocus(false)}
+                        onChange={item => {
+                            setCategoria(item.nome);
+                            setDropdownCategoryIsFocus(false);
+                        }}
+                    />
+                </View>
 
                 <Button
                     buttonColor='#5DB075'
                     style={{ marginTop: 20, marginHorizontal: 20 }}
                     mode="contained"
                     onPress={()=>salvarProduto()}>
-                    Adicionar
+                    Salvar
                 </Button>
 
                 <Button
@@ -185,7 +232,7 @@ const AdicionarExistente = ({ route, navigation }) => {
 
             <Portal>
                 <Modal visible={visible} dismissable={false} dismissableBackButton={false} contentContainerStyle={styles.containerStyle}>
-                    <Text variant='titleMedium' style={{textAlign:'center'}}>Você tem certeza que quer sair sem adicionar o produto?</Text>
+                    <Text variant='titleMedium' style={{textAlign:'center'}}>Você tem certeza que quer sair sem salvar o item? Suas alterações não serão salvas.</Text>
 
                     <Button
                         textColor='#000'
@@ -234,6 +281,42 @@ const styles = StyleSheet.create({
         padding: 20,
         margin: 20,
         borderRadius: 8
+    },
+    //dropdown categoria
+    dropdown: {
+        height: 48,
+        borderColor: 'rgb(124, 117, 126)',
+        backgroundColor: 'rgb(255, 251, 255)',
+        borderWidth: 1,
+        borderRadius: 5,
+        paddingHorizontal: 15,
+        marginHorizontal: 20,
+        marginTop: 20
+    },
+    label: {
+        position: 'absolute',
+        backgroundColor: 'white',
+        color: 'rgba(79,55,139, 0.87)',
+        left: 30,
+        top: 12,
+        zIndex: 999,
+        paddingHorizontal: 4,
+        fontSize: 12,
+    },
+    placeholderStyle: {
+        fontSize: 16,
+        color: 'rgba(0, 0, 0, 0.7)',
+    },
+    selectedTextStyle: {
+        fontSize: 16,
+        color: 'rgb(0, 0, 0)',
+    },
+    inputSearchStyle: {
+        height: 40,
+        fontSize: 16,
+    },
+    itemTextStyle: {
+        color: 'rgb(0, 0, 0)',
     }
 })
 

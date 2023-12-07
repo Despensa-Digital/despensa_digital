@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native'
 import { Button, IconButton, Modal, PaperProvider, Portal, Switch, Text, TextInput } from 'react-native-paper';
 import { putProduto } from '../../../Controller/Produtos/produtosController';
+import { Dropdown } from 'react-native-element-dropdown';
 
 //Adicionar props nos estados [adicionado props mockados]
 const EditarProduto = ({ route, navigation }) => {
@@ -16,6 +17,29 @@ const EditarProduto = ({ route, navigation }) => {
     const [peso, setPeso] = useState('');
     const [quantidade, setQuantidade] = useState('');
     const [disableButton, setDisableButton]= useState(false);
+    const [dropdownMedidaIsFocus, setDropdownMedidaIsFocus] = useState(false);
+
+    //Lista de unidade de medidas exibido no dropdown
+    const medidas = [
+        { name: 'G', value: '1' },
+        { name: 'KG', value: '2' },
+        { name: 'ML', value: '3' },
+        { name: 'L', value: '4' },
+        { name: 'UNIDADE(S)', value: '5' },
+        { name: 'DÚZIA', value: '6' }
+    ];
+
+    //renderiza label do dropdown unidade de medida
+    const renderLabelMedida = () => {
+        if (unidadeMedida || dropdownMedidaIsFocus) {
+            return (
+                <Text style={[styles.labelMedida, dropdownMedidaIsFocus && { color: 'rgb(79,55,139)' }]}>
+                    Unidade de medida
+                </Text>
+            );
+        }
+        return null;
+    };
 
     //este metodo faz parte do mock
     const editarProduto = async () => {
@@ -109,19 +133,19 @@ const EditarProduto = ({ route, navigation }) => {
                     onChangeText={marca => setMarca(marca)}
                 />
 
-                <TextInput
+                {/* <TextInput
                     style={{ marginTop: 10, marginHorizontal: 20 }}
                     label="Categoria"
                     mode="outlined"
                     error={false}
                     value={categoria}
                     onChangeText={categoria => setCategoria(categoria)}
-                />
+                /> */}
 
-                <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginVertical: 10, marginStart: 20, marginEnd: 10 }} >
-
+                <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginVertical: 10, marginStart: 20, marginEnd: 20}} >
+                    
                     <TextInput
-                        style={{ marginEnd: 10, width: '40%' }}
+                        style={{ width: '40%' }}
                         keyboardType='numeric'
                         label="Peso"
                         placeholder='Ex.: 395'
@@ -131,15 +155,32 @@ const EditarProduto = ({ route, navigation }) => {
                         onChangeText={peso => setPeso(peso)}
                     />
 
-                    <TextInput
-                        style={{ marginEnd: 10, width: '50%' }}
-                        label="Unidade de medida"
-                        placeholder='Ex.: g, kg, ml'
-                        mode="outlined"
-                        error={false}
-                        value={unidadeMedida}
-                        onChangeText={unidadeMedida => setUnidadeMedida(unidadeMedida)}
-                    />
+                    <View style={{ width: '50%', paddingTop: 6 }}>
+                        {renderLabelMedida()}
+                        <Dropdown
+                            style={[styles.dropdownMedida, dropdownMedidaIsFocus && { borderColor: 'rgb(79,55,139)', borderWidth: 2 }]}
+                            placeholderStyle={styles.placeholderStyle}
+                            selectedTextStyle={styles.selectedTextStyle}
+                            inputSearchStyle={styles.inputSearchStyle}
+                            itemTextStyle={styles.itemTextStyle}
+                            showsVerticalScrollIndicator={true}
+                            autoScroll={false}
+                            data={medidas}
+                            search
+                            maxHeight={300}
+                            labelField="name"
+                            valueField="name"
+                            placeholder={!dropdownMedidaIsFocus ? 'Medida' : '...'}
+                            searchPlaceholder="Pesquisar..."
+                            value={unidadeMedida}
+                            onFocus={() => setDropdownMedidaIsFocus(true)}
+                            onBlur={() => setDropdownMedidaIsFocus(false)}
+                            onChange={item => {
+                                setUnidadeMedida(item.name);
+                                setDropdownMedidaIsFocus(false);
+                            }}
+                        />
+                    </View>
                 </View>
 
                 {/* <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', marginVertical: 10, marginStart: 20, marginEnd: 10, alignItems: 'center' }}>
@@ -197,7 +238,7 @@ const EditarProduto = ({ route, navigation }) => {
 
             <Portal>
                 <Modal visible={visible} dismissable={false} dismissableBackButton={false} contentContainerStyle={styles.containerStyle}>
-                    <Text variant='titleMedium' style={{ textAlign: 'center' }}>Você tem certeza que quer sair sem adicionar o produto?</Text>
+                    <Text variant='titleMedium' style={{ textAlign: 'center' }}>Você tem certeza que quer sair sem salvar o produto? Suas alterações não serão salvas.</Text>
 
                     <Button
                         textColor='#000'
@@ -246,6 +287,65 @@ const styles = StyleSheet.create({
         padding: 20,
         margin: 20,
         borderRadius: 8
+    },
+     //dropdown categoria
+    dropdown: {
+        height: 48,
+        borderColor: 'rgb(124, 117, 126)',
+        backgroundColor: 'rgb(255, 251, 255)',
+        borderWidth: 1,
+        borderRadius: 5,
+        paddingHorizontal: 15,
+        marginHorizontal: 20,
+        marginTop: 20
+    },
+    label: {
+        position: 'absolute',
+        backgroundColor: 'white',
+        color: 'rgba(79,55,139, 0.87)',
+        left: 30,
+        top: 12,
+        zIndex: 999,
+        paddingHorizontal: 4,
+        fontSize: 12,
+    },
+    placeholderStyle: {
+        fontSize: 16,
+        color: 'rgba(0, 0, 0, 0.7)',
+    },
+    selectedTextStyle: {
+        fontSize: 16,
+        color: 'rgb(0, 0, 0)',
+    },
+    inputSearchStyle: {
+        height: 40,
+        fontSize: 16,
+    },
+    itemTextStyle: {
+        color: 'rgb(0, 0, 0)',
+    },
+
+    //dropdown unidade de medida
+    dropdownMedida: {
+        height: 50,
+        borderColor: 'rgb(124, 117, 126)',
+        backgroundColor: 'rgb(255, 251, 255)',
+        borderWidth: 1,
+        borderRadius: 5,
+        paddingHorizontal: 15
+    },
+    labelMedida: {
+        position: 'absolute',
+        backgroundColor: 'white',
+        color: 'rgba(79,55,139, 0.87)',
+        left: 10,
+        top: -2,
+        zIndex: 999,
+        fontSize: 12,
+        paddingHorizontal:4,
+        paddingVertical:0,
+        marginVertical:0
+
     }
 })
 
