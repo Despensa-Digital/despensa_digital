@@ -14,7 +14,6 @@ const DespensaListHeader = ({ categorias, searchQuery, setSearchQuery, setSelect
     para poder alterar o nome da categoria atual no <Text> junto com o useEffect*/
     //const [selectedId, setSelectedId] = useState(1);
     const [categoryName, setCategoryName] = useState('');
-    const [searchQuery, setSearchQuery] = useState('')
     //pega o selectedId, busca em categorias qual item possui esse id e seta o nome em setCategoryName
     const carregarCategoriaSelecionada = async () => {
         // try {

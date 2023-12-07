@@ -60,6 +60,21 @@ const updateNomeResidencia = (residenciaId, nomeResidencia) =>{
     }
 }
 
+const getQuadroDeAvisos = () =>{
+    try {
+        return residencia.buscarQuadroDeAvisos()
+    } catch (error) {
+        console.log("Erro ao buscar as informações do Quadro de avisos", error);
+    }
+}
+const postQuadroDeAvisos = (informacoesDoQuadro) =>{
+    try {
+        return residencia.salvarQuadroDeAvisos(informacoesDoQuadro)
+    } catch (error) {
+        console.log("Erro ao atualizar o quadro de avisos: " + error);
+    }
+}
+
 const postNovoMembro = async (novoMembro) =>{
     try {
         return residencia.adicionarNovoMembro(novoMembro)
@@ -91,7 +106,9 @@ export {
     getIdResidencia,
     postResidencia,
     deleteResidencia,
+    getQuadroDeAvisos,
     postNovoMembro,
+    postQuadroDeAvisos,
     updateNomeResidencia,
     updateNomeMembro,
     deleteMembro

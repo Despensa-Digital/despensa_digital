@@ -106,9 +106,6 @@ const Despensa = ({ route, navigation }) => {
     },[searchCategoria && whatCategoryIs])
 
 
-    const listHeaderComponent = useCallback(() => (
-        <DespensaListHeader categorias={categorias} searchQuery={searchQuery} setSearchQuery={setSearchQuery} selectedId={selectedId} setSelectedId={setSelectedId} setSearchCategoria={setSearchCategoria} setWhatCategoryIs={setWhatCategoryIs}/>
-    ), [categorias, selectedId])
 
     const renderItem = useCallback(({ item }) => (
             <DespensaRenderItem item={item} key={item.key} searchQuery={searchQuery} />
@@ -127,7 +124,7 @@ const Despensa = ({ route, navigation }) => {
                 style={{ backgroundColor: '#fff' }}
                 data={produtos}
                 keyExtractor={(item, index) => item.key + index}
-                ListHeaderComponent={listHeaderComponent}
+                ListHeaderComponent={<DespensaListHeader categorias={categorias} searchQuery={searchQuery} setSearchQuery={setSearchQuery} selectedId={selectedId} setSelectedId={setSelectedId} setSearchCategoria={setSearchCategoria} setWhatCategoryIs={setWhatCategoryIs}/>}
                 renderItem={renderItem}
                 ListEmptyComponent={DespensaEmptyList}
                 onRefresh={() => setRefreshing(true)}

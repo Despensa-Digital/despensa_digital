@@ -10,6 +10,9 @@ const Item = ({ item, navigation, numeroAleatorio, convertData }) => (
                 key={`${item.key}-${numeroAleatorio}`}
                 title={`${item.nome} ${item.marca}`}
                 description={`Data de validade: ${convertData}`}
+                    descriptionStyle={
+                        item?.itensProdutos?.vencido ? {color:'red'}:null
+                    }
                 left={() =>
                     <FastImage
                         style={{ width: 60 }}
@@ -38,50 +41,18 @@ const DespensaRenderItem = ({ item, searchQuery }) => {
         item.itensProdutos?.vencido ? "Produto vencido":
         item?.itensProdutos?.validade.toDate().toLocaleString('pt-BR', options);
 
-<<<<<<< HEAD
-    return (
-        <View key={item.key}>
-            <View style={{ marginStart: 10 }}>
-                <List.Item
-                    key={`${item.key}-${numeroAleatorio}`}
-                    title={`${item.nome} ${item.marca}`}
-                    description={`Data de validade: ${convertData}`}
-                    descriptionStyle={
-                        item?.itensProdutos?.vencido ? {color:'red'}:null
-                    }
-                    left={() =>
-                        <FastImage
-                            style={{ width: 60 }}
-                            source={{
-                                uri: `https://cdn-cosmos.bluesoft.com.br/products/${item.codigoDeBarras}`.toString(),
-                                priority: FastImage.priority.normal,
-                            }}
-                            defaultSource={require('../../../Assets/Categories/Hamper.png')}
-                            resizeMode={FastImage.resizeMode.contain}
-
-                        />
-                    }
-                        onPress={() => navigation.navigate('VerItem',  item.key )}
-                    />
-                </View>
-                <Divider style={{ height: 1 }} />
-            </View>
-        );
-    }
-=======
     // Sem filtro
     if (searchQuery === "") {
         return <Item item={item} navigation={navigation} numeroAleatorio={numeroAleatorio} convertData={convertData} />;
     }
     // filtrar nome
-    if (item.nome.toUpperCase().includes(searchQuery.toUpperCase().trim().replace(/\s/g, ""))) {
+    if (item.nome.toUpperCase().includes(searchQuery.toUpperCase().trim().replace(/\s/g, " "))) {
         return <Item item={item} navigation={navigation} numeroAleatorio={numeroAleatorio} convertData={convertData} />;
     }
     // filtrar marca
-    if (item.marca.toUpperCase().includes(searchQuery.toUpperCase().trim().replace(/\s/g, ""))) {
+    if (item.marca.toUpperCase().includes(searchQuery.toUpperCase().trim().replace(/\s/g, " "))) {
         return <Item item={item} navigation={navigation} numeroAleatorio={numeroAleatorio} convertData={convertData} />;
     }
 }
->>>>>>> origin/integracao_despensa_view
 
 export default DespensaRenderItem;

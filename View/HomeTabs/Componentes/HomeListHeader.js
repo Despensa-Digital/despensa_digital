@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, ScrollView, TouchableOpacity } from 'react-native'
 import { Button, Modal, Portal, Text, TextInput } from 'react-native-paper';
 import ProfileAvatar from '../Componentes/ProfileAvatar';
-
+import { getQuadroDeAvisos, postQuadroDeAvisos } from '../../../Controller/Residencia/residenciaController'; 
+import { useFocusEffect } from '@react-navigation/native';
 //Componente para o ListHeader do FlatList [partes da tela que não são itens da lista]
 const HomeListHeader = ({ membros }) => {
     // Ainda vai funcionar
@@ -15,8 +16,15 @@ const HomeListHeader = ({ membros }) => {
     const saveText = () => {
         setTextoQuadro(textoInput);
         hideModal();
+        postQuadroDeAvisos(textoInput)
     }
 
+    const carregarQuadroDeAvisos  = async()=>{
+        const data = await getQuadroDeAvisos()
+        console.log("Quadro de avisos: ", data)
+        if(data === '')
+            console.log("Vazio...")
+    }
     const openInputText = () => {
         setTextoInput(textoQuadro);
         setModalVisible(true)
@@ -26,6 +34,16 @@ const HomeListHeader = ({ membros }) => {
         setModalVisible(false)
     }
 
+    useEffect(()=>{
+        carregarQuadroDeAvisos()
+    }, [])
+    
+    React.useCallback(() => {
+        carregarQuadroDeAvisos()
+        
+        return () => console.log("lista atualizada");
+    }, [])
+    
     return (
         <>
             <Text

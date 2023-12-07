@@ -183,6 +183,42 @@ removerResidencia = async (residenciaId) =>{
   });
 }
 
+//QUADRO DE AVISOS
+buscarQuadroDeAvisos = async () => {
+    try {
+        const residenciaId = await getResidenciaStorage();
+        const residenciaDoc = await DB_RESIDENCIA.doc(residenciaId).get();
+
+        if (residenciaDoc.exists) {
+            const quadroDeAvisos = residenciaDoc.data().quadroDeAvisos || '';
+            return quadroDeAvisos;
+        } else {
+            console.log('Documento da residência não encontrado.');
+            return ''; // ou qualquer valor padrão, se desejar
+        }
+    } catch (error) {
+        console.error('Erro ao buscar informações do quadro de avisos:', error);
+        // Trate o erro de acordo com as necessidades da sua aplicação
+        return ''; // ou qualquer valor padrão, se desejar
+    }
+};
+
+
+salvarQuadroDeAvisos = async (informacoesQuadroDeAviso) =>{
+    try {
+        const residenciaId = await getResidenciaStorage();
+        await DB_RESIDENCIA.doc(residenciaId).update({ quadroDeAvisos: informacoesQuadroDeAviso });
+
+        console.log('Informação do quadro de avisos atualizada com sucesso!');
+    } catch (error) {
+        console.error('Erro ao atualizar informação do quadro de avisos:', error);
+        // Trate o erro de acordo com as necessidades da sua aplicação
+    }
+
+}
+
+
+
 //MEMBROS
 
 adicionarNovoMembro = async (novoMembro) =>{
@@ -277,6 +313,8 @@ export default{
     buscarIdResidenciaAtual,
     adicionarResidencia,
     removerResidencia,
+    buscarQuadroDeAvisos,
+    salvarQuadroDeAvisos,
     adicionarNovoMembro,
     atualizarNomeResidencia,
     atualizarMembro,
