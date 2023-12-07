@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { FlatList, TouchableOpacity, View, Text, Image } from 'react-native'
 import { PaperProvider, IconButton, ActivityIndicator, MD2Colors } from 'react-native-paper';
 
@@ -30,7 +30,23 @@ const HomeScreen = () => {
     //Itens próximos do vencimento?
 
 
-    
+
+    useEffect(() => {
+            // removeResidenciaStorage()
+            console.log("PASSEI NA HOME")
+            carregarResidenciaAtual()
+            carregarProdutos()  
+        return ()=> console.log("finalizei produtos")
+    }, [])
+
+    useFocusEffect(
+        React.useCallback(() => {
+                carregarResidenciaAtual()
+                carregarProdutos()
+
+            return () => console.log("lista atualizada");
+        }, [])
+    );
 
 
 
@@ -40,7 +56,7 @@ const HomeScreen = () => {
             .then(doc => {
                 setResidencia(doc)
             })
-            
+
     }
 
 
@@ -73,26 +89,31 @@ const HomeScreen = () => {
             </View>
         )
     } 
+
+    const renderItem = useCallback(({ item }) => (
+        <HomeRenderItem item={item} key={item.key} />
+    ), []);
+
     if (residencia === null) {
         return (
             <PaperProvider>
-                <View style={{ 
-                    textAlign: 'center', 
+                <View style={{
+                    textAlign: 'center',
                     marginTop: 230,
                 }}>
                     <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.navigate('GerenciarResidencias')} hitSlop={{top: 20, bottom: 20, left: 50, right: 50}}>
-                        <Image source={require('../../../Assets/Home/empty.jpg')} style={{ alignSelf: "center", width: 170, height: 170 }} /> 
+                        <Image source={require('../../../Assets/Home/empty.jpg')} style={{ alignSelf: "center", width: 170, height: 170 }} />
                         <Text  style={{color:'black', textAlign: "center", fontSize: 18, paddingHorizontal: 20}}>
                             Parece que ainda não há residências vinculadas à sua conta. {"\n"}{"\n"}Clique aqui para criar uma nova residência.
                         </Text>
                     </TouchableOpacity>
-    
+
                 </View>
             </PaperProvider>
         )
     }else{
         return (
-            <PaperProvider>          
+            <PaperProvider>
                 <FlatList
                     style={{ backgroundColor: '#fff' }}
                     data={produtos
@@ -103,15 +124,13 @@ const HomeScreen = () => {
                     }): produtos}
                     keyExtractor={(item, index) => item.key + index}
                     ListHeaderComponent={<HomeListHeader membros={residencia.membros}/>}
-                    renderItem={({ item }) => <HomeRenderItem item={item} />}
+                    renderItem={renderItem}
                     ListEmptyComponent={
-                        loading 
-                        ?
+                        loading ?
                             <View style={{flex: 1, justifyContent: 'center'}}>
                                 <ActivityIndicator animating={true} color="#00ff00" />
                             </View>
-                        :
-                            <HomeEmptyList/>
+                            :<HomeEmptyList/>
                     }
                     onRefresh={() => {
                        carregarProdutos()}}

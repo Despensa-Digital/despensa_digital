@@ -123,6 +123,7 @@ const buscarProdutosItensValidades = async (residenciaId, callback) => {
 
                 });
 
+
                 await Promise.all(promises);
 
                 callback(produtos.length > 0 ? produtos : null);
@@ -302,9 +303,11 @@ const buscarProdutoItensProdutos = (residenciaId, idProduto, callback) => {
     despensaRef
         .onSnapshot(async documentSnapshot => {
 
+
             if (documentSnapshot.exists) {
                 produto = {
                     ...documentSnapshot.data(),
+                    key: documentSnapshot.id,
                     key: documentSnapshot.id,
                 }
                 // console.log("Produto", produto);    
@@ -327,6 +330,7 @@ const buscarProdutoItensProdutos = (residenciaId, idProduto, callback) => {
 
                     produto.itensProdutos = itensProdutos;
                 }
+
 
                 callback(produto)
             }
@@ -390,9 +394,9 @@ const adicionarProduto = async (residenciaId, produto) => {
 
 const atualizarProduto = async (residenciaId, produtoAtualizado) => {
     const produtoRef = DB_DESPENSA.doc(residenciaId).collection("Produtos").doc(produtoAtualizado.key)
-    // console.log("Produto Atualizado", produtoAtualizado)
+    console.log("Produto Atualizado", produtoAtualizado)
 
-    try {
+    try{
         await produtoRef.update({
             categorias: produtoAtualizado.categoria,
             marca: produtoAtualizado.marca,
@@ -442,8 +446,9 @@ const atualizarItemProduto = async (residenciaId, produtoId, itemAtualizado) => 
     // console.log("Meu item", itemAtualizado)
     try {
         await itemRef.update({
-            // categoriaId: itemAtualizado.categoria,
+            categoria: itemAtualizado.categoria,
             preco: itemAtualizado.preco,
+            validade: itemAtualizado.validade,
             validade: itemAtualizado.validade,
             localCompra: itemAtualizado.localCompra
         });
@@ -451,6 +456,55 @@ const atualizarItemProduto = async (residenciaId, produtoId, itemAtualizado) => 
         console.log('Item atualizado com sucesso.');
     } catch (erro) {
         console.error('Erro ao atualizar item:', erro);
+    }
+}
+
+const excluirItemProduto = async (residenciaId, produtoId, itemId) => {
+
+    const produtoRef = DB_DESPENSA.doc(residenciaId).collection("Produtos").doc(produtoId);
+    const itemRef = produtoRef.collection('ItensProdutos');
+
+    const snapshot = await produtoRef.collection('ItensProdutos').count().get();
+    const qtd = snapshot.data().count;
+    console.log("QTD: ", qtd);
+    try {
+        if (qtd > 1) {
+            return await itemRef.doc(itemId).delete().then(() => {
+                //console.log("Model: ", produtoId, itemId)
+                console.log('Item excluído com sucesso.');
+            }).then(() => 1)
+        } else {
+            await itemRef.get()
+            .then(allItemDocs => {
+                allItemDocs.forEach((itemDoc) => itemDoc.ref.delete())
+            })
+            //deleta o produto
+            return await produtoRef.delete().then(() => 0);
+        }
+    } catch (erro) {
+        console.error('Erro ao atualizar item:', erro);
+        return "FALHEI"
+    }
+}
+
+const excluirProduto = async (residenciaId, produtoId) => {
+
+    const produtoRef = DB_DESPENSA.doc(residenciaId).collection("Produtos").doc(produtoId);
+    const itemRef = produtoRef.collection('ItensProdutos');
+
+    try {
+        //deleta todos os itens do produto
+        await itemRef.get()
+            .then(allItemDocs => {
+                allItemDocs.forEach((itemDoc) => itemDoc.ref.delete())
+            })
+
+        //deleta o produto
+        return await produtoRef.delete().then(() => 0);
+
+    } catch (erro) {
+        console.error('Erro ao atualizar item:', erro);
+        return "FALHEI"
     }
 }
 
@@ -462,5 +516,7 @@ export default {
     adicionarProduto,
     atualizarProduto,
     adicionarItemProduto,
-    atualizarItemProduto
+    atualizarItemProduto,
+    excluirItemProduto,
+    excluirProduto
 }

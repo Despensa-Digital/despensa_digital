@@ -1,28 +1,38 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback, useContext } from 'react';
 import { View, FlatList, StyleSheet } from 'react-native'
-import { ActivityIndicator,FAB, PaperProvider} from 'react-native-paper';
+import { ActivityIndicator, FAB, PaperProvider, Snackbar } from 'react-native-paper';
 
 import { getProdutos, getProdutosFiltrados } from '../../../Controller/Produtos/produtosController';
-import {  useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 import { getCategorias } from '../../../Controller/Categoria/categoriaController';
 
 import DespensaListHeader from '../Componentes/DespensaListHeader';
 import DespensaRenderItem from '../Componentes/DespensaRenderItem';
 import DespensaEmptyList from '../Componentes/DespensaEmptyList';
+import { SnackbarContext, CategoriasContext } from '../../../App';
 
 const Despensa = ({ route, navigation }) => {
     const [searchQuery, setSearchQuery] = useState('');
     const [produtos, setProdutos] = useState([]);
-    const [categorias, setCategorias] = useState([]);
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
     const [searchCategoria, setSearchCategoria] = useState('')
     const [whatCategoryIs, setWhatCategoryIs] = useState(0)
+    const [selectedId, setSelectedId] = useState(1);
+    const {deleteProductSnackbar, setDeleteProductSnackbar} = useContext(SnackbarContext);
+    const {categorias, setCategorias} = useContext(CategoriasContext);
     const onChangeSearch = query => setSearchQuery(query);
+    // const produtosOrdenados = produtos.sort((a, b) => {
+    //     let x = a?.nome?.toLowerCase();
+    //     let y = b?.nome?.toLowerCase();
+    //     if (x < y) { return -1; }
+    //     if (x > y) { return 1; }
+    //     return 0;
+    // })
 
     const carregarProdutos =  (callback)=>{
         getProdutos(callback)
-        
+
     }
 
     const carregarCategorias = ()=>{
@@ -84,7 +94,6 @@ const Despensa = ({ route, navigation }) => {
 
     useEffect(()=>{
         let canceled = false
-        
         if(!canceled){
             if(whatCategoryIs !== 0){
                 filtrarProdutos(searchCategoria, setProdutos)
@@ -93,9 +102,17 @@ const Despensa = ({ route, navigation }) => {
                 carregarProdutos(setProdutos)
             }
         }       
-
     return ()=>(canceled = true)
     },[searchCategoria && whatCategoryIs])
+
+
+    const listHeaderComponent = useCallback(() => (
+        <DespensaListHeader categorias={categorias} searchQuery={searchQuery} setSearchQuery={setSearchQuery} selectedId={selectedId} setSelectedId={setSelectedId} setSearchCategoria={setSearchCategoria} setWhatCategoryIs={setWhatCategoryIs}/>
+    ), [categorias, selectedId])
+
+    const renderItem = useCallback(({ item }) => (
+            <DespensaRenderItem item={item} key={item.key} searchQuery={searchQuery} />
+    ), [searchQuery]);
 
     if (loading) {
         return (
@@ -106,21 +123,12 @@ const Despensa = ({ route, navigation }) => {
     }
     return (
         <PaperProvider>
-
             <FlatList
                 style={{ backgroundColor: '#fff' }}
-                data={produtos 
-                //     ? produtos.sort((a, b) => {
-                //     let x = a?.nome?.toLowerCase();
-                //     let y = b?.nome?.toLowerCase();
-                //     if (x < y) { return -1; }
-                //     if (x > y) { return 1; }
-                //     return 0;
-                // }) : produtos
-                }
+                data={produtos}
                 keyExtractor={(item, index) => item.key + index}
-                ListHeaderComponent={<DespensaListHeader categorias={categorias} setSearchCategoria={setSearchCategoria} setWhatCategoryIs={setWhatCategoryIs}/>}
-                renderItem={({ item }) => <DespensaRenderItem item={item} />}
+                ListHeaderComponent={listHeaderComponent}
+                renderItem={renderItem}
                 ListEmptyComponent={DespensaEmptyList}
                 onRefresh={() => setRefreshing(true)}
                 //if set to true, the UI will show a loading indicator
@@ -132,6 +140,14 @@ const Despensa = ({ route, navigation }) => {
                 style={styles.fab}
                 onPress={() => navigation.navigate('AdicionarProduto', categorias)}
             />
+
+            <Snackbar
+                visible={deleteProductSnackbar}
+                onDismiss={() => { setDeleteProductSnackbar(false) }}
+                duration={3000}>
+                Produto excluído com sucesso!
+            </Snackbar>
+
         </PaperProvider>
 
     );

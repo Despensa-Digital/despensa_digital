@@ -76,6 +76,11 @@ const buscarResidenciaAtual = async ()=>{
 
 }
 
+const buscarIdResidencia = async () => {
+    const residenciaId = await getResidenciaStorage();
+    return residenciaId;
+}
+
 
 const buscarIdResidenciaAtual = async ()=>{
     const current_id = await consumidor.buscarConsumidorLogado();
@@ -268,6 +273,7 @@ export default{
     buscarResidencias,
     buscarResidencia,
     buscarResidenciaAtual,
+    buscarIdResidencia,
     buscarIdResidenciaAtual,
     adicionarResidencia,
     removerResidencia,

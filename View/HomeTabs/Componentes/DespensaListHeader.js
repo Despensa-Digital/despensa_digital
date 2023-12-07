@@ -6,14 +6,13 @@ import { getCategorias } from '../../../Controller/Categoria/categoriaController
 import categoria from '../../../Model/Firestore/categoria';
 import { set } from 'date-fns';
 //Componente para o ListHeader do FlatList [partes da tela que não são itens da lista]
-const DespensaListHeader = ({ categorias, setSearchCategoria, setWhatCategoryIs }) => {
+const DespensaListHeader = ({ categorias, searchQuery, setSearchQuery, setSelectedId, selectedId, setSearchCategoria, setWhatCategoryIs }) => {
     const onChangeSearch = query => setSearchQuery(query);
-    
 
     //iniciar com o ID de "Todas as Categorias"
     /*esse useState é criado aqui e passado como parametro para CategoryAvatar
     para poder alterar o nome da categoria atual no <Text> junto com o useEffect*/
-    const [selectedId, setSelectedId] = useState(1);
+    //const [selectedId, setSelectedId] = useState(1);
     const [categoryName, setCategoryName] = useState('');
     const [searchQuery, setSearchQuery] = useState('')
     //pega o selectedId, busca em categorias qual item possui esse id e seta o nome em setCategoryName
@@ -32,21 +31,16 @@ const DespensaListHeader = ({ categorias, setSearchCategoria, setWhatCategoryIs 
             setSearchCategoria('Todas as categorias')
             setWhatCategoryIs(0)
         }
-       
+
+        // } catch (error) {
+        //     console.log("Erro", error);
+        // }
     }
 
-   
-
-
     useEffect(() => {
-        console.log("DESPENSALISTHEADER")
-        carregarCategoriaSelecionada()
+            console.log("DESPENSALISTHEADER")
+            carregarCategoriaSelecionada()       
     }, [selectedId])
-
-
-
-
-
 
     return (
         <>
